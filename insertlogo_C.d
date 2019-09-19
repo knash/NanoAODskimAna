@@ -1,0 +1,61 @@
+
+# DO NOT DELETE
+
+./insertlogo_C.so: insertlogo.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TPad.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVirtualPad.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TAttPad.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/Rtypes.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RtypesCore.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RConfig.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RVersion.h
+./insertlogo_C.so: /usr/include/features.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/DllImport.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/snprintf.h
+./insertlogo_C.so: /usr/include/stdio.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/strlcpy.h
+./insertlogo_C.so: /usr/include/unistd.h /usr/include/string.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TGenericClassInfo.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TSchemaHelper.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TIsAProxy.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVirtualIsAProxy.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVirtualX.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TNamed.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TObject.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RConfigure.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TStorage.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVersionCheck.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TString.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TMathBase.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RStringView.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TAttLine.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TAttFill.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TAttText.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TAttMarker.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/GuiTypes.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/Buttons.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TQObject.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TError.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TList.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TSeqCollection.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TCollection.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TIterator.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVirtualRWMutex.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVirtualMutex.h
+./insertlogo_C.so: /usr/include/assert.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVirtualQConnection.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TInterpreter.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TDictionary.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/ESTLType.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TAttBBox2D.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TPoint.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TLatex.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TText.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TLine.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TBox.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TASImage.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TImage.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TAttImage.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TVectorDfwd.h
+./insertlogo_C.so: /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RVersion.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RConfig.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TClass.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TDictAttributeMap.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TInterpreter.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TROOT.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TBuffer.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TMemberInspector.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TError.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/RtypesImp.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TIsAProxy.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TFileMergeInfo.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/include/TCollectionProxyInfo.h /cvmfs/cms.cern.ch/slc6_amd64_gcc700/cms/cmssw/CMSSW_10_2_9/external/slc6_amd64_gcc700/bin/rootcling
+insertlogo_C__ROOTBUILDVERSION= 6.12/07
