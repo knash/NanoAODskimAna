@@ -70,7 +70,6 @@ if options.anatype=="tZb":
 	sigfiles=glob.glob("rootfiles/NanoAODskim_tZbAna"+options.era+"__WpToTpB_Wp4000Nar_Tp3000Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
 if options.anatype=="tHb":
 	sigfiles=glob.glob("rootfiles/NanoAODskim_tHbAna"+options.era+"__WpToTpB_Wp4000Nar_Tp3000Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
-
 sigfs = {}
 for sigf in sigfiles:
 	sigfs[sigf.split("__")[1].replace(".root","")]=TFile(sigf,"open")
@@ -143,7 +142,7 @@ for rname in NanoF.LoadCuts:
 			rebins.append(100)
 			ranges.append([0.0,1.0])
 			xvals.append("image_{top}")
-			cutvals.append([0.6,-999.0])
+			cutvals.append([0.9,-999.0])
 			maxfacs.append(1.4)
 		if var=="iMDPho":
 			rebins.append(100)
@@ -155,7 +154,7 @@ for rname in NanoF.LoadCuts:
 			rebins.append(4)
 			ranges.append([-1.0,1.0])
 			xvals.append("doubleB")
-			cutvals.append([0.6,-999.0])
+			cutvals.append([0.8,-999.0])
 			maxfacs.append(1.4)
 for ihn in xrange(len(histonames)):
 		curname = histonames[ihn]

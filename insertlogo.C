@@ -29,21 +29,18 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
   TString lumiText;
   if( iPeriod==1 )
     {
-      lumiText +=lumi_13TeV_2017;
+      lumiText +=lumi_13TeV_2016;
       lumiText += " (13 TeV)";
     }
   else if ( iPeriod==2 )
     {
-      lumiText +=lumi_13TeV_2018;
+      lumiText +=lumi_13TeV_2017;
       lumiText += " (13 TeV)";
     }
   else if( iPeriod==3 ) 
     {
-      lumiText = lumi_8TeV; 
-      lumiText += " (8 TeV)";
-      lumiText += " + ";
-      lumiText += lumi_7TeV;
-      lumiText += " (7 TeV)";
+      lumiText +=lumi_13TeV_2018;
+      lumiText += " (13 TeV)";
     }
   else if ( iPeriod==4 )
     {

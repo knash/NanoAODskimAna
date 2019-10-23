@@ -1,3 +1,6 @@
+from optparse import OptionParser
+import subprocess,os,sys
+
 import NanoAODskim_Functions	
 from NanoAODskim_Functions import *
 
@@ -15,6 +18,10 @@ parser.add_option('--batch', metavar='F', action='store_true',
                   default=False,
                   dest='batch',
                   help='batch')
+parser.add_option('--normcorr', metavar='F', action='store_true',
+                  default=False,
+                  dest='normcorr',
+                  help='normcorr')
 parser.add_option('-e', '--era', metavar='F', type='string', action='store',
                   default	=	'2017',
                   dest		=	'era',
@@ -25,8 +32,7 @@ setname = options.set
 isdata=False
 if (setname).find('JetHT')!=-1:
 	isdata=True
-
-NanoF = NanoAODskim_Functions(options.anatype)
+NanoF = NanoAODskim_Functions(options.anatype,options.era)
 candl = NanoF.candl
 probl = NanoF.probl
 
@@ -38,6 +44,8 @@ output = ROOT.TFile("NanoAODskim_RateMaker__"+options.anatype+options.era+"__"+o
 numregions = ["B","E","J"]
 if (options.anatype=="tHb" or options.anatype=="tZb"):
 	numregions.append("M")
+constdict = NanoF.LoadConstants
+ttbarnormcorr=constdict['ttrenorm']
 for num in numregions:
 	Denregion ="A"
 	if num=="M":
@@ -121,9 +129,12 @@ for num in numregions:
 
 	if isdata:
 		
-		bkgtosubtract = ["TT","WJets"]
+		bkgtosubtract = ["TT"]
 		if options.anatype=="Pho":
 			bkgtosubtract.append("GJets")
+		if options.anatype=="WW":
+			bkgtosubtract.append("WJets")
+
 		for bkgs in bkgtosubtract:
 
 			curfile = TFile('rootfiles/NanoAODskim_'+options.anatype+'Bkg'+options.era+'__'+bkgs+'.root','open')
@@ -147,6 +158,15 @@ for num in numregions:
 			print "subfrac"
 			print bkgs,histosnumbkg["sum"].Integral()/histosnum["sum"].Integral()
 			print bkgs,histosdenbkg["sum"].Integral()/histosden["sum"].Integral()
+
+			if options.normcorr:
+				histosnumbkg["0"].Scale(ttbarnormcorr[0])
+				histosnumbkg["1"].Scale(ttbarnormcorr[0])
+				histosnumbkg["sum"].Scale(ttbarnormcorr[0])
+
+				histosdenbkg["0"].Scale(ttbarnormcorr[0])
+				histosdenbkg["1"].Scale(ttbarnormcorr[0])
+				histosdenbkg["sum"].Scale(ttbarnormcorr[0])
 
 			histosnum["0"].Add(histosnumbkg["0"],-1)
 			histosnum["1"].Add(histosnumbkg["1"],-1)

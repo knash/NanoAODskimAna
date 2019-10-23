@@ -1,6 +1,8 @@
-import NanoAODskim_Functions	
-from NanoAODskim_Functions import *
 
+from optparse import OptionParser
+import subprocess,os,sys
+import ROOT
+#ROOT.ROOT.EnableImplicitMT()
 parser = OptionParser()
 
 parser.add_option('-s', '--set', metavar='F', type='string', action='store',
@@ -40,6 +42,10 @@ parser.add_option('-S', '--search', metavar='F', type='string', action='store',
 		  default	=	'',
 		  dest		=	'search',
 		  help		=	'')
+parser.add_option('--ttonly', metavar='F', action='store_true',
+		  default=False,
+		  dest='ttonly',
+		  help='ttonly')
 parser.add_option('--condor', metavar='F', action='store_true',
 		  default=False,
 		  dest='condor',
@@ -60,10 +66,28 @@ parser.add_option('--prescale', metavar='F', action='store_true',
 		  default=False,
 		  dest='prescale',
 		  help='prescale')
-
-
+parser.add_option('--trigemu', metavar='F', action='store_true',
+		  default=False,
+		  dest='trigemu',
+		  help='trigemu')
 
 (options, args) = parser.parse_args()
+
+di=""
+if options.condor:
+	di="tardir/"
+	#subprocess.call( ["mv "+di+"PhysicsTools ./"], shell=True )
+	#subprocess.call( ["cp -r PhysicsTools ./CMSSW_10_2_9/src"], shell=True )
+	#os.chdir("CMSSW_10_2_9/src")
+	#subprocess.call( ["scram b"], shell=True )
+	#subprocess.call( ["scramv1 runtime -sh"], shell=True )
+	#subprocess.call( ["cmsenv"], shell=True )
+	#os.chdir("../../")
+	#subprocess.call( ["ls ./"], shell=True )
+	#subprocess.call( ["pwd"], shell=True )
+import NanoAODskim_Functions	
+from NanoAODskim_Functions import *
+
 
 print "Options Summary..."
 print "=================="
@@ -80,22 +104,26 @@ if jobarr[0]>jobarr[1]:
 prescale = options.prescale
 setname = options.set
 setnametowrite=setname.split('/')[0]
-print "set name to write",setnametowrite
-isdata=False
-if (setname).find('JetHT')!=-1:
-	isdata=True
-isQCD=False
-if (setname).find('QCD')!=-1:
-	isQCD=True
-NanoF = NanoAODskim_Functions(options.anatype,options.era,options.search)
+print "set name",setnametowrite
+settype=setfilter(setname)
+print "set type",settype
+NanoF = NanoAODskim_Functions(options.anatype,options.era,"v8",settype,options.condor)
 
-if not isdata:
+
+if not (settype=="JetHT"):
 	constdict = NanoF.LoadConstants
 	lumi = constdict["lumi"]
-	nev_xsec = constdict["dataconst"][setname]
-	setweight = lumi*nev_xsec[1]/float(nev_xsec[0])
+	
+	nev_xsec = constdict["dataconst"][setnametowrite]
+	posfac = constdict["posfac"][setnametowrite]
+	posmmin = posfac
+	nevweighted=nev_xsec[0]*posmmin
+
+	setweight = lumi*nev_xsec[1]/float(nevweighted)
+	
+	print "nev=",nev_xsec[0],"posfac",posfac,"events",nevweighted
 	print "Using MC weights..."
-	print "\t... Using Constants: Lumi =",lumi,"; Xsec =",nev_xsec[1],"; Nevents =",float(nev_xsec[0])
+	print "\t... Using Constants: Lumi =",lumi,"; Xsec =",nev_xsec[1],"; Nevents =",float(nevweighted)
 
 else:
 	print "Using data..."
@@ -104,7 +132,7 @@ else:
 print "\t... Weight =",setweight
 
 print "Loading Files..."
-allfiles = NanoF.loadfiles(setname,options.folder,options.redir,"")
+allfiles = NanoF.loadfiles(setname,options.folder,options.redir,options.search)
 print "Totfiles",len(allfiles)
 files = []
 for cfile in xrange(len(allfiles)):
@@ -132,9 +160,7 @@ for lab in labels:
 	if len(lab)==3:
 		njetinv=3
 		print "Trijet version"
-di=""
-if options.condor:
-	di="tardir/"
+
 verbose=False
 if options.Ana:
 	macro="Ana"
@@ -143,16 +169,19 @@ elif options.Bkg:
 else:
 	logging.error("Must Select a Analysis Type")
 	sys.exit()
-
+doshifts=False
 if macro=="Bkg":
 	#regions=["A","B","E","J","C","K","H","I","F","G","D","All"]
 	regions=["A","B","E","J"]
+
 	if options.anatype=="tHb" or options.anatype=="tZb":
 		regions.append("M")
 		regions.append("Z")
 
 	#regions=["A","B","C","D","All"]
 	hemispheres = ["0","1"]
+	if (not NanoF.isdata):
+		weightstoplot = ["genweightsf"]
 	histos = NanoF.histosinit(labels,regions)
 	#print histos
 	for region in regions:
@@ -160,13 +189,14 @@ if macro=="Bkg":
 		for ild in xrange(2):
 			jetreg.append(region+"_"+str(ild))
 		histos.update(NanoF.histosinit(labels,jetreg))
-
+FSregions = {}
 if macro=="Ana":
-	if isQCD:
+	doshifts=True
+	if settype=="QCD":
 		ratefile=TFile(di+'NanoAODskim_RateMaker__'+options.anatype+options.era+'__QCD.root','open')
-	elif options.era=="2016":
-		print "2016 HACK!!!!!!!"
-		ratefile=TFile(di+'NanoAODskim_RateMaker__'+options.anatype+options.era+'__QCD.root','open')
+	#elif options.era=="2016":
+	#	print "2016 HACK!!!!!!!"
+	#	ratefile=TFile(di+'NanoAODskim_RateMaker__'+options.anatype+options.era+'__QCD.root','open')
 	else:
 		ratefile=TFile(di+'NanoAODskim_RateMaker__'+options.anatype+options.era+'__JetHT.root','open')
 	ratehist = {}
@@ -174,14 +204,21 @@ if macro=="Ana":
 	ratehist["G"]=ratefile.Get('Erate')
 	ratehist["L"]=ratefile.Get('Jrate')
 	ratehist["I"]=ratefile.Get('rate')
-	ratehist["FTR"]=ratefile.Get('rate')
+	
 
-	regions=["C","K","H","F","FT"]
-	rateregions = ["D","L","I","G","FTR"]
+
+	regions=["C","K","H","F"]
+	rateregions = ["D","L","I","G"]
 	if options.anatype=="tHb" or options.anatype=="tZb":
 		ratehist["O"]=ratefile.Get('Mrate')
 		regions.append("N")
 		rateregions.append("O")
+	if options.anatype=="tHb":
+		ratehist["FTR"]=ratefile.Get('rate')
+		regions.append("FT")
+		rateregions.append("FTR")
+	FSregions=copy.copy(regions)
+	anaregions=copy.copy(regions)
 	ratehistos={}
 	for ratetype in rateregions:
 		regions.append(ratetype)
@@ -203,8 +240,11 @@ if macro=="Ana":
 	#	histofills.append("bkg__"+bkgw)
 	histos = NanoF.histosinit(labels,histofills)
 
+	if (not NanoF.isdata):
+		weightstoplot = ["genweightsf"]
+		#weightshistos = NanoF.weightshistosinit(weightstoplot,FSregions)
 
-
+	#print weightshistos
 	binstrs=[]
 	#print histos 
 
@@ -249,6 +289,8 @@ if macro=="Ana":
 						histos[ratetype+exstr]["bbin"+str(ybin)+"__"+candl+"__pt__"+lab+"__"+ratetype+exstr] =  TH2F("bbin"+str(ybin)+"__"+candl+"__pt__"+lab+"__"+ratetype+exstr,	"bbin"+str(ybin)+"__"+candl+"__pt__"+lab+"__"+ratetype+exstr,		nxbins, 0,nxbins,350, 0.,3500.)
 					else:
 						histos[ratetype+exstr]["bbin"+str(ybin)+"__"+candl+"__pt__"+lab+"__"+ratetype+exstr] =  TH2F("bbin"+str(ybin)+"__"+candl+"__pt__"+lab+"__"+ratetype+exstr,	"bbin"+str(ybin)+"__"+candl+"__pt__"+lab+"__"+ratetype+exstr,		nxbins, 0,nxbins,350, 400.,3900.)
+						if len(lab)==1:
+							histos[ratetype+exstr]["bbin"+str(ybin)+"__"+candl+"__msoftdrop__"+lab+"__"+ratetype+exstr] =  TH2F("bbin"+str(ybin)+"__"+candl+"__msoftdrop__"+lab+"__"+ratetype+exstr,	"bbin"+str(ybin)+"__"+candl+"__msoftdrop__"+lab+"__"+ratetype+exstr,		nxbins, 0,nxbins,240, 0.,480.)
 					histos[ratetype+exstr]["bbin"+str(ybin)+"__"+candl+"__eta__"+lab+"__"+ratetype+exstr] =  TH2F("bbin"+str(ybin)+"__"+candl+"__eta__"+lab+"__"+ratetype+exstr,	"bbin"+str(ybin)+"__"+candl+"__eta__"+lab+"__"+ratetype+exstr,		nxbins, 0,nxbins,60, -3.0,3.0)
 		newhistos = NanoF.histosinit(labels,[ratetype+"_0",ratetype+"_1"])
 		histos[ratetype+"_0"].update(newhistos[ratetype+"_0"])
@@ -259,17 +301,8 @@ if macro=="Ana":
 	#		print histo1
 
 	masshist = ratefile.Get("masshist")
-weightdict = {}
-for region in regions:
-	weightdict[region] = setweight
 
 
-branchestokeep = NanoF.branchestokeep
-
-
-
-
-branchestokeepevent = NanoF.branchestokeepevent
 matchmatrix = []
 
 
@@ -298,10 +331,15 @@ cutflow["pre"]["highpt"]=0.0
 cutflow["pre"]["eta"]=0.0
 cutflow["pre"]["Ak8DR"]=0.0
 cutflow["pre"]["Ak8Drap"]=0.0
+cutflow["pre"]["muveto"]=0.0
+cutflow["pre"]["elveto"]=0.0
 minpt = 9999999.
+minptak4 = 9999999.
 minsdm = 9999999.
 for region in regions:
 	minpt=min(minpt,(NanoF.LoadCuts)[region]["ptAK8"])
+	if "B" in ak4labs:
+		minptak4=min(minptak4,(NanoF.LoadCuts)[region]["pt__B"])
 	#print "msoftdrop__"+ak8labs[0]
 	#print (NanoF.LoadCuts)[region]["msoftdrop__"+ak8labs[0]]
 	#print region,"msoftdrop__"+ak8labs[0],"msoftdrop__"+ak8labs[1]
@@ -314,32 +352,110 @@ for region in regions:
 	cutflow[region]["ht"]=0.0
 	cutflow[region]["trig"]=0.0
 	cutflow[region]["Full"]=0.0
-print "min pt, softdrop mass for triggering",minpt,minsdm
-alltrigs = ["All"]
-alltrigs += NanoF.strigs + NanoF.etrigs
 
-histos["TRIG"]={}
-for ttr in alltrigs:
-	histos["TRIG"]["ht__pretrig__"+ttr]=TH1F("ht__pretrig__"+ttr,"ht__pretrig__"+ttr,200, 500.0,2500.0)
-	histos["TRIG"]["ht__posttrig__"+ttr]=TH1F("ht__posttrig__"+ttr,"ht__posttrig__"+ttr,200, 500.0,2500.0)
-histos["TRIG"]["ht__msoftdrop__pretrig__All"]=  TH2F("ht__msoftdrop__pretrig__"+ttr,"ht__msoftdrop__pretrig__"+ttr,200, 500.0,2500.0,250, 0.,500.)
-histos["TRIG"]["ht__msoftdrop__posttrig__All"]=  TH2F("ht__msoftdrop__posttrig__"+ttr,"ht__msoftdrop__posttrig__"+ttr,200, 500.0,2500.0,250, 0.,500.)
-#skipem=True
+print "min pt, softdrop mass for triggering",minpt,minsdm
+print "min pt ak4",minptak4
+
+#print histos
+errvals = ["mass","pt","eta"]
+
+
+prehisto = copy.deepcopy(histos)
+
+shiftnames = []
+shiftuncert=[""]
+errnames = []
+
+if (not NanoF.isdata) and (settype!="QCD"):
+	errnames.append("trig")
+	errnames.append("pu")
+	if "H" in ak8labs:
+		errnames.append("htag")
+	if "Z" in ak8labs:
+		errnames.append("wtag")
+	if "T" in ak8labs:
+		errnames.append("ttag")
+	if "B" in ak4labs:
+		errnames.append("btag")
+	errnames.append("q2")
+	if settype=="Signal":
+		errnames.append("pdfweight")
+	if settype=="TT":
+		errnames.append("tptrw")
+	if doshifts:
+		shiftnames = ["jes","jer"]
+		shiftuncert=["","jes__up","jes__down","jer__up","jer__down"]
+	recalmc = NanoF.jmeCorrections().jetReCalibrator
+	recalmcak4 = NanoF.jmeCorrectionsak4().jetReCalibrator
+weightshistos=[]
+if macro=="Ana" and (not NanoF.isdata):
+	for errname in errnames:
+		#print errname
+		weightstoplot.append(errname+"sf")
+		weightstoplot.append(errname+"up")
+		weightstoplot.append(errname+"down")
+	weightshistos = NanoF.weightshistosinit(weightstoplot,["C"])
+uphistos={}
+downhistos={}
+for errname in (errnames+shiftnames):
+	uphistos[errname]={}
+	downhistos[errname]={}
+	for errval in errvals:
+		for region in FSregions:	
+			uphistos[errname][region]={}
+			downhistos[errname][region]={}
+			for hn in prehisto[region]:
+				if (hn.split("__")[0] in errvals) and (isinstance(prehisto[region][hn], TH1F)):
+					#print hn.split("__")[1],len(hn.split("__")[1])
+					if (hn.split("__")[0]!="mass") and (len(hn.split("__")[1])>1):
+						continue 
+					#print [hn+"__"+errname+"__up"], [hn+"__"+errname+"__down"]
+					copyhist = copy.copy(prehisto[region][hn])
+					copyhist.SetName(hn+"__"+errname+"__up")
+					uphistos[errname][region][hn+"__"+errname+"__up"]=copyhist
+					copyhist = copy.copy(prehisto[region][hn])
+					copyhist.SetName(hn+"__"+errname+"__down")
+					downhistos[errname][region][hn+"__"+errname+"__down"]=copyhist
+
+#print histos
+if options.ttonly and options.anatype=="tHb":
+	regions=["FT","FTR"]
+	rateregions=["FTR"]
+#jeccorr =NanoF.jmeCorrections()
+#nak8jets=0
+resetweightdict={}
+for region in regions:
+	resetweightdict[region]={}
+	for errname in errnames:
+		resetweightdict[region][errname]={"sf":1.0,"down":1.0,"up":1.0}
+resetweightdict[region]["setweight"]={"sf":1.0}
+if (not NanoF.isdata):
+	resetweightdict[region]["genweight"]={"sf":1.0}
+if macro=="Ana":
+	resetweightdict[region]["bkgweight"]={"sf":1.0}
+numf=-1
+
+
 for curfilename in files:
+	numf+=1
 	#filest = time.time()
 	#print "Loading",curfilename.split('/')[-1]
-	#print curfilename
+	print curfilename
 	#if curfilename=="root://eoscms.cern.ch:///store/group/phys_b2g/knash/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1_NanoSlimNtuples2018mc_v8/190904_160953/0000/NanoAODSIMv5skim_176.root":
 	#	skipem=False
 	#if skipem:
 	#	continue
 	if kill:
 		break 
-	runver = ""
-	if curfilename.find("Run2017B-31Mar2018-v1")!=-1:
-		runver="2017B"
-	if curfilename.find("Run2017C-31Mar2018-v1")!=-1:
-		runver="2017C"
+		
+	if (options.trigemu) or (NanoF.isdata):
+		runver = ""
+		parsename =  curfilename.split("/")
+		for pars in parsename:
+			if pars.find("Run201")!=-1:
+				runver=pars[0:8]
+		NanoF.setruntrigs(runver)
+	
 	try:
 		#curfile = TFile(curfilename,"open")
 		curfile = TFile.Open(curfilename)
@@ -348,8 +464,10 @@ for curfilename in files:
 		logging.warning("ERROR OPENING FILE")
 		continue
 	
-	branchdir = NanoF.ttreeinit(curttree,runver)
+	#branchdir = NanoF.ttreeinit(curttree,runver)
 	
+	#if NanoF.isdata:
+	#	jmecorr = NanoF.initcorr(curfilename)
 	#endftime=time.time()
 	#timelogger["files"]+=endftime-stftime
 	nent = curttree.GetEntries()
@@ -359,12 +477,16 @@ for curfilename in files:
 	if (options.eventsplitting):
 		itertree = itertools.islice(itertree,(jobarr[0]-1),nent,jobarr[1])
 	#for tt in itertree:
+	avetime=0
+	stevtime = time.time()	
 	for iev in xrange(nent):
+		genpart,genweight,pdfweights,q2weights=None,None,None,None
+
 		counts+=1
 
 
 		try:
-			itertree.next()
+			ev=itertree.next()
 		except:
 			print "EV ERR!"
 			continue
@@ -372,7 +494,7 @@ for curfilename in files:
 		#	continue
 
 
-		snapdir = copy.copy(branchdir)
+		#snapdir = copy.copy(branchdir)
 		#print "start"
 		#curttreeread.Next()
 		#stetime=time.time()
@@ -380,7 +502,11 @@ for curfilename in files:
 		
 		cutflow["pre"]["All"]+=1.
 		if counts%10000==0:
-			print "\t...",counts,"events processed, total time:",NanoF.strf(time.time()-sttime),"sec"
+			avetime=time.time()-stevtime
+			tpev=0.0
+			if iev>0:
+				tpev=10000.*(avetime)/float(iev)
+			print "\t...",counts,"events processed, ave time per proc event:",strf(tpev),"dmsec, Total time",strf(time.time()-sttime)
 			if verbose:
 				for lab in labels:
 					if len(lab)==njetinv:
@@ -406,384 +532,603 @@ for curfilename in files:
 				
 		
 		#print counts,counts%jobarr[1],jobarr[0]
-		#if counts>120000:
+		#if counts>10000:
 		#	kill=True
 		#	break
 
-			
+	
 		#print branchdir["event"]
 		#print branchdir["event"]
 		#print snapdir
 		#print "\t1.11"
-		if snapdir["CustomAK8Puppi"][0][0]<2:
+		#print "pre",nak8jets
+
+		nak8jets = getattr(ev, "nCustomAK8Puppi")
+		if nak8jets<2:
 			continue 
-		
 		cutflow["pre"]["twoak8"]+=1.
-		#print branchdir["CustomAK8Puppi"][1]["pt"][0],branchdir["CustomAK8Puppi"][1]["pt"][1]
-		
-		if snapdir["CustomAK8Puppi"][1]["pt"][1]<minpt:
+		minptak8 = getattr(ev, "CustomAK8Puppi_pt")[1]
+		#~30GeV buffer zone
+		if minptak8<(minpt-30.0):
 			continue
-		
-		alllight = True
-		for iii in xrange(snapdir["CustomAK8Puppi"][0][0]):
-			if snapdir["CustomAK8Puppi"][1]["msoftdrop"][iii]>minsdm:
-				alllight=False
-				break
-		
-		if alllight:
-			#if branchdir["CustomAK8Puppi"][0][0]>2:
-			#	for iii in xrange(branchdir["CustomAK8Puppi"][0][0]):
-			#		print iii,branchdir["CustomAK8Puppi"][1]["msoftdrop"][iii]
-			#	print "All low mass"
-			continue
-		
+			
 		cutflow["pre"]["highpt"]+=1.
-		if abs(snapdir["CustomAK8Puppi"][1]["eta"][0])>2.4 or abs(snapdir["CustomAK8Puppi"][1]["eta"][1])>2.4:
-			continue
-		
-		cutflow["pre"]["eta"]+=1.
-		try:
-			curdictval = NanoF.eventinit(snapdir)
-		except:
-			print "ERROR"
-			continue 
-
-		
 
 
-		#print curdictval["CustomAK8Puppi"]
-		#continue
-		#endetime=time.time()
-		#timelogger["init"]+=endetime-stetime
-		#stptime=time.time()
+		#print ptrigs
+		#print curtrigs
 
-		ak8jets = NanoF.physobjinit(curdictval["CustomAK8Puppi"],njetinv)
+
+		trigvals = {}
+		if (options.trigemu) or (NanoF.isdata):
+			ptrigs = copy.copy(NanoF.ptrigs)
+			curtrigs = copy.copy(NanoF.strigs+NanoF.etrigs)
+			if prescale:	
+				prigvals = {}
+				for tt in ptrigs:
+					try:
+						prigvals[tt]=getattr(ev, tt)
+					except:
+						pass
+				if not (NanoF.TriggerPass(prigvals,True)):
+					continue
+			else:
+				for tt in curtrigs:
+					try:
+						trigvals[tt]=getattr(ev, tt)
+					except:
+					#print "no",tt
+						pass
+					#print tt,trigvals[tt]
+				if not (NanoF.TriggerPass(trigvals)):
+					continue
+
+		muons = NanoF.expandgeneric(ev,"Muon",maxlen=4,ptcut=100.0 )
+		electrons = NanoF.expandgeneric(ev,"Electron",maxlen=4,ptcut=100.0  )
 		
-		ak4jets = NanoF.physobjinit(curdictval["Jet"],12)
-		htval = 0
-		for ak4jet in ak4jets: 
-			if ak4jet["TLV"].Perp()<30.0: 
-				continue		
-			htval += ak4jet["TLV"].Perp()
-		if prescale:
-			if not (NanoF.TriggerPass(curdictval,True)):
-				continue
-		#print "pass1"
-		histos["TRIG"]["ht__pretrig__All"].Fill(htval)
-		histos["TRIG"]["ht__msoftdrop__pretrig__All"].Fill(htval,max(ak8jets[0]["msoftdrop"],ak8jets[1]["msoftdrop"]))
-		for hh in NanoF.trigstopass:
-			histos["TRIG"]["ht__pretrig__"+hh].Fill(htval)
-			if curdictval[hh]:
-				histos["TRIG"]["ht__posttrig__"+hh].Fill(htval)
-		if not (NanoF.TriggerPass(curdictval)):
-			continue
-		#print "pass2"
-		histos["TRIG"]["ht__posttrig__All"].Fill(htval)
-		histos["TRIG"]["ht__msoftdrop__posttrig__All"].Fill(htval,max(ak8jets[0]["msoftdrop"],ak8jets[1]["msoftdrop"]))
-		
-		muons = NanoF.physobjinit(curdictval["Muon"],4)
-		electrons = NanoF.physobjinit(curdictval["Electron"],4)
-	
 		muveto=False
 		for mu in muons:
-			#print mu["pt"],mu["mvaId"],mu["highPtId"]
-			if mu["pt"]>70 and (mu["mvaId"]>1 or mu["highPtId"]>1):
+			if mu.pt>100 and mu.tightId: 
 				muveto=True
-		
+		 		break
 		if muveto:
-			#print "Skip Mu"
 			continue
-
-		
-		
+		cutflow["pre"]["muveto"]+=1
+		#print cutflow["pre"]["muveto"]/cutflow["pre"]["highpt"]
+			
+			
 		elveto=False
 		for el in electrons:
 			#print el["pt"],el["mvaFall17V2Iso_WP90"]
-			#print el["pt"],el["mvaFall17V2Iso_WP90"],el["mvaFall17V2noIso_WP90"]
-			if el["pt"]>70 and (el["mvaFall17V2Iso_WP90"]>0 or el["mvaFall17V2noIso_WP90"])>0:
+			#print "EL",el.pt,el.mvaFall17V2Iso_WP90,el.mvaFall17V2noIso_WP90
+			if el.pt>100 and (el.mvaFall17V2Iso_WP90>0 or el.mvaFall17V2noIso_WP90)>0:
 				elveto=True
+				break
 		if elveto:
-			#print "Skip El"
 			continue
-		#print
-		
-		#print ak8jets[0]["TLV"].DeltaR(ak8jets[1]["TLV"])
-		if ak8jets[0]["TLV"].DeltaR(ak8jets[1]["TLV"])<1.6:
-			continue
+		cutflow["pre"]["elveto"]+=1
+		#print cutflow["pre"]["elveto"]/cutflow["pre"]["muveto"]
+		#ak8jets=Collection(ev,"CustomAK8Puppi" )
+		ak8jetsFF=NanoF.expandgeneric(ev,"CustomAK8Puppi",maxlen=3,ptcut=(minpt-30.0) )
+		ak4jetsFF=NanoF.expandgeneric(ev,"Jet" )
+		if not NanoF.isdata:
+			CustomGenJetAK8FF=NanoF.expandgeneric(ev,"CustomGenJetAK8",maxlen=-1)
+			CustomGenJetAK4FF=NanoF.expandgeneric(ev,"GenJet",maxlen=-1)
+			nTrueInt = getattr(ev, "Pileup_nTrueInt")
+        	rho = getattr(ev, "fixedGridRhoFastjetAll")
+        	eventnumber = getattr(ev, "event")
+		NanoF.rnd.SetSeed(eventnumber)
+		random.seed(eventnumber)
 
-		cutflow["pre"]["Ak8DR"]+=1.
-		if njetinv==2:
-			if abs(ak8jets[0]["TLV"].Rapidity()-ak8jets[1]["TLV"].Rapidity())>1.8:
-				continue 
-		cutflow["pre"]["Ak8Drap"]+=1.
-		
-		
-		for region in regions:
+		for shift in shiftuncert:
+			ak8jets=copy.deepcopy(ak8jetsFF)
+			ak4jets=copy.deepcopy(ak4jetsFF)
+			#print shift
+			shstr=""
+			shtype=""
+			if len(shift.split("__"))>1: 
+				shstr=shift.split("__")[1]
+			if len(shift.split("__"))>1: 
+				shtype=shift.split("__")[0]
+			histostoplot = histos
+			if shstr=="up":
+				histostoplot = uphistos[shtype]
+				delta=1
+			if shstr=="down":
+				histostoplot = downhistos[shtype]
+				delta=-1
+			histostofill = histos
+			ak8corrs=[]
+			#print "ev"
+			
+			if (shtype=="jes") and (not NanoF.isdata):
+				#print "delta",delta
+				#print "AK8 Loop"
+				#print "pre"
+				for ak8j in ak8jets:
+					#print "newjet"
+					#print ak8j.pt
+					(jet_pt, jet_mass) = recalmc.correct(ak8j,rho,delta=delta)
+					ak8j.pt = jet_pt
+					ak8j.mass = jet_mass
+					ak8j.setp4()
+					
+				for ak4j in ak4jets:
+					#print "newjet"
+					#print ak4j.pt
+					(jet_pt, jet_mass) = recalmcak4.correct(ak4j,rho,delta=delta)
+					ak4j.pt = jet_pt
+					ak4j.mass = jet_mass
+					ak4j.setp4()
+					
+			if not NanoF.isdata:
+				CustomGenJetAK8=copy.deepcopy(CustomGenJetAK8FF)
+				CustomGenJetAK4=copy.deepcopy(CustomGenJetAK4FF)
 
-			ptcut=(NanoF.LoadCuts)[region]["ptAK8"]
+				jind=0
+				if (shtype=="jer") and (shstr=="up"):
+					jind=2
+				if (shtype=="jer") and (shstr=="down"):
+					jind=1
+				#print shift,ak8jets[0].pt,ak4jets[0].pt
+			
+				NanoF.jersmear(ak8jets, CustomGenJetAK8,rho,jind,jtype="ak8")
+				NanoF.jersmear(ak4jets, CustomGenJetAK4,rho,jind,jtype="ak4")
+				
+				#print shift,ak8jets[0].pt,ak4jets[0].pt
 
-			tags = {}
-			for ak8lab in ak8labs:
-				tags[ak8lab]=[]
-			ijet=0
-			for ak8jet in ak8jets:
 
-				if ijet>njetinv-1:
-					break
-				#print ijet,njetinv-1
-				if ak8jet["TLV"].Perp()<ptcut or abs(ak8jet["TLV"].Eta())>2.4 :
-					break
-				if ak8jet["tau1"]>0.0:
-					ak8jet["tau21"]=ak8jet["tau2"]/ak8jet["tau1"]
-				else:
-					ak8jet["tau21"]=1.0
-				ak8jet["index"]=ijet
-				for tag in tags:
-					if NanoF.tagjet(ak8jet,tag,region.split("__")[0]):
-						#print tag
-						tags[tag].append(ijet)
+					
+			#print shift,ak8jets[0].pt
+			if ak8jets[1].pt<minpt:
+				continue
+			#print ak8jets[1].pt
+			
 
-				ijet+=1
+			if abs(ak8jets[0].eta)>2.4 or abs(ak8jets[1].eta)>2.4:
+				continue
+			
+			cutflow["pre"]["eta"]+=1.
+			
 
-			if len(tags[probl])==0:
+
+			#print curdictval["CustomAK8Puppi"]
+			#continue
+			#endetime=time.time()
+			#timelogger["init"]+=endetime-stetime
+			#stptime=time.time()
+
+
+			htval = 0
+			for ak4jet in ak4jets: 
+				if ak4jet.p4.Perp()<30.0: 
+					continue		
+				htval += ak4jet.p4.Perp()
+
+
+			#print "pass1"
+			#histos["TRIG"]["ht__pretrig__All"].Fill(htval)
+			#histos["TRIG"]["ht__msoftdrop__pretrig__All"].Fill(htval,max(ak8jets[0].msoftdrop,ak8jets[1].msoftdrop))
+			#for hh in NanoF.trigstopass:
+			#	histos["TRIG"]["ht__pretrig__"+hh].Fill(htval)
+				#print trigvals,trigvals[hh]
+			#	if trigvals[hh]:
+			#		histos["TRIG"]["ht__posttrig__"+hh].Fill(htval)
+
+			#print "pass2"
+			#histos["TRIG"]["ht__posttrig__All"].Fill(htval)
+			#histos["TRIG"]["ht__msoftdrop__posttrig__All"].Fill(htval,max(ak8jets[0].msoftdrop,ak8jets[1].msoftdrop))
+			
+
+			#print
+
+			#print ak8jets[0].p4.DeltaR(ak8jets[1].p4)
+
+			if ak8jets[0].p4.DeltaR(ak8jets[1].p4)<1.6:
 				continue
 
-			cutflow[region]["noprobl"]+=1.
-
-			if region=="default" and len(tags[probl])>1 and len(tags[candl])>0:
-				logging.error("Possible Multiple Entries")
-			#print
-			nfills=0
-			for i in xrange(len(tags[probl])):
-				cands = {}
-				for lab in labels:
-					cands[lab]=None	
-				iprobe = tags[probl][i]	
-				if njetinv==2:
-					icandidate = 1-tags[probl][i]
-
-				if njetinv==3:
-
-					tempcands = copy.deepcopy(tags[candl])
-					#print tempcands	, tags[probl],tags[probl][i]
-					if tags[probl][i] in tempcands:
-						tempcands.remove(tags[probl][i])
-					#print tempcands
-					if len(tempcands)>0:
-						#random.shuffle(tempcands)
-						#print tempcands
-						icandidate = tempcands[0]
-						#print icandidate
-					else:
-						continue
-
-				if len(tags[candl])>0:
-					if icandidate in tags[candl]:
-						cands[candl]= ak8jets[icandidate]
-
-				cands[probl]=ak8jets[iprobe]
-				iorder=0
-				if icandidate>iprobe:
-					iorder=1
-				#print "ic",icandidate,iprobe,"io",iorder
-				if cands[probl]==None or cands[candl]==None:
+			cutflow["pre"]["Ak8DR"]+=1.
+			if njetinv==2:
+				if abs(ak8jets[0].p4.Rapidity()-ak8jets[1].p4.Rapidity())>1.8:
+					continue 
+			cutflow["pre"]["Ak8Drap"]+=1.
+			
+			
+			nfillsev=0
+			weightdict={}
+			for region in regions:
+				if (shift!="") and not (region in FSregions):
 					continue
-				if cands[probl]["TLV"].DeltaR(cands[candl]["TLV"])<1.6:
+
+				weightdict[region] = resetweightdict[region]
+				weightdict[region]["setweight"] = {"sf":setweight}
+				ptcut=(NanoF.LoadCuts)[region]["ptAK8"]
+
+				tags = {}
+				for ak8lab in ak8labs:
+					tags[ak8lab]=[]
+				maxsdmass=0.0
+				ijet=0
+				for ak8jet in ak8jets:
+					maxsdmass=max(maxsdmass,ak8jet.msoftdrop)
+					if ijet>njetinv-1:
+						break
+					#print ijet,njetinv-1
+					if ak8jet.p4.Perp()<ptcut or abs(ak8jet.p4.Eta())>2.4 :
+						break
+
+					ak8jet.index=ijet
+					for tag in tags:
+						if NanoF.tagjet(ak8jet,tag,region.split("__")[0]):
+							#print tag
+							tags[tag].append(ijet)
+
+					ijet+=1
+
+				if len(tags[probl])==0:
 					continue
-				#print icandidate,iprobe
-				cutflow[region]["nocandlandprobl"]+=1.
-				if macro=="Ana":
-					if (region in rateregions) and (options.anatype=="tHb" or options.anatype=="tZb"):
-						fakemass = masshist.GetRandom()
-						cands[candl]["TLV"].SetPtEtaPhiM(cands[candl]["pt"],cands[candl]["eta"],cands[candl]["phi"],fakemass)
-						cands[candl]["mass"] = fakemass
 
-				njets = 0
-				htvalrem = 0
-				njetsrem = 0
-				for ak4jet in ak4jets: 
-					if ak4jet["TLV"].Perp()<30.0: 
-						continue
-					if njets==0:
-						fullevent=ak4jet["TLV"].Perp()
-					else:
-						fullevent+=ak4jet["TLV"].Perp()			
-					njets += 1
-					if (cands[candl]["TLV"].DeltaR(ak4jet["TLV"])>1.2 and cands[probl]["TLV"].DeltaR(ak4jet["TLV"])>1.2):
-						htvalrem += ak4jet["TLV"].Perp()
-						njetsrem += 1
+				cutflow[region]["noprobl"]+=1.
 
-				foundall=True
+				#if region=="default" and len(tags[probl])>1 and len(tags[candl])>0:
+				#	logging.error("Possible Multiple Entries")
 				#print
-				#print "pret"
-				for lab in labels: 
-					if len(lab)==1 and not (lab in [probl,candl]):
-
-						if lab in ak4labs:
-							ptcutAK4=(NanoF.LoadCuts)[region]["pt__"+lab]
-							#print ptcutAK4
-							iak4jet=0
-							for ak4jet in ak4jets: 
-								if ak4jet["TLV"].Perp()>ptcutAK4 and abs(ak4jet["TLV"].Eta())<2.4:
-									if ak4jet["TLV"].DeltaR(cands[probl]["TLV"])>1.2 and ak4jet["TLV"].DeltaR(cands[candl]["TLV"])>1.2:
-										if NanoF.tagjet(ak4jet,lab,region.split("__")[0]):							
-											ak4jet["index"]=iak4jet
-											cands[lab]=ak4jet
-											break
-							iak4jet+=1
-						#print lab,cands[lab]
-						if cands[lab]==None:
-							foundall=False
-				#print cands
-
-				if not foundall:
-					continue
-
-				cutflow[region]["ak4tag"]+=1.
-				for lab in labels: 
-					if len(lab)>1:
-						lvtag = True
-						for ll in lab:
-							if cands[ll]==None:
-								lvtag=False 
-						
-						if lvtag:
-							
-							cands[lab] = NanoF.makeinv(cands,lab)	
-							cands[lab]["njets"]=njets
-							cands[lab]["htval"]=htval
-							cands[lab]["njetsrem"]=njetsrem
-							cands[lab]["htvalrem"]=htvalrem
-							#print "njets",cands[lab]["njets"]
-							#print "htval",cands[lab]["htval"]
-							#print "njetsrem",cands[lab]["njetsrem"]
-							#print "htvalrem",cands[lab]["htvalrem"]
-				#if njetsrem>4:
-				#	continue		
-							
-				bkgweight=1.0
+				nfills=0
 
 
-				if options.anatype=="Pho":
-					phos = NanoF.physobjinit(curdictval["Photon"],2)
-					listtoneg = [probl]
-					if len(phos)>0:
-						cands[candl]["Piso"] = phos[0]['pfRelIso03_all']
-						cands[candl]["PelectronVeto"] = phos[0]['electronVeto']
-						cands[candl]["PpixelSeed"] = phos[0]['pixelSeed']
-						cands[candl]["PmvaID_WP80"] = phos[0]['mvaID_WP80']
-						cands[candl]["PmvaID_WP90"] = phos[0]['mvaID_WP90']
 
 
-						if 0.0<=cands[candl]["Piso"]<0.04:
+
+				#print "ST", settype,weightdict
+				for i in xrange(len(tags[probl])):
+					cands = {}
+					for lab in labels:
+						cands[lab]=None	
+					iprobe = tags[probl][i]	
+					if njetinv==2:
+						icandidate = 1-tags[probl][i]
+
+					if njetinv==3:
+
+						tempcands = copy.deepcopy(tags[candl])
+						#print tempcands	, tags[probl],tags[probl][i]
+						if tags[probl][i] in tempcands:
+							tempcands.remove(tags[probl][i])
+						#print tempcands
+						if len(tempcands)>0:
+							#random.shuffle(tempcands)
+							#print tempcands
+							icandidate = tempcands[0]
+							#print icandidate
+						else:
 							continue
 
-						#if region=='C':
-						#	print
-						#	print cands[candl]["Piso"]
-						#	print cands[candl]["PelectronVeto"]
-						#	print cands[candl]["PpixelSeed"]
-						#	print cands[candl]["PmvaID_WP80"]
-						#	print cands[candl]["PmvaID_WP90"]
-
-
-					else:
-						listtoneg.append(candl)
-					for cc in listtoneg:
-						for dd in ["Piso","PelectronVeto","PpixelSeed","PmvaID_WP80","PmvaID_WP90"]:
-							cands[cc][dd]=-1.
-
-				if htval<1100:
-					continue
-
-				cutflow[region]["ht"]+=1.
-				ntrigtot+=1
-
-
-				cutflow[region]["trig"]+=1.
-				if macro=="Ana" and (region in rateregions):
+					if len(tags[candl])>0:
+						#if (region=="FT"):
+						#	print "Dubs ntry",i,tags[candl],tags[probl],icandidate,iprobe
+						
+						if icandidate in tags[candl]:
+							cands[candl]= ak8jets[icandidate]
+					#else:
+					#	if (region=="FT"):
+					#		print "Sings",tags[candl]
+					cands[probl]=ak8jets[iprobe]
 					
-					remerr = 0.
-					remcont = 0.
-					for bkgw in bkgweights:
-						if len(bkgw)>0:
-							if bkgw[-1] in ["0","1"]:
-								tagindex = int(bkgw[-1])
-								#print bkgw,tagindex,icandidate
-								if iorder!=tagindex:
-									continue
-								
+					iorder=0
+					if icandidate>iprobe:
+						iorder=1
+					#print "ic",icandidate,iprobe,"io",iorder
+					if cands[probl]==None or cands[candl]==None:
+						continue
+					if cands[probl].p4.DeltaR(cands[candl].p4)<1.6:
+						continue
+					#print icandidate,iprobe
+					cutflow[region]["nocandlandprobl"]+=1.
+					if macro=="Ana":
+						if (region in rateregions) and (options.anatype=="tHb" or options.anatype=="tZb"):
+							fakemass = masshist.GetRandom()
+							cands[candl].p4.SetPtEtaPhiM(cands[candl].pt,cands[candl].eta,cands[candl].phi,fakemass)
+							cands[candl].mass = fakemass
+
+					njets = 0
+					htvalrem = 0
+					njetsrem = 0
+					for ak4jet in ak4jets: 
+						if ak4jet.p4.Perp()<30.0: 
+							continue
+						if njets==0:
+							fullevent=ak4jet.p4.Perp()
+						else:
+							fullevent+=ak4jet.p4.Perp()			
+						njets += 1
+						if (cands[candl].p4.DeltaR(ak4jet.p4)>1.2 and cands[probl].p4.DeltaR(ak4jet.p4)>1.2):
+							htvalrem += ak4jet.p4.Perp()
+							njetsrem += 1
+
+					foundall=True
+					#print
+					#print "pret"
+					for lab in labels: 
+						if len(lab)==1 and not (lab in [probl,candl]):
+							
+							if lab in ak4labs:
+								ptcutAK4=(NanoF.LoadCuts)[region]["pt__"+lab]
+								#print ptcutAK4
+								iak4jet=0
+								for ak4jet in ak4jets: 
+									if ak4jet.p4.Perp()>ptcutAK4 and abs(ak4jet.p4.Eta())<2.4:
+										if ak4jet.p4.DeltaR(cands[probl].p4)>1.2 and ak4jet.p4.DeltaR(cands[candl].p4)>1.2:
+											if NanoF.tagjet(ak4jet,lab,region.split("__")[0]):							
+												ak4jet.index=iak4jet
+												cands[lab]=ak4jet
+												break
+									iak4jet+=1
+							#print lab,cands[lab]
+							if cands[lab]==None:
+								foundall=False
+
+
+					if not foundall:
+						continue
+					cutflow[region]["ak4tag"]+=1.
+					for lab in labels: 
+						if len(lab)>1:
+							lvtag = True
+							for ll in lab:
+								if cands[ll]==None:
+									lvtag=False 
+							
+							if lvtag:
+								candarr=[]
+								for ll in lab:
+									candarr.append(cands[ll])
+								cands[lab] = invobj(candarr)	
+								cands[lab].njets=njets
+								cands[lab].htval=htval
+								cands[lab].njetsrem=njetsrem
+								cands[lab].htvalrem=htvalrem
+
+					bkgweight=1.0
+
 					
-						etabin=ratehist[region].GetYaxis().FindBin(abs(cands[candl]["eta"]))
-						for binstr in binstrs:
-							cands[candl][binstr]=None	
-						curratehisto = ratehistos[region+bkgw.replace("__err","")]
-						if etabin<len(curratehisto):
-							ptbin=curratehisto[etabin].FindBin(cands[candl]["pt"])
-							if bkgw.find('err')!=-1:
-								if bkgw== "__err":
-									remerr=curratehisto[etabin].GetBinError(ptbin)
-								bkgweight = curratehisto[etabin].GetBinError(ptbin)
-								
-							else:
-								if bkgw== "":
-									remcont=curratehisto[etabin].GetBinContent(ptbin)
-								bkgweight = curratehisto[etabin].GetBinContent(ptbin)
+					#if options.anatype=="Pho":
+					#	phos = NanoF.physobjinit(curdictval["Photon"],2)
+					#	listtoneg = [probl]
+					#	if len(phos)>0:
+					#		cands[candl]["Piso"] = phos[0]['pfRelIso03_all']
+					#		cands[candl]["PelectronVeto"] = phos[0]['electronVeto']
+					#		cands[candl]["PpixelSeed"] = phos[0]['pixelSeed']
+					#		cands[candl]["PmvaID_WP80"] = phos[0]['mvaID_WP80']
+					#		cands[candl]["PmvaID_WP90"] = phos[0]['mvaID_WP90']
+
+
+					#		if 0.0<=cands[candl]["Piso"]<0.04:
+					#			continue
+
+							#if region=='C':
+							#	print
+							#	print cands[candl]["Piso"]
+							#	print cands[candl]["PelectronVeto"]
+							#	print cands[candl]["PpixelSeed"]
+							#	print cands[candl]["PmvaID_WP80"]
+							#	print cands[candl]["PmvaID_WP90"]
+
+
+					#	else:
+					#		listtoneg.append(candl)
+					#	for cc in listtoneg:
+					#		for dd in ["Piso","PelectronVeto","PpixelSeed","PmvaID_WP80","PmvaID_WP90"]:
+					#			cands[cc][dd]=-1.
+
+					if htval<1100:
+						continue
+
+					if (not NanoF.isdata):
+						if genweight==None:
+							genweight = float(getattr(ev, "genWeight"))
+						weightdict[region]["genweight"] = {"sf":genweight}
+						if settype=="TT":
+							if genpart==None:
+								genpart = NanoF.expandgeneric(ev,"GenPart",20,ptcut=0.0)
+							weightdict[region]["tptrw"] = NanoF.tptrw(genpart)
+						if settype=="Signal":
+							if q2weights==None:
+								q2weights=[]
+							
+								for iq2 in range(0,6):
+									q2weights.append(float(getattr(ev, "LHEScaleWeight")[iq2]))
 									
-							cands[candl]["bbin"+str(etabin)]=ptbin
-						#if 
-						#	print bkgweight,bkgw,region
-						weightdict[region]=setweight*bkgweight
-						bkgstr=region
+							weightdict[region]["q2"] = NanoF.q2weight(q2weights)
+							#print weightdict[region]["q2"]
+							if pdfweights==None:
+								pdfweights=[]
 						
-						if bkgw!="":
-							bkgstr += bkgw
+								for ipdf in range(2,102):
+									pdfweights.append(float(getattr(ev, "LHEPdfWeight")[ipdf]))
+							weightdict[region]["pdfweight"] = NanoF.pdfweight(pdfweights)
+
+						if (not options.trigemu):
+							weightdict[region]["trig"] = NanoF.triggerweight(htval,maxsdmass)
+						weightdict[region]["pu"] = NanoF.puweight(nTrueInt)
+						if "B" in ak4labs:
+							#print eventnumber
+							if not (region in ["M","N","O","Z","NM1BbtagDeepFlavB"]):
+								#print "runb",shift,region,cands["B"].pt
+								weightdict[region]["btag"] = NanoF.btagsf(cands["B"],"T")
+								#print weightdict[region]["btag"]
+							else:
+								#print "nob",region
+								weightdict[region]["btag"] = NanoF.btagsf(cands["B"],"L")
+								#print weightdict[region]["btag"]
+						if "H" in ak8labs:
+	
+							if (region in ["C","D","K","L","N","O","NM1Tmsoftdrop","NM1TiMDtop","NM1Hmsoftdrop","NM1BbtagDeepFlavB"]):
+								weightdict[region]["htag"] = NanoF.htagsf(cands["H"],"T",settype)
+								#print "ptag",weightdict[region]["htag"]
+							else:
+								weightdict[region]["htag"] = NanoF.htagsf(cands["H"],"L",settype)
+						if "Z" in ak8labs:
+							if (region in ["C","D","K","L","N","O","NM1Tmsoftdrop","NM1TiMDtop","NM1Zmsoftdrop","NM1BbtagDeepFlavB"]):
+								weightdict[region]["wtag"] = NanoF.wtagsf(cands["Z"],"T")
+							else:
+								weightdict[region]["wtag"] = NanoF.wtagsf(cands["Z"],"L")
+
+						if "T" in ak8labs:
+							if (region in ["B","C","H","M","N","FT","NM1Tmsoftdrop","NM1HbtagHbb","NM1Hmsoftdrop","NM1BbtagDeepFlavB"]):
+								weightdict[region]["ttag"] = NanoF.toptagsf(cands["T"],"T")
+								#print "ptag",weightdict[region]["ttag"]
+							else:
+								weightdict[region]["ttag"] = NanoF.toptagsf(cands["T"],"L")
+							if (region in ["FT","FTR"]):
+								#Fake H region
+								tempttag = NanoF.toptagsf(cands["H"],"T")	
+								#fully correlated errors
+								weightdict[region]["ttag"]["sf"]*=tempttag["sf"]
+								weightdict[region]["ttag"]["up"]*=tempttag["up"]
+								weightdict[region]["ttag"]["down"]*=tempttag["down"]
+
+		
+
+
+		
+
+					cutflow[region]["ht"]+=1.
+					ntrigtot+=1
+
+
+					cutflow[region]["trig"]+=1.
+					plotdict = NanoF.candtodict(cands)
+
+					if macro=="Ana" and (region in rateregions):
+						
+						remerr = 0.
+						remcont = 0.
+						for bkgw in bkgweights:
+							if len(bkgw)>0:
+								if bkgw[-1] in ["0","1"]:
+									tagindex = int(bkgw[-1])
+									#print bkgw,tagindex,icandidate
+									if iorder!=tagindex:
+										continue
+									
+						
+							etabin=ratehist[region].GetYaxis().FindBin(abs(cands[candl].eta))
+							for binstr in binstrs:
+								plotdict[candl][binstr]=None	
+							curratehisto = ratehistos[region+bkgw.replace("__err","")]
+							if etabin<len(curratehisto):
+								ptbin=curratehisto[etabin].FindBin(cands[candl].pt)
+								if bkgw.find('err')!=-1:
+									if bkgw== "__err":
+										remerr=curratehisto[etabin].GetBinError(ptbin)
+									bkgweight = curratehisto[etabin].GetBinError(ptbin)
+									
+								else:
+									if bkgw== "":
+										remcont=curratehisto[etabin].GetBinContent(ptbin)
+									bkgweight = curratehisto[etabin].GetBinContent(ptbin)
+										
+								plotdict[candl]["bbin"+str(etabin)]=ptbin
+							#if 
+							#	print bkgweight,bkgw,region
+							weightdict[region]["bkgweight"]={"sf":bkgweight}
+							bkgstr=region
+							
+							if bkgw!="":
+								bkgstr += bkgw
+							hweight=1.0
+							for ww in weightdict[region]:
+								hweight*=weightdict[region][ww]["sf"]
+							
+							NanoF.histosfill(histostoplot,plotdict,bkgstr,hweight)
+							if (not NanoF.isdata):
+								NanoF.weightshistosfill(weightshistos,weightdict,region)
+							#for weightname in weightdict:
+							#	if not weightname in resetweightdict :
+							#		print "missing",weightname
+					else:
+	
+						if macro=="Bkg":
+							hweight=1.0
+							for ww in weightdict[region]:
+								hweight*=weightdict[region][ww]["sf"]
+							NanoF.histosfill(histostoplot,plotdict,region+"_"+str(iorder),hweight)
+						if (macro=="Ana" and region!="FT" and (region in anaregions) and nfills!=0):
+							break
+						cutflow[region]["Full"]+=1.
+						
+							
+						#print "Start unc loop",
+
+						hweight=1.0
+						#print "running weights"
+						for ww in weightdict[region]:
+								#print region,ww,"sf",weightdict[region][ww]["sf"]
+								hweight*=weightdict[region][ww]["sf"]
+								#if region=="FT":
+								#	print region,ww,weightdict[region][ww]["sf"]
+							
+						if (settype=="JetHT"):
+							if hweight!=1.0:
+								logging.error("DATA with non-unity weight!!!")
+						#if region=="FT":
+						#print "FW",hweight
 					
-						
-						NanoF.histosfill(histos,cands,bkgstr,weightdict[region])
-					#print remerr/remcont
+						NanoF.histosfill(histostoplot,plotdict,region,hweight)
+						if (not NanoF.isdata):
+							NanoF.weightshistosfill(weightshistos,weightdict,region)
+						#print "fill"
+						#print "curshift",shift
 
-				else:
-					#if cands["P"]["TLV"].Perp()>700:
-					#	continue
+						#for weightname in weightdict:
+						#	if not weightname in resetweightdict :
+						#		print "missing",weightname
+						if (shift=="") and (region in FSregions):
+							#print
+							#print "running uncs"
+							for normerr in errnames:
+								#print normerr
+								#print weightdict[region]
+								for errval in ["down","up"]:
+									hweight=1.0
+								
+									for ww in weightdict[region]:
+		
+										if (normerr==ww) and (errval in weightdict[region][ww]):	
+											hweight*=weightdict[region][ww][errval]
+											#if normerr=="htag" and region=="C":
+											#	print errval,ww,weightdict[region][ww][errval]
+											#	print errval,ww,weightdict[region][ww]
+										else:
+											hweight*=weightdict[region][ww]["sf"]
+											#print "sf",ww,weightdict[region][ww]["sf"]
+									#if normerr=="htag" and region=="C":
+									#	print errval,hweight												
+									if errval=="up":
+										NanoF.histosfill(uphistos[normerr],plotdict,region,hweight)
+									if errval=="down":
+										NanoF.histosfill(downhistos[normerr],plotdict,region,hweight)
 
-					weightdict[region]=setweight
-					if macro=="Bkg":
-						NanoF.histosfill(histos,cands,region+"_"+str(iorder),weightdict[region])
-					if isdata:
-						if weightdict[region]!=1.0:
-							logging.error("DATA with non-unity weight!!!")
-					cutflow[region]["Full"]+=1.
-					NanoF.histosfill(histos,cands,region,weightdict[region])
-					nfills+-1
-					if nfills>1 and (region in ["C","K","H","F","N"]):
-						print region
-						print "Double counting in SR"
-						break
-					#print "All",cutflow["pre"]["All"]
-					#print "twoak8",cutflow["pre"]["twoak8"]
-					#print "highpt",cutflow["pre"]["highpt"]
-					#print "eta",cutflow["pre"]["eta"]
-					#print "Ak8DR",cutflow["pre"]["Ak8DR"]
-					#print "Ak8Drap",cutflow["pre"]["Ak8Drap"]
-					#for region in ["All","A"]:
-					#	print region,"noprobl",cutflow[region]["noprobl"]
-					#	print region,"nocandlandprobl",cutflow[region]["nocandlandprobl"]
-					#	print region,"ak4tag",cutflow[region]["ak4tag"]
-					#	print region,"ht",cutflow[region]["ht"]
-					#	print region,"trig",cutflow[region]["trig"]
-					#	print region,"Full",cutflow[region]["Full"]
-		#print "\tDone!"
+						nfills+=1
+						nfillsev+=1
+					
 print "Finished Looping..."
 jobstr=""
 if jobarr[1]!=1:
 	jobstr += "__job"+str(jobarr[0])+"of"+str(jobarr[1])
 output = ROOT.TFile("NanoAODskim_"+options.anatype+macro+options.era+"__"+setnametowrite+jobstr+".root","recreate")
 output.cd()
-
-for histo in histos:
-	for histo1 in histos[histo]:
-		histos[histo][histo1].Write()
+allhiststowrite=[histos]
+for errname in (errnames+shiftnames):
+	allhiststowrite.append(uphistos[errname])
+	allhiststowrite.append(downhistos[errname])
+if (not NanoF.isdata):
+	allhiststowrite.append(weightshistos)
+for histoset in allhiststowrite:
+	for histo in histoset:
+		for histo1 in histoset[histo]:
+			#print "Writing",histo,histo1
+			histoset[histo][histo1].Write()
 
 output.Write()
 output.Close()
