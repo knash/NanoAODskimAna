@@ -1,0 +1,38 @@
+<p>Observables (xmin, xmax, nbins):</p>
+<ul>
+<li>mass_THB_CFT3_2017 (0, 8000, 8)</li>
+<li>mass_THB_CFT3_2018 (0, 8000, 8)</li>
+</ul>
+<p>Background processes:</p>
+<ul>
+<li>qcd</li>
+<li>ttbar</li>
+</ul>
+<p>Signal processes:</p><ul>
+<li>WptoqVLQWp1500</li>
+<li>WptoqVLQWp2000</li>
+<li>WptoqVLQWp2500</li>
+<li>WptoqVLQWp3000</li>
+<li>WptoqVLQWp3500</li>
+<li>WptoqVLQWp4000</li>
+<li>WptoqVLQWp4500</li>
+</ul>
+<p>Nuisance parameters (includes only those which apply to the background-only model):</p>
+<ul>
+<li>bkg (morph only)</li>
+<li>btag2017 (morph only)</li>
+<li>btag2018 (morph only)</li>
+<li>htag (morph only)</li>
+<li>jer2017 (morph only)</li>
+<li>jer2018 (morph only)</li>
+<li>jes2017 (morph only)</li>
+<li>jes2018 (morph only)</li>
+<li>lumi (rate only)</li>
+<li>nonclosure (rate only)</li>
+<li>pu (morph only)</li>
+<li>q2 (morph only)</li>
+<li>topsf (rate only)</li>
+<li>trig2017 (morph only)</li>
+<li>trig2018 (morph only)</li>
+<li>ttbar_xsec (rate only)</li>
+</ul>

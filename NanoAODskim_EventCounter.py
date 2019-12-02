@@ -41,6 +41,10 @@ parser.add_option('-S', '--search', metavar='F', type='string', action='store',
 		  default	=	'',
 		  dest		=	'search',
 		  help		=	'')
+parser.add_option('-v', '--version', metavar='F', type='string', action='store',
+		  default	=	'v8',
+		  dest		=	'version',
+		  help		=	'')
 parser.add_option('--ttonly', metavar='F', action='store_true',
 		  default=False,
 		  dest='ttonly',
@@ -98,7 +102,7 @@ setnametowrite=setname.split('/')[0]
 print "set name",setnametowrite
 settype=setfilter(setname)
 print "set type",settype
-NanoF = NanoAODskim_Functions(options.anatype,options.era,"v8",settype)
+NanoF = NanoAODskim_Functions(options.anatype,options.era,options.version,settype)
 
 
 
@@ -126,7 +130,7 @@ totev = 0
 output = ROOT.TFile("NanoAODskim_EV"+options.era+"__"+setnametowrite+".root","recreate")
 output.cd()
 allgenweight=TH1F("allgenweight",	"allgenweight",		20000, -2000.0,2000.0 )
-gwhist=TH1F("gwhist",	"gwhist",		20000, -1000.0,1000.0 )
+gwhist=TH1F("gwhist",	"gwhist",		20000, -2000.0,2000.0 )
 #allpdfweight=TH1F("allpdfweight",	"allpdfweight",		400, -4.0,-4.0 )
 #pdhist=TH1F("pdhist",	"pdhist",		400, -4.0,-4.0 )
 #pdavehist=TH1F("pdavehist",	"pdavehist",		400, -4.0,-4.0 )

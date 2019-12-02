@@ -1,11 +1,11 @@
 #from DataFormats.FWLite import Events, Handle
 from array import array
 import subprocess, math, copy, random, time, logging, sys, os, glob, numpy, itertools
-import NanoAODskim_Data	
+import NanoAODskim_Data
 from NanoAODskim_Data import *
 #random.seed(8574931)
 from math import sqrt
-import ROOT 
+import ROOT
 
 sys.path.insert(0,os.getcwd()+'/tardir')
 sys.path.insert(0,os.getcwd()+'/CMSSW_10_2_9/src')
@@ -26,7 +26,7 @@ class objecttype:
 		self.mass = None
 		self.p4 = TLorentzVector()
 
-		if name=="CustomAK8Puppi":	
+		if name=="CustomAK8Puppi":
 			self.iMDPho= None
 			self.iMDWW= None
 			self.iMDtop= None
@@ -40,16 +40,18 @@ class objecttype:
 			self.btagHbb= None
 			self.rawFactor= None
 			self.area= None
-		if name=="Jet":	
+		if name=="Jet":
 			self.btagDeepFlavB= None
 			self.rawFactor= None
 			self.area= None
 		if name=="GenPart":
 			self.pdgId= None
-			self.statusFlags= None	
-		if name=="Muon":	
+			self.statusFlags= None
+		if name=="Muon":
 			self.tightId= None
-		if name=="Electron":	
+			self.mvaId= None
+
+		if name=="Electron":
 			self.mvaFall17V2Iso_WP90= None
 			self.mvaFall17V2noIso_WP90= None
 
@@ -91,7 +93,7 @@ class invobj:
 		self.idval= 0
 
 class NanoAODskim_Functions:
-	def __init__(self,anatype="Pho",era="2017",versionstring="v8",settype="TT",condor=False):
+	def __init__(self,anatype="Pho",era="2017",versionstring=["v8"],settype="TT",condor=False):
 		di=""
 		if condor:
 			di="tardir/"
@@ -108,13 +110,17 @@ class NanoAODskim_Functions:
 		self.trigstopass=[]
         	self.rnd = ROOT.TRandom3(12345)
 
-		
+
 		NanoAODskimData= NanoAODskim_Data(era)
 		self.LoadConstants=NanoAODskimData.LoadConstants
 		self.allsignamesHT=NanoAODskimData.allsignamesHT
 		self.allsignamesZT=NanoAODskimData.allsignamesZT
-
+		self.genmatrix=NanoAODskimData.genmatrix
+		self.runver=NanoAODskimData.runver
 		self.btagdict=NanoAODskimData.btagdict
+		self.ovrvec=NanoAODskimData.ovrvec
+		self.ovrvecZT=NanoAODskimData.ovrvecZT
+		self.ovrvecHT=NanoAODskimData.ovrvecHT
 		#for ll in self.LoadConstants['dataconst']:
 		#	print ll,self.LoadConstants['dataconst'][ll])
 		if not self.isdata:
@@ -139,7 +145,7 @@ class NanoAODskim_Functions:
 					"down":copy.deepcopy(pufile.Get("purwdown")),
 					"up":copy.deepcopy(pufile.Get("purwup"))
 					}
-	
+
 			self.trighist2ds = []
 			self.trighists=[]
 			self.trigprobs=[]
@@ -151,28 +157,28 @@ class NanoAODskim_Functions:
 				self.trighists.append(copy.deepcopy(trigfiles[0].Get("trighistht")))
 				self.trigprobs.append(8.7/35.9)
 				self.trighist2ds.append(copy.deepcopy(trigfiles[1].Get("trighisthtmass")))
-				self.trighists.append(copy.deepcopy(trigfiles[1].Get("trighistht")))	
+				self.trighists.append(copy.deepcopy(trigfiles[1].Get("trighistht")))
 				self.trigprobs.append(0.0)
 
 			if self.era=="2017":
-				
+
 				trigfiles=[]
 				trigfiles.append(TFile(di+"NanoAODskim_TrigMaker__2017__Run2017CtoF.root","open"))
 				trigfiles.append(TFile(di+"NanoAODskim_TrigMaker__2017__Run2017B.root","open"))
 				self.trighist2ds.append(copy.deepcopy(trigfiles[0].Get("trighisthtmass")))
-				self.trighists.append(copy.deepcopy(trigfiles[0].Get("trighistht")))	
+				self.trighists.append(copy.deepcopy(trigfiles[0].Get("trighistht")))
 				self.trigprobs.append(3.93/41.8)
 				self.trighist2ds.append(copy.deepcopy(trigfiles[1].Get("trighisthtmass")))
-				self.trighists.append(copy.deepcopy(trigfiles[1].Get("trighistht")))		
+				self.trighists.append(copy.deepcopy(trigfiles[1].Get("trighistht")))
 				self.trigprobs.append(0.0)
 
 			if self.era=="2018":
 				trigfiles=[]
 				trigfiles.append(TFile(di+"NanoAODskim_TrigMaker__2018__Run2018AtoD.root","open"))
 				self.trighist2ds.append(copy.deepcopy(trigfiles[0].Get("trighisthtmass")))
-				self.trighists.append(copy.deepcopy(trigfiles[0].Get("trighistht")))		
+				self.trighists.append(copy.deepcopy(trigfiles[0].Get("trighistht")))
 				self.trigprobs.append(0.0)
-			
+
 		if anatype=="Pho":
 			self.labels = ["W","P","PW"]
 			self.ak8labels = ["W","P"]
@@ -187,57 +193,57 @@ class NanoAODskim_Functions:
 					'ptAK8':{'L':500.0,'M':500.0,'M1':500.0,'T':500.0},
 					}
 			self.LoadCuts =  	{
-						'A':		{	
+						'A':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDPho__P':cutranges['iMDPho__P']['L'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['L'],
 								},
-						'B':		{	
+						'B':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDPho__P':cutranges['iMDPho__P']['T'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['T'],
 								},
-						'C':	 	{	
+						'C':	 	{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDPho__P':cutranges['iMDPho__P']['T'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['T'],
 								},
-						'D':		{	
+						'D':		{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDPho__P':cutranges['iMDPho__P']['L'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['L'],
 								},
 
-						'E':		{	
+						'E':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDPho__P':cutranges['iMDPho__P']['M'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['M'],
 								},
-						'F':	 	{	
+						'F':	 	{
 								'iMDW__W':cutranges['iMDW__W']['M'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M'],
 								'iMDPho__P':cutranges['iMDPho__P']['M'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['M'],
 								},
-						'G':		{	
+						'G':		{
 								'iMDW__W':cutranges['iMDW__W']['M'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M'],
 								'iMDPho__P':cutranges['iMDPho__P']['L'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['L'],
 								},
 
-						'H':	 	{	
+						'H':	 	{
 								'iMDW__W':cutranges['iMDW__W']['M1'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M1'],
 								'iMDPho__P':cutranges['iMDPho__P']['T'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['T'],
 								},
-						'I':		{	
+						'I':		{
 								'iMDW__W':cutranges['iMDW__W']['M1'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M1'],
 								'iMDPho__P':cutranges['iMDPho__P']['L'],
@@ -245,19 +251,19 @@ class NanoAODskim_Functions:
 								},
 
 
-						'J':		{	
+						'J':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDPho__P':cutranges['iMDPho__P']['M1'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['M1'],
 								},
-						'K':	 	{	
+						'K':	 	{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDPho__P':cutranges['iMDPho__P']['M1'],
 								'msoftdrop__P':cutranges['msoftdrop__P']['M1'],
 								},
-						'L':		{	
+						'L':		{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDPho__P':cutranges['iMDPho__P']['L'],
@@ -266,35 +272,35 @@ class NanoAODskim_Functions:
 
 
 
-				
-				
-						'NM1PiMDPho':	 {	
+
+
+						'NM1PiMDPho':	 {
 								'iMDW__W':[0.9,1.0],
 								'msoftdrop__W':[65.0,105.0],
 								'iMDPho__P':[0.0,1.0],
 								'msoftdrop__P':[105.0,float("inf")],
 								},
-						'NM1Pmsoftdrop':{	
+						'NM1Pmsoftdrop':{
 								'iMDW__W':[0.9,1.0],
 								'msoftdrop__W':[65.0,105.0],
 								'iMDPho__P':[0.85,1.0],
 								'msoftdrop__P':[0.0,float("inf")],
 								},
-						'NM1WiW':	 {	
+						'NM1WiW':	 {
 								'iMDW__W':[0.0,1.0],
 								'msoftdrop__W':[65.0,105.0],
 								'iMDPho__P':[0.85,1.0],
 								'msoftdrop__P':[105.0,float("inf")],
 								},
 
-						'NM1Wmsoftdrop':{	
+						'NM1Wmsoftdrop':{
 								'iMDW__W':[0.9,1.0],
 								'msoftdrop__W':[0.0,float("inf")],
 								'iMDPho__P':[0.85,1.0],
 								'msoftdrop__P':[105.0,float("inf")],
 								},
 
-						'All':	  	{	
+						'All':	  	{
 								'iMDW__W':[0.0,1.0],
 								'msoftdrop__W':[0.0,float("inf")],
 								'iMDPho__P':[0.0,1.0],
@@ -318,57 +324,57 @@ class NanoAODskim_Functions:
 					}
 
 			self.LoadCuts =  	{
-						'A':		{	
+						'A':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDWW__F':cutranges['iMDWW__F']['L'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['L'],
 								},
-						'B':		{	
+						'B':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDWW__F':cutranges['iMDWW__F']['T'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['T'],
 								},
-						'C':	 	{	
+						'C':	 	{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDWW__F':cutranges['iMDWW__F']['T'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['T'],
 								},
-						'D':		{	
+						'D':		{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDWW__F':cutranges['iMDWW__F']['L'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['L'],
 								},
 
-						'E':		{	
+						'E':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDWW__F':cutranges['iMDWW__F']['M'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['M'],
 								},
-						'F':	 	{	
+						'F':	 	{
 								'iMDW__W':cutranges['iMDW__W']['M'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M'],
 								'iMDWW__F':cutranges['iMDWW__F']['M'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['M'],
 								},
-						'G':		{	
+						'G':		{
 								'iMDW__W':cutranges['iMDW__W']['M'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M'],
 								'iMDWW__F':cutranges['iMDWW__F']['L'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['L'],
 								},
 
-						'H':	 	{	
+						'H':	 	{
 								'iMDW__W':cutranges['iMDW__W']['M1'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M1'],
 								'iMDWW__F':cutranges['iMDWW__F']['T'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['T'],
 								},
-						'I':		{	
+						'I':		{
 								'iMDW__W':cutranges['iMDW__W']['M1'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['M1'],
 								'iMDWW__F':cutranges['iMDWW__F']['L'],
@@ -376,19 +382,19 @@ class NanoAODskim_Functions:
 								},
 
 
-						'J':		{	
+						'J':		{
 								'iMDW__W':cutranges['iMDW__W']['L'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['L'],
 								'iMDWW__F':cutranges['iMDWW__F']['M1'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['M1'],
 								},
-						'K':	 	{	
+						'K':	 	{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDWW__F':cutranges['iMDWW__F']['M1'],
 								'msoftdrop__F':cutranges['msoftdrop__F']['M1'],
 								},
-						'L':		{	
+						'L':		{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDWW__F':cutranges['iMDWW__F']['L'],
@@ -399,25 +405,25 @@ class NanoAODskim_Functions:
 
 
 
-						'NM1FiMDWW':	  	{	
+						'NM1FiMDWW':	  	{
 								'iMDW__W':[0.9,1.0],
 								'msoftdrop__W':[65.0,105.0],
 								'iMDWW__F':[0.0,1.0],
 								'msoftdrop__F':[105.0,float("inf")],
 								},
-						'NM1Fmsoftdrop':	  	{	
+						'NM1Fmsoftdrop':	  	{
 								'iMDW__W':[0.9,1.0],
 								'msoftdrop__W':[65.0,105.0],
 								'iMDWW__F':[0.8,1.0],
 								'msoftdrop__F':[0.0,float("inf")],
 								},
-						'NM1WiW':	 	{	
+						'NM1WiW':	 	{
 								'iMDW__W':[0.0,1.0],
 								'msoftdrop__W':[65.0,105.0],
 								'iMDWW__F':[0.8,1.0],
 								'msoftdrop__F':[105.0,float("inf")],
 								},
-						'NM1Wmsoftdrop':	 	{	
+						'NM1Wmsoftdrop':	 	{
 								'iMDW__W':[0.9,1.0],
 								'msoftdrop__W':[0.0,float("inf")],
 								'iMDWW__F':[0.8,1.0],
@@ -425,14 +431,14 @@ class NanoAODskim_Functions:
 								},
 
 
-						'NM2FmsoftdropiMDWW':	  	{	
+						'NM2FmsoftdropiMDWW':	  	{
 								'iMDW__W':cutranges['iMDW__W']['T'],
 								'msoftdrop__W':cutranges['msoftdrop__W']['T'],
 								'iMDWW__F':[0.0,1.0],
 								'msoftdrop__F':[0.0,float("inf")],
 								},
-						
-						'NM2WmsoftdropiMDW':	 	{	
+
+						'NM2WmsoftdropiMDW':	 	{
 								'iMDW__W':[0.0,1.0],
 								'msoftdrop__W':[0.0,float("inf")],
 								'iMDWW__F':cutranges['iMDWW__F']['T'],
@@ -440,7 +446,7 @@ class NanoAODskim_Functions:
 								},
 
 
-						'All':	  	{	
+						'All':	  	{
 								'iMDW__W':[0.0,1.0],
 								'msoftdrop__W':[0.0,float("inf")],
 								'iMDWW__F':[0.0,1.0],
@@ -451,10 +457,10 @@ class NanoAODskim_Functions:
 
 
 
-		
 
 
-		
+
+
 
 		elif anatype=="tHb":
 			self.labels = ["H","T","B","THB","TH","BH","BT"]
@@ -464,54 +470,58 @@ class NanoAODskim_Functions:
 			self.probl = "H"
 
 			cutranges = 	{
-					'btagHbb__H':{'L':[-1.0,0.0],'M':[0.0,0.3],'M1':[0.3,0.6],'T':[0.6,1.0],'F':[-1.0,1.0]},
+					'btagHbb__H':{'L':[-1.0,0.0],'M':[0.0,0.3],'M1':[0.3,0.6],'T':[0.6,1.0],'F':[-1.0,1.0],'C1':[0.3,1.0],'C2':[0.8,1.0],'C3':[0.9,1.0]},
 					'msoftdrop__H':{'L':[10.0,30.0],'M':[105.0,140.0],'M1':[105.0,140.0],'T':[105.0,140.0],'F':[130.0,250.0]},
-					'iMDtop__H':{'L':[0.0,0.95],'M':[0.0,0.95],'M1':[0.0,0.95],'T':[0.0,0.95],'F':[0.9,1.0]},
-					'iMDtop__T':{'L':[0.0,0.6],'M':[0.6,0.9],'M1':[0.6,0.9],'T':[0.9,1.0]},
+					'iMDtop__H':{'L':[0.0,0.95],'M':[0.0,0.95],'M1':[0.0,0.95],'T':[0.0,0.95],'F':[0.9,1.0],'C1':[0.0,0.90],'C2':[0.0,0.99]},
+					'iMDtop__T':{'L':[0.0,0.6],'M':[0.6,0.9],'M1':[0.6,0.9],'T':[0.9,1.0],'C1':[0.8,1.0],'C2':[0.85,1.0],'C3':[0.95,1.0]},
 					'msoftdrop__T':{'L':[30.0,65.0],'M':[140.0,220.0],'M1':[140.0,220.0],'T':[140.0,220.0]},
-					'btagDeepFlavB__B':{'L':[-1.0,0.0521],'M':[-1.0,0.0521],'M1':[0.0521,1.0],'T':[0.0521,1.0],'F':[-1.0,0.0521]},
+					'btagDeepFlavB__B':{'L':[-1.0,0.3033],'M':[-1.0,0.3033],'M1':[0.3033,1.0],'T':[0.3033,1.0],'F':[-1.0,0.3033],'C1':[0.0521,1.0],'C2':[0.7489,1.0]},
 					'pt__B':{'L':200.0,'M':200.0,'M1':200.0,'T':200.0,'F':50.0},
 					'ptAK8':{'L':450.0,'M':450.0,'M1':450.0,'T':450.0},
-					} 
+					}
 			if self.era=="2016":
-				cutranges['btagDeepFlavB__B']={'L':[-1.0,0.0614],'M':[-1.0,0.0614],'M1':[0.0614,1.0],'T':[0.0614,1.0],'F':[-1.0,0.0614]}
+				cutranges['btagDeepFlavB__B']={'L':[-1.0,0.3093],'M':[-1.0,0.3093],'M1':[0.3093,1.0],'T':[0.3093,1.0],'F':[-1.0,0.3093],'C1':[0.0614,1.0],'C2':[0.7221,1.0]}
 			if self.era=="2018":
-				cutranges['btagDeepFlavB__B']={'L':[-1.0,0.0494],'M':[-1.0,0.0494],'M1':[0.0494,1.0],'T':[0.0494,1.0],'F':[-1.0,0.0494]}
+				cutranges['btagDeepFlavB__B']={'L':[-1.0,0.2770],'M':[-1.0,0.2770],'M1':[0.2770,1.0],'T':[0.2770,1.0],'F':[-1.0,0.2770],'C1':[0.0494,1.0],'C2':[0.7264,1.0]}
 
 			self.LoadCuts =  	{
 
 
 
-						'A':		{	
+						'A':		{
 								'btagHbb__H':cutranges['btagHbb__H']['L'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['L'],
+								'iMDtop__H':cutranges['iMDtop__H']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['L'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'B':		{	
+						'B':		{
 								'btagHbb__H':cutranges['btagHbb__H']['L'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['L'],
+								'iMDtop__H':cutranges['iMDtop__H']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'C':	 	{	
+						'C':	 	{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'D':		{	
+						'D':		{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['L'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
@@ -519,27 +529,30 @@ class NanoAODskim_Functions:
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
 
-						'E':		{	
+						'E':		{
 								'btagHbb__H':cutranges['btagHbb__H']['L'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['L'],
+								'iMDtop__H':cutranges['iMDtop__H']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['M'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['M'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'F':	 	{	
+						'F':	 	{
 								'btagHbb__H':cutranges['btagHbb__H']['M'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['M'],
+								'iMDtop__H':cutranges['iMDtop__H']['M'],
 								'iMDtop__T':cutranges['iMDtop__T']['M'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['M'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'G':		{	
+						'G':		{
 								'btagHbb__H':cutranges['btagHbb__H']['M'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['M'],
+								'iMDtop__H':cutranges['iMDtop__H']['M'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['L'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
@@ -548,18 +561,20 @@ class NanoAODskim_Functions:
 								},
 
 
-						'H':	 	{	
+						'H':	 	{
 								'btagHbb__H':cutranges['btagHbb__H']['M1'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['M1'],
+								'iMDtop__H':cutranges['iMDtop__H']['M1'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'I':		{	
+						'I':		{
 								'btagHbb__H':cutranges['btagHbb__H']['M1'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['M1'],
+								'iMDtop__H':cutranges['iMDtop__H']['M1'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['L'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
@@ -568,27 +583,30 @@ class NanoAODskim_Functions:
 								},
 
 
-						'J':		{	
+						'J':		{
 								'btagHbb__H':cutranges['btagHbb__H']['L'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['L'],
+								'iMDtop__H':cutranges['iMDtop__H']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['M1'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['M1'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'K':	 	{	
+						'K':	 	{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['M1'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['M1'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'L':		{	
+						'L':		{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['L'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
@@ -596,27 +614,30 @@ class NanoAODskim_Functions:
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
 
-						'M':		{	
+						'M':		{
 								'btagHbb__H':cutranges['btagHbb__H']['L'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['L'],
+								'iMDtop__H':cutranges['iMDtop__H']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['L'],
 								'pt__B':cutranges['pt__B']['L'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'N':	 	{	
+						'N':	 	{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['L'],
 								'pt__B':cutranges['pt__B']['L'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'O':		{	
+						'O':		{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['L'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['L'],
@@ -626,9 +647,10 @@ class NanoAODskim_Functions:
 
 
 
-						'Z':		{	
+						'Z':		{
 								'btagHbb__H':cutranges['btagHbb__H']['L'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['L'],
+								'iMDtop__H':cutranges['iMDtop__H']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['L'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['L'],
@@ -637,7 +659,7 @@ class NanoAODskim_Functions:
 								},
 
 
-						'FT':		{	
+						'FT':		{
 								'btagHbb__H':cutranges['btagHbb__H']['F'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['F'],
 								'iMDtop__H':cutranges['iMDtop__H']['F'],
@@ -648,7 +670,7 @@ class NanoAODskim_Functions:
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
 
-						'FTR':		{	
+						'FTR':		{
 								'btagHbb__H':cutranges['btagHbb__H']['F'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['F'],
 								'iMDtop__H':cutranges['iMDtop__H']['F'],
@@ -659,61 +681,116 @@ class NanoAODskim_Functions:
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
 
-						'NM1Tmsoftdrop':		{	
+						'NM1Tmsoftdrop':		{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':[0.0,float("inf")],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1TiMDtop':		{	
+						'NM1TiMDtop':		{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':[0.0,1.0],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1HbtagHbb':		{	
+						'NM1HbtagHbb':		{
 								'btagHbb__H':[-1.0,1.0],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1Hmsoftdrop':		{	
+						'NM1Hmsoftdrop':		{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':[0.0,float("inf")],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':cutranges['btagDeepFlavB__B']['T'],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1BbtagDeepFlavB':		{	
+						'NM1BbtagDeepFlavB':		{
 								'btagHbb__H':cutranges['btagHbb__H']['T'],
 								'msoftdrop__H':cutranges['msoftdrop__H']['T'],
+								'iMDtop__H':cutranges['iMDtop__H']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
 								'msoftdrop__T':cutranges['msoftdrop__T']['T'],
 								'btagDeepFlavB__B':[-2.0,2.0],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'All':		{	
+						'All':		{
 								'btagHbb__H':[-1.0,1.0],
 								'msoftdrop__H':[0.0,float("inf")],
+								'iMDtop__H':[0.0,float("inf")],
 								'iMDtop__T':[0.0,1.0],
 								'msoftdrop__T':[0.0,float("inf")],
 								'btagDeepFlavB__B':[-2.0,2.0],
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
+
+
 						}
+			self.LoadCuts['CFH1'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFH1']['btagHbb__H']=cutranges['btagHbb__H']['C1']
+
+			self.LoadCuts['CFH2'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFH2']['btagHbb__H']=cutranges['btagHbb__H']['C2']
+
+			self.LoadCuts['CFH3'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFH3']['btagHbb__H']=cutranges['btagHbb__H']['C3']
+
+			self.LoadCuts['CFT1'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFT1']['iMDtop__T']=cutranges['iMDtop__T']['C1']
+
+			self.LoadCuts['CFT2'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFT2']['iMDtop__T']=cutranges['iMDtop__T']['C2']
+
+			self.LoadCuts['CFT3'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFT3']['iMDtop__T']=cutranges['iMDtop__T']['C3']
+
+			self.LoadCuts['CFB1'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFB1']['btagDeepFlavB__B']=cutranges['btagDeepFlavB__B']['C1']
+
+			self.LoadCuts['CFB2'] =  copy.deepcopy(self.LoadCuts['C'])
+			self.LoadCuts['CFB2']['btagDeepFlavB__B']=cutranges['btagDeepFlavB__B']['C2']
+
+
+
+			self.LoadCuts['HFH1'] =  copy.deepcopy(self.LoadCuts['CFH1'])
+			self.LoadCuts['HFH1']['btagHbb__H']=[0.2,cutranges['btagHbb__H']['C1'][0]]
+
+			self.LoadCuts['HFH2'] =  copy.deepcopy(self.LoadCuts['CFH2'])
+			self.LoadCuts['HFH2']['btagHbb__H']=[0.3,cutranges['btagHbb__H']['C2'][0]]
+
+			self.LoadCuts['HFH3'] =  copy.deepcopy(self.LoadCuts['CFH3'])
+			self.LoadCuts['HFH3']['btagHbb__H']=[0.3,cutranges['btagHbb__H']['C3'][0]]
+
+			self.LoadCuts['KFT1'] =  copy.deepcopy(self.LoadCuts['CFT1'])
+			self.LoadCuts['KFT1']['iMDtop__T']=[0.6,cutranges['iMDtop__T']['C1'][0]]
+
+			self.LoadCuts['KFT2'] =  copy.deepcopy(self.LoadCuts['CFT2'])
+			self.LoadCuts['KFT2']['iMDtop__T']=[0.6,cutranges['iMDtop__T']['C2'][0]]
+
+			self.LoadCuts['KFT3'] =  copy.deepcopy(self.LoadCuts['CFT3'])
+			self.LoadCuts['KFT3']['iMDtop__T']=[0.6,cutranges['iMDtop__T']['C3'][0]]
+
+
+
+
 
 		elif anatype=="tZb":
 			self.labels = ["Z","T","B","TZB","TZ","BZ","BT"]
@@ -730,7 +807,7 @@ class NanoAODskim_Functions:
 					'btagDeepFlavB__B':{'L':[-1.0,0.0521],'M':[-1.0,0.0521],'M1':[0.0521,1.0],'T':[0.0521,1.0],'F':[-1.0,0.0521]},
 					'pt__B':{'L':200.0,'M':200.0,'M1':200.0,'T':200.0},
 					'ptAK8':{'L':450.0,'M':450.0,'M1':450.0,'T':450.0},
-					} 
+					}
 			if self.era=="2016":
 				cutranges['btagDeepFlavB__B']={'L':[-1.0,0.0614],'M':[-1.0,0.0614],'M1':[0.0614,1.0],'T':[0.0614,1.0],'F':[-1.0,0.0614]}
 				cutranges['tau21__Z']={'L':[0.6,1.0],'M':[0.6,1.0],'M1':[0.4,0.6],'T':[0.0,0.4]}
@@ -740,7 +817,7 @@ class NanoAODskim_Functions:
 
 
 
-						'A':		{	
+						'A':		{
 								'tau21__Z':cutranges['tau21__Z']['L'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
@@ -749,7 +826,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'B':		{	
+						'B':		{
 								'tau21__Z':cutranges['tau21__Z']['L'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -758,7 +835,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'C':	 	{	
+						'C':	 	{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -767,7 +844,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'D':		{	
+						'D':		{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
@@ -777,7 +854,7 @@ class NanoAODskim_Functions:
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
 
-						'E':		{	
+						'E':		{
 								'tau21__Z':cutranges['tau21__Z']['L'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['M'],
@@ -786,7 +863,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'F':	 	{	
+						'F':	 	{
 								'tau21__Z':cutranges['tau21__Z']['M'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['M'],
 								'iMDtop__T':cutranges['iMDtop__T']['M'],
@@ -795,7 +872,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'G':		{	
+						'G':		{
 								'tau21__Z':cutranges['tau21__Z']['M'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['M'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
@@ -806,7 +883,7 @@ class NanoAODskim_Functions:
 								},
 
 
-						'H':	 	{	
+						'H':	 	{
 								'tau21__Z':cutranges['tau21__Z']['M1'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['M1'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -815,7 +892,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'I':		{	
+						'I':		{
 								'tau21__Z':cutranges['tau21__Z']['M1'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['M1'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
@@ -826,7 +903,7 @@ class NanoAODskim_Functions:
 								},
 
 
-						'J':		{	
+						'J':		{
 								'tau21__Z':cutranges['tau21__Z']['L'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['M1'],
@@ -835,7 +912,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'K':	 	{	
+						'K':	 	{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['M1'],
@@ -844,7 +921,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'L':		{	
+						'L':		{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
@@ -855,7 +932,7 @@ class NanoAODskim_Functions:
 								},
 
 
-						'M':		{	
+						'M':		{
 								'tau21__Z':cutranges['tau21__Z']['L'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -864,7 +941,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['L'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'N':	 	{	
+						'N':	 	{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -873,7 +950,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['L'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'O':		{	
+						'O':		{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
@@ -884,7 +961,7 @@ class NanoAODskim_Functions:
 								},
 
 
-						'Z':		{	
+						'Z':		{
 								'tau21__Z':cutranges['tau21__Z']['L'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['L'],
 								'iMDtop__T':cutranges['iMDtop__T']['L'],
@@ -895,7 +972,7 @@ class NanoAODskim_Functions:
 								},
 
 
-						'NM1Tmsoftdrop':{	
+						'NM1Tmsoftdrop':{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -904,7 +981,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1TiMDtop':{	
+						'NM1TiMDtop':{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':[0.0,1.0],
@@ -913,7 +990,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1Ztau21':		{	
+						'NM1Ztau21':		{
 								'tau21__Z':[-1.0,1.0],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -922,7 +999,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1Zmsoftdrop':		{	
+						'NM1Zmsoftdrop':		{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':[0.0,float("inf")],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -931,7 +1008,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'NM1BbtagDeepFlavB':{	
+						'NM1BbtagDeepFlavB':{
 								'tau21__Z':cutranges['tau21__Z']['T'],
 								'msoftdrop__Z':cutranges['msoftdrop__Z']['T'],
 								'iMDtop__T':cutranges['iMDtop__T']['T'],
@@ -940,7 +1017,7 @@ class NanoAODskim_Functions:
 								'pt__B':cutranges['pt__B']['T'],
 								'ptAK8':cutranges['ptAK8']['T'],
 								},
-						'All':		{	
+						'All':		{
 								'tau21__Z':[-1.0,1.0],
 								'msoftdrop__Z':[0.0,float("inf")],
 								'iMDtop__T':[0.0,1.0],
@@ -962,40 +1039,71 @@ class NanoAODskim_Functions:
 		if self.era=="2016":
 			self.ptrigs = ["HLT_PFHT650"]
 			self.strigs = ["HLT_PFHT900","HLT_PFHT800","HLT_PFJet450","HLT_PFJet500","HLT_AK8PFJet450","HLT_AK8PFJet500"]
-			self.etrigs = ["HLT_AK8PFHT700_TrimR0p1PT0p03Mass50","HLT_AK8PFHT650_TrimR0p1PT0p03Mass50","HLT_AK8PFJet360_TrimMass30"]	
+			self.etrigs = ["HLT_AK8PFHT700_TrimR0p1PT0p03Mass50","HLT_AK8PFHT650_TrimR0p1PT0p03Mass50","HLT_AK8PFJet360_TrimMass30"]
 			self.mutrigs = ["HLT_IsoMu27","HLT_IsoMu22_eta2p1","HLT_Mu50"]
 		if runver=="Run2017B":
 			self.etrigs = []
 		if runver=="Run2016H":
 			self.strigs = ["HLT_PFHT900","HLT_PFJet450","HLT_PFJet500","HLT_AK8PFJet450","HLT_AK8PFJet500"]
 
-		
-	def loadfiles(self,setname="QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8",folder="/eos/cms/store/user/knash",redir="eoscms.cern.ch",search=""):
+
+	def loadfiles(self,setname="QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8",folder="/eos/cms/store/user/knash",redir="eoscms.cern.ch",search="",rdf=False):
 		ntry=0
 		files = []
+		print "STILL RUNNING DATASET OVERRIDE"
+		sigmap={}
+		rvsearch = self.runver
+		
+		if setname in self.ovrvec:
+			if self.era=="2016":	
+				rvsearch="RunIIFall17MiniAOD"
+			if self.era=="2017":	
+				rvsearch="RunIIAutumn18MiniAOD"
+				if setname in ['WpToBpT_Wp3500Nar_Bp2700Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8','WpToTpB_Wp2500Nar_Tp1700Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8']:
+					rvsearch="RunIISummer16MiniAODv3"
+			if self.era=="2018":	
+				rvsearch="RunIIFall17MiniAOD"
+				if setname in ['WpToTpB_Wp2500Nar_Tp1700Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8']:
+					rvsearch="RunIISummer16MiniAODv3"
+				
 		#print setname,folder,redir
 		versionstring=self.versionstring
 		nanotype=self.nanotype
 		#cmsxrootd.fnal.gov
 		setnametowrite=setname.replace("/","_").replace("*","")
 		#print setname,folder,redir,setnametowrite
+
 		while len(files)==0:
 				#print redir
 
 				tempfname="tempfiles"+setnametowrite+self.era+".txt"
-				spcall = "eos root://"+redir+" find  "+folder+"/"+setname+" > "+tempfname 
+				spcall = "eos root://"+redir+" find  "+folder+"/"+setname+" > "+tempfname
 				print spcall
 				#subprocess.call( ["eos root://cmseos.fnal.gov find  /eos/uscms/"+folder+"/"+setname], shell=True )
 				subprocess.call( [spcall], shell=True )
 				files = []
-				
+
 				with open(tempfname) as ftemp:
 					filestemp = ftemp.read().splitlines()
 					for curfile in filestemp:
+
 						#print curfile
-						#print curfile,versionstring,curfile.find(versionstring),search,curfile.find(search)
-						
-						if curfile.find(".root")!=-1 and curfile.find(versionstring)!=-1 and curfile.find(nanotype)!=-1 and curfile.find("failed")==-1 and curfile.find(search)!=-1:
+
+						verfind=False
+						for vv in versionstring:
+							if curfile.find(vv)!=-1:
+								verfind=True
+						#print curfile.find(".root")!=-1 , verfind , curfile.find(nanotype)!=-1 , curfile.find("failed")==-1 , curfile.find(search)!=-1,curfile.find(rvsearch)!=-1 
+						if not rdf:
+							fileBool=curfile.find(".root")!=-1 and verfind and curfile.find(nanotype)!=-1 and curfile.find("failed")==-1 and curfile.find(search)!=-1
+							if not self.isdata:
+								fileBool = fileBool and curfile.find(rvsearch)!=-1 
+						else:
+							#print curfile
+							#print curfile.find(".root")!=-1 , curfile.find("failed")==-1 , curfile.find(search)!=-1 , curfile.find(self.era)!=-1
+							fileBool=curfile.find(".root")!=-1 and curfile.find("failed")==-1 and curfile.find(search)!=-1 and curfile.find("_"+self.era+"__")!=-1
+
+						if fileBool:
 							#files.append(curfile)
 							if redir=="eoscms.cern.ch":
 								files.append(curfile.replace("/eos/cms/","root://"+redir+":///"))
@@ -1008,8 +1116,8 @@ class NanoAODskim_Functions:
 				if len(files) != len(set(files)):
 					logging.error("Duplicate Files")
 				files = list(set(files))
-				
-				#files = eos find 
+
+				#files = eos find
 				if len(files)==0:
 					ntry+=1
 					logging.error("No Files Found For "+setname)
@@ -1018,7 +1126,10 @@ class NanoAODskim_Functions:
 				if ntry>10:
 					logging.error("Too Many Tries")
 					sys.exit()
+		files.sort()
 		return files
+
+
 	def initcorr(self,filename):
 		print filename
 		index = filename.find("JetHT/Run")
@@ -1028,16 +1139,16 @@ class NanoAODskim_Functions:
 		print dir(createJMECorrector((not self.isdata), year, run, "Total", True, "AK8PFPuppi", True))
 		print createJMECorrector((not self.isdata), year, run, "Total", True, "AK8PFPuppi", True)
 		self.jmeCorrections = createJMECorrector((not self.isdata), year, run, "Total", True, "AK8PFPuppi", True)
-		
+
 	def histosmatchinit(self,labels,regions=['C']):
 		histos = {}
 		for region in regions:
 			histos[region] = {}
 			for label in labels:
 				histos[region]["tau21__"+label+"__"+region] =  TH1F("tau21__"+label+"__"+region,	"tau21__"+label+"__"+region,		10000, 0.,1.01 )
-				histos[region]["iMDW__"+label+"__"+region] =  TH1F("iMDW__"+label+"__"+region,	"iMDW__"+label+"__"+region,		10000, 0.,1. )		
-				histos[region]["tau41__"+label+"__"+region] =  TH1F("tau41__"+label+"__"+region,	"tau41__"+label+"__"+region,		10000, 0.,1.01 )		
-				histos[region]["iMDWW__"+label+"__"+region] =  TH1F("iMDWW__"+label+"__"+region,	"iMDWW__"+label+"__"+region,		10000, 0.,1.01 )		
+				histos[region]["iMDW__"+label+"__"+region] =  TH1F("iMDW__"+label+"__"+region,	"iMDW__"+label+"__"+region,		10000, 0.,1. )
+				histos[region]["tau41__"+label+"__"+region] =  TH1F("tau41__"+label+"__"+region,	"tau41__"+label+"__"+region,		10000, 0.,1.01 )
+				histos[region]["iMDWW__"+label+"__"+region] =  TH1F("iMDWW__"+label+"__"+region,	"iMDWW__"+label+"__"+region,		10000, 0.,1.01 )
 		return histos
 
 
@@ -1048,7 +1159,7 @@ class NanoAODskim_Functions:
 		if maxlen>0:
 			nobj = min(nobj,maxlen)
 		objvec = []
-		#print name	
+		#print name
 		for iobj in xrange(nobj):
 			curpt=float(getattr(ev, name+"_pt")[iobj])
 			#if name=="GenPart":
@@ -1061,7 +1172,7 @@ class NanoAODskim_Functions:
 			objvec[-1].eta = float(getattr(ev, name+"_eta")[iobj])
 			objvec[-1].phi = float(getattr(ev, name+"_phi")[iobj])
 			objvec[-1].mass = float(getattr(ev, name+"_mass")[iobj])
-			if name=="CustomAK8Puppi":	
+			if name=="CustomAK8Puppi":
 				objvec[-1].iMDPho=float(getattr(ev, name+"_iMDPho")[iobj])
 				objvec[-1].iMDWW=float(getattr(ev, name+"_iMDWW")[iobj])
 				objvec[-1].iMDtop=float(getattr(ev, name+"_iMDtop")[iobj])
@@ -1078,29 +1189,29 @@ class NanoAODskim_Functions:
 				objvec[-1].btagHbb=float(getattr(ev, name+"_btagHbb")[iobj])
 				objvec[-1].rawFactor=float(getattr(ev, name+"_rawFactor")[iobj])
 				objvec[-1].area=float(getattr(ev, name+"_area")[iobj])
-			if name=="Jet":	
+			if name=="Jet":
 				objvec[-1].btagDeepFlavB=float(getattr(ev, name+"_btagDeepFlavB")[iobj])
 				objvec[-1].rawFactor=float(getattr(ev, name+"_rawFactor")[iobj])
 				objvec[-1].area=float(getattr(ev, name+"_area")[iobj])
-			if name=="Muon":	
+			if name=="Muon":
 				#print getattr(ev, name+"_highPtId")[iobj]
 				#print float(getattr(ev, name+"_highPtId")[iobj])
 				#objvec[-1].mediumId=bool(getattr(ev, name+"_mediumId")[iobj])
 				objvec[-1].tightId=bool(getattr(ev, name+"_tightId")[iobj])
 				#print "MEDID",objvec[-1].mediumId
 				#objvec[-1].mvaId=getattr(ev, name+"_mvaId")[iobj]
-			if name=="Electron":	
+			if name=="Electron":
 				objvec[-1].mvaFall17V2Iso_WP90=int(getattr(ev, name+"_mvaFall17V2Iso_WP90")[iobj])
 				objvec[-1].mvaFall17V2noIso_WP90=int(getattr(ev, name+"_mvaFall17V2noIso_WP90")[iobj])
-			if name=="GenPart":	
+			if name=="GenPart":
 				objvec[-1].pdgId=int(getattr(ev, name+"_pdgId")[iobj])
-				objvec[-1].statusFlags=int(getattr(ev, name+"_statusFlags")[iobj])	
+				objvec[-1].statusFlags=int(getattr(ev, name+"_statusFlags")[iobj])
 			#objvec[-1].p4.SetPtEtaPhiM(objvec[-1].pt,objvec[-1].eta,objvec[-1].phi,objvec[-1].mass)
 			objvec[-1].setp4()
 		return objvec
 
 	def weightshistosinit(self,weightstoplot,regions=['C']):
-		weightshistos = {}		
+		weightshistos = {}
 		for region in regions:
 			weightshistos[region]={}
 			for curweight in weightstoplot:
@@ -1114,7 +1225,7 @@ class NanoAODskim_Functions:
 
 			for whisto in weightshistos[region]:
 				weightshistos[region][whisto].Sumw2()
-		
+
 		return weightshistos
 	def histosinit(self,labels,regions=['C']):
 		histos = {}
@@ -1142,7 +1253,7 @@ class NanoAODskim_Functions:
 				if len(label)==1:
 					histos[region]["mass__"+label+"__"+region] =  TH1F("mass__"+label+"__"+region,	"mass__"+label+"__"+region,		250, 0.,500.  )
 					histos[region]["index__"+label+"__"+region] =  TH1F("index__"+label+"__"+region,	"index__"+label+"__"+region,		4, -.5,3.5  )
-					if not isAK4:				
+					if not isAK4:
 						histos[region]["msoftdrop__"+label+"__"+region] =  TH1F("msoftdrop__"+label+"__"+region,	"msoftdrop__"+label+"__"+region,		240, 0.,480. )
 						if self.anatype=="Pho":
 							histos[region]["Piso__"+label+"__"+region] =  TH1F("Piso__"+label+"__"+region,	"Piso__"+label+"__"+region,	5000, -1.0,1.0 )
@@ -1151,7 +1262,7 @@ class NanoAODskim_Functions:
 							histos[region]["PmvaID_WP80__"+label+"__"+region] =  TH1F("PmvaID_WP80__"+label+"__"+region,	"PmvaID_WP80__"+label+"__"+region,	3, -1.5,1.5 )
 							histos[region]["PmvaID_WP90__"+label+"__"+region] =  TH1F("PmvaID_WP90__"+label+"__"+region,	"PmvaID_WP90__"+label+"__"+region,	3, -1.5,1.5 )
 
-	
+
 
 							#histos[region]["Pisoch__"+label+"__"+region] =  TH1F("Pisoch__"+label+"__"+region,	"Pisoch__"+label+"__"+region,	5000, -1.0,1.0 )
 							#histos[region]["Pbm__"+label+"__"+region] =  TH1F("Pbm__"+label+"__"+region,	"Pbm__"+label+"__"+region,		40, 0.,20. )
@@ -1175,7 +1286,7 @@ class NanoAODskim_Functions:
 							histos[region]["tau21__"+label+"__"+region] =  TH1F("tau21__"+label+"__"+region,	"tau21__"+label+"__"+region,		100, 0.,1. )
 					else:
 						histos[region]["btagDeepFlavB__"+label+"__"+region] =  TH1F("btagDeepFlavB__"+label+"__"+region,	"btagDeepFlavB__"+label+"__"+region,		100, 0.,1. )
-	
+
 				if len(label)==2:
 					histos[region]["dphi__"+label+"__"+region] =  TH1F("dphi__"+label+"__"+region,	"dphi__"+label+"__"+region,		60, -4.0,4.0 )
 					histos[region]["dR__"+label+"__"+region] =  TH1F("dR__"+label+"__"+region,	"dR__"+label+"__"+region,		100, 0.0,10.0 )
@@ -1211,9 +1322,9 @@ class NanoAODskim_Functions:
 							histos[region]["tau21__"+label[1]+"__iMDtop__"+label[0]+"__"+region] =  TH2F("tau21__"+label[1]+"__iMDtop__"+label[0]+"__"+region,	"tau21__"+label[1]+"__iMDtop__"+label[0]+"__"+region,		100, 0.,1.,100, 0.,1. )
 							histos[region]["msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region] =  TH2F("msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region,	"msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region,		240, 0.,480.,100, 0.,1. )
 
-				if not isAK4:				
+				if not isAK4:
 					histos[region]["pt__"+label+"__aeta__"+label+"__"+region] =  TH2F("pt__"+label+"__aeta__"+label+"__"+region,	"pt__"+label+"__aeta__"+label+"__"+region,		350, 400.,3900.,24, 0.0,2.4 )
-				else:				
+				else:
 					histos[region]["pt__"+label+"__aeta__"+label+"__"+region] =  TH2F("pt__"+label+"__aeta__"+label+"__"+region,	"pt__"+label+"__aeta__"+label+"__"+region,		350, 0.,3500.,24, 0.0,2.4 )
 
 
@@ -1233,12 +1344,12 @@ class NanoAODskim_Functions:
 			for vari in weightdict[region][whisto]:
 				if (whisto+vari) in weightshistos[region]:
 					weightshistos[region][whisto+vari].Fill(weightdict[region][whisto][vari])
-				
+
 	def histosfill(self,histos,cands,region='C',weight=1.0,hfilter=[]):
 		if not (region in histos):
 			return
 		for histo in histos[region]:
-			
+
 			keep=False
 			if hfilter==[]:
 				keep=True
@@ -1246,9 +1357,9 @@ class NanoAODskim_Functions:
 				if histo.find(hf)!=-1:
 					keep=True
 			if not keep:
-				continue 
+				continue
 			#print region,histo
-			
+
 			idval = histo.split("__")
 			#print idval
 			if isinstance(histos[region][histo], TH2F):
@@ -1263,7 +1374,7 @@ class NanoAODskim_Functions:
 					if cands[idval[1]][idval[0]]!=None:
 						#print "filling",histo,cands[idval[1]][idval[0]]
 						histos[region][histo].Fill(cands[idval[1]][idval[0]],weight)
-		
+
 	def overlapcheck(self,histos,cands,region,matchmatrix):
 		for histo in histos[region]:
 			if [region,histo] in matchmatrix:
@@ -1272,8 +1383,8 @@ class NanoAODskim_Functions:
 			else:
 				matchmatrix.append([region,histo])
 	def tagjet(self,ak8jet,obj,region='C'):
-		curcuts = self.LoadCuts[region] 
-		defaultcuts = self.LoadCuts['C'] 
+		curcuts = self.LoadCuts[region]
+		defaultcuts = self.LoadCuts['C']
 
 		if obj=="W":
 			#if region=="C":
@@ -1282,27 +1393,27 @@ class NanoAODskim_Functions:
 			if curcuts["iMDW__W"][0]<ak8jet.iMDW<=curcuts["iMDW__W"][1] :
 				if curcuts["msoftdrop__W"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__W"][1]:
 					return True
-				
+
 		if obj=="H":
 			if curcuts["btagHbb__H"][0]<ak8jet.btagHbb<=curcuts["btagHbb__H"][1] and (curcuts["msoftdrop__H"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__H"][1]):
-				
+
 
 				if "iMDtop__H" in curcuts:
 					if curcuts["iMDtop__H"][0]<ak8jet.iMDtop<=curcuts["iMDtop__H"][1]:
 						return True
-				else:			
+				else:
 					return True
 		if obj=="Z":
 			if curcuts["tau21__Z"][0]<ak8jet.tau21<=curcuts["tau21__Z"][1] and (curcuts["msoftdrop__Z"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__Z"][1]):
 				return True
 		if obj=="T":
 			if (curcuts["iMDtop__T"][0]<ak8jet.iMDtop<=curcuts["iMDtop__T"][1]) and (curcuts["msoftdrop__T"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__T"][1]):
-					return True	
+					return True
 				#if self.anatype=="tHb":
 				#	if not (curcuts["_btagHbb__T"][0]<ak8jet["btagHbb"]<=curcuts["Inv_btagHbb__T"][1] and (curcuts["Inv_msoftdrop__T"][0]<ak8jet["msoftdrop"]<=curcuts["Inv_msoftdrop__T"][1])):
 				#		return True
 				#elif self.anatype=="Bstar":
-				#	#if not( curcuts["Inv_tau21__T"][0]<ak8jet["tau21"]<curcuts["Inv_tau21__T"][1] and (curcuts["Inv_msoftdrop__T"][0]<ak8jet["msoftdrop"]<curcuts["Inv_msoftdrop__T"][1])):		
+				#	#if not( curcuts["Inv_tau21__T"][0]<ak8jet["tau21"]<curcuts["Inv_tau21__T"][1] and (curcuts["Inv_msoftdrop__T"][0]<ak8jet["msoftdrop"]<curcuts["Inv_msoftdrop__T"][1])):
 				#	return True
 				#else:
 				#	return True
@@ -1318,33 +1429,33 @@ class NanoAODskim_Functions:
 		if obj=="P":
 			if ((curcuts["iMDPho__P"][0]<ak8jet.iMDPho<=curcuts["iMDPho__P"][1]) and (curcuts["msoftdrop__P"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__P"][1])):
 				if curcuts["msoftdrop__P"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__P"][1]:
-				#if not ( (curcuts["Inv_iMDW__P"][0]<ak8jet["iMDW"]<curcuts["Inv_iMDW__P"][1])):		
+				#if not ( (curcuts["Inv_iMDW__P"][0]<ak8jet["iMDW"]<curcuts["Inv_iMDW__P"][1])):
 					return True
 		if obj=="F":
 			if ((curcuts["iMDWW__F"][0]<ak8jet.iMDWW<=curcuts["iMDWW__F"][1]) and (curcuts["msoftdrop__F"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__F"][1])):
 				#if not ( (curcuts["Inv_iMDW__F"][0]<ak8jet["iMDW"]<curcuts["Inv_iMDW__F"][1])):
-				if curcuts["msoftdrop__F"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__F"][1]:		
+				if curcuts["msoftdrop__F"][0]<ak8jet.msoftdrop<=curcuts["msoftdrop__F"][1]:
 					return True
 		return False
-	
-	
+
+
 	def TriggerPass(self,curdictval,prescale=False):
-		#print "intp"  
+		#print "intp"
 		for ctrig in curdictval:
 			#print ctrig,curdictval[ctrig]
-			try: 
+			try:
 				if curdictval[ctrig]==1:
 					#print "PASS!"
 					return True
 			except:
 				print "Missing trigger",ctrig
 		#print "FAIL!"
-		return False 
+		return False
 
 	def disambiguate(self,tags,jets):
 		cands = {"W":None, "P":None}
 		intersection = list(set(tags["W"]) & set(tags["P"]))
-		print tags 
+		print tags
 		print intersection
 		if len(tags["W"])>=2 and len(tags["P"])>=2:
 			#print "randomizing"
@@ -1354,7 +1465,7 @@ class NanoAODskim_Functions:
 			#print "returning P",randomar[1]
 			cands["W"]=jets[randomar[0]]
 			cands["P"]=jets[randomar[1]]
-			
+
 		else:
 			for tag in tags:
 				if len(tags[tag])==2:
@@ -1365,7 +1476,7 @@ class NanoAODskim_Functions:
 			cands["W"]= jets[tags["W"][0]]
 			cands["P"]= jets[tags["P"][0]]
 		return cands
-		
+
 	def getPUPPIweight(self,puppipt,puppieta ):
 		puppifile=TFile('puppiCorr.root','open')
   		puppisd_corrGEN      = puppifile.Get("puppiJECcorr_gen")
@@ -1376,21 +1487,21 @@ class NanoAODskim_Functions:
   		genCorr  = 1.
   		recoCorr = 1.
   		totalWeight = 1.
-        
+
   		genCorr =  puppisd_corrGEN.Eval( puppipt )
   		if abs(puppieta)  <= 1.3 :
     			recoCorr = puppisd_corrRECO_cen.Eval( puppipt )
-  
+
   		else:
     			recoCorr = puppisd_corrRECO_for.Eval( puppipt )
-  
-  
+
+
   		totalWeight = genCorr * recoCorr;
 
   		return totalWeight;
 
 	def physobjinit(self,lvdict,num=10):
-		
+
 		tlvs = []
 		otherb = []
 		for cname in lvdict:
@@ -1399,7 +1510,7 @@ class NanoAODskim_Functions:
 			otherb.append(cname)
 		for lv in xrange(min(len(lvdict["pt"]),num)):
 			#print lv
-			
+
 			tlvs.append({})
 			tlvs[-1]["TLV"] = TLorentzVector()
 			tlvs[-1]["TLV"].SetPtEtaPhiM(lvdict["pt"][lv],lvdict["eta"][lv],lvdict["phi"][lv],lvdict["mass"][lv])
@@ -1436,7 +1547,7 @@ class NanoAODskim_Functions:
 				BKGerr = abs(BKGDOWN.GetBinContent(ibin)-BKG.GetBinContent(ibin))
 			if FScont == 0.0:
 				FSerr=1.84*normval
-	
+
 			sigma = sqrt(FSerr*FSerr + BKGerr*BKGerr)
 
 			if FScont == 0.0 and BKGcont == 0.0 :
@@ -1454,7 +1565,7 @@ class NanoAODskim_Functions:
 
 
 	def jersmear(self,jets, genjets,rho,jind,jtype="ak8"):
-	
+
 		pairs = matchObjectCollection(jets, genjets)
 		if jtype=="ak8":
 			params_sf_and_uncertainty = self.params_sf_and_uncertainty
@@ -1469,7 +1580,7 @@ class NanoAODskim_Functions:
 		#print pairs
 		for ak8j in jets:
 			#temporary, for some reason low pt stuff throws an error.  has a small effect on ht
-			
+
             		params_sf_and_uncertainty.setJetEta(ak8j.eta)
 			curSF = jerSF_and_Uncertainty.getScaleFactor(params_sf_and_uncertainty, jind)
 
@@ -1489,10 +1600,10 @@ class NanoAODskim_Functions:
 					dostoc=True
 			if not dostoc:
 				#print "ptreco",ak8j.pt,"ptgen",genJet.pt
-				
+
 				smearFactor = 1. + (curSF - 1.)*dPt/ak8j.pt
 				#print "smear",smearFactor,"dPt",dPt,"curSF",curSF
-				
+
 			else:
 		  		jerrand = self.rnd.Gaus(0,jet_pt_resolution)
 				if curSF>1.:
@@ -1510,7 +1621,7 @@ class NanoAODskim_Functions:
 		avew=sum(pdfweights)/len(pdfweights)
 		#print "np",len(pdfweights),"avew",avew
 		pdw=0
-		# check rms math 
+		# check rms math
 		for pp in pdfweights:
 			pdw+=(pp-avew)*(pp-avew)
 		#curttree.Draw("LHEPdfWeight>>pdavehist","","goff")
@@ -1534,20 +1645,20 @@ class NanoAODskim_Functions:
 		if settype=="Signal":
 			if self.era=="2016":
 				sf=	[350.0,850.0,1.01,0.06,0.10]
-					
+
 			if self.era=="2017":
 				sf=	[350.0,840.0,0.9,0.08,0.04]
-					
+
 			if self.era=="2018":
 				sf=	[350.0,850.0,0.89,0.06,0.04]
 		#USE 2017 TTBAR FOR ALL!!
 		elif settype=="TT":
 			if self.era=="2016":
 				sf=	[430.0,float("inf"),0.902,0.083,0.081]
-					
+
 			if self.era=="2017":
 				sf=	[430.0,float("inf"),0.902,0.083,0.081]
-					
+
 			if self.era=="2018":
 				sf=	[430.0,float("inf"),0.902,0.083,0.081]
 		else:
@@ -1563,7 +1674,7 @@ class NanoAODskim_Functions:
 	def btagsf(self,ak4jet,cut):
 		ak4pt = ak4jet.pt
 		if cut=="T":
-			
+
 			bsfdict={"sf":1.0,"down":1.0,"up":1.0}
 			for bsf in bsfdict:
 				for prange in (self.btagdict)[bsf]:
@@ -1571,9 +1682,9 @@ class NanoAODskim_Functions:
 						bsfdict[bsf]=prange[2].Eval(ak4pt)
 					if (prange[1]<ak4pt) and (prange==(self.btagdict)[bsf][-1]):
 						bsfdict[bsf]=2.0*prange[2].Eval(prange[1])
-			
-			
-			
+
+
+
 			return bsfdict
 		else:
 			return {"sf":1.0,"down":1.0,"up":1.0}
@@ -1582,10 +1693,10 @@ class NanoAODskim_Functions:
 		if cut=="T":
 			if self.era=="2016":
 				sf=[0.980,0.027]
-					
+
 			if self.era=="2017":
 				sf=[0.97,0.06]
-					
+
 			if self.era=="2018":
 				sf=[1.10,0.12]
 			return {"sf":sf[0],"down":sf[0]-sf[1],"up":sf[0]+sf[1]}
@@ -1614,14 +1725,14 @@ class NanoAODskim_Functions:
 		for it in xrange(len(self.trigprobs)):
 			#print it,trigrand,self.trigprobs[it]
 			if trigrand>self.trigprobs[it]:
-		
+
 				if self.era=="2017" and it==1:
 					trhisto=self.trighists[it]
 					histotype="1D"
 					#print "using 1D"
-					
+
 				else:
-					trhisto=self.trighist2ds[it]	
+					trhisto=self.trighist2ds[it]
 				break
 		if trhisto==None:
 			print "Trig ERROR!"
@@ -1634,10 +1745,10 @@ class NanoAODskim_Functions:
 				weight = trhisto.GetBinContent(htbin)
 				toterr=0.5*abs(1.0-weight)
 				trigdict= {"sf":weight,"down":max(weight-toterr,0.0),"up":min(weight+toterr,1.0)}
-		else:		
+		else:
 			if (ht > maxtright) or (msd > maxtrigmass):
 				trigdict= {"sf":1.0,"down":1.0,"up":1.0}
-		
+
 			else:
 				htbin = trhisto.GetXaxis().FindBin(ht)
 				msdbin = trhisto.GetYaxis().FindBin(msd)
@@ -1646,7 +1757,7 @@ class NanoAODskim_Functions:
 				trigdict= {"sf":weight,"down":max(weight-toterr,0.0),"up":min(weight+toterr,1.0)}
 		#print trigdict
 		return trigdict
-		
+
 	def candtodict(self,cands):
 		dictver = {}
 		for cand in cands:
@@ -1693,6 +1804,15 @@ class NanoAODskim_Functions:
 				dictver[cand]["dyhighm"] = cands[cand].dyhighm
 		return dictver
 
+	def regionmap(self,regionint):
+		outr=[]
+		regionmap=["A","B","E","J","C","K","H","F","D","L","I","G"]
+		for rr in xrange(len(regionmap)):
+			bitv = 1<<rr
+			truthv=(bitv&regionint)>>rr
+			if(truthv):outr.append(regionmap[rr])
+		return outr
+
 	def tptrw(self,geninfo):
 		TPT = None
 		ATPT = None
@@ -1708,11 +1828,11 @@ class NanoAODskim_Functions:
 			if (gg.pdgId==-6) and ATPT==None:
 				ATPT = gg.pt
 			if TPT!=None and ATPT!=None:
-				
+
 				#print "foundem ",TPT,ATPT
 				#print
 				#print math.exp(0.0615-0.0005*TPT),math.exp(0.0615-0.0005*ATPT)
-				sfval= math.exp(0.0615-0.0005*TPT)*math.exp(0.0615-0.0005*ATPT)
+				sfval= sqrt(math.exp(0.0615-0.0005*TPT)*math.exp(0.0615-0.0005*ATPT))
 				abserror = 1.0-sfval
 				#print sfval,abserror
 				tptsf["sf"] = sfval
@@ -1723,7 +1843,7 @@ class NanoAODskim_Functions:
 		if tptsf["sf"]==1.0:
 			print "1.0",geninfo
 		#print tptsf
-		return tptsf	
+		return tptsf
 
 
 
@@ -1739,10 +1859,7 @@ def setfilter(setstring):
 		filtername="WJets"
 	if (setstring).find('WpTo')!=-1:
 		filtername="Signal"
-	return filtername 
+	return filtername
 
 def strf(x):
 	return '%.0f' % x
-
-
-

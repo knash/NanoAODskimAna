@@ -1,0 +1,16 @@
+<p>Rates for all observables and processes as given by the 'nominal' templates. If errors are given, they are MC stat. uncertainties.</p>
+<table cellpadding="2" border="1">
+<tr><th>process / observable</th><th>mass_THB_CFT3_2017</th><th>mass_THB_CFT3_2018</th></tr>
+<tr><td>qcd</td><td>4.1211 +/- 2.8145</td><td>1.3357 +/- 0.73342</td></tr>
+<tr><td>ttbar</td><td>3.6667 +/- 0.42718</td><td>3.99 +/- 0.4665</td></tr>
+<tr><td><b>total background</b></td><td>7.7878 +/- 2.8467</td><td>5.3257 +/- 0.86921</td></tr>
+<tr><td>WptoqVLQWp1500</td><td>7.9315 +/- 0.33477</td><td>12.09 +/- 0.50779</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>16.012 +/- 0.23813</td><td>22.635 +/- 0.34267</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>6.4637 +/- 0.077169</td><td>10.197 +/- 0.1237</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>2.3398 +/- 0.026713</td><td>3.4535 +/- 0.039604</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>0.58107 +/- 0.0067531</td><td>0.8027 +/- 0.0096322</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>0.22162 +/- 0.0028819</td><td>0.32432 +/- 0.0042602</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>0.10689 +/- 0.0016605</td><td>0.15592 +/- 0.0023681</td></tr>
+<tr><td><b>DATA</b></td><td>---</td><td>---</td></tr>
+</table>
+

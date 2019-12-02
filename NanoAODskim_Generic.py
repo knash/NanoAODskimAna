@@ -42,6 +42,10 @@ parser.add_option('-S', '--search', metavar='F', type='string', action='store',
 		  default	=	'',
 		  dest		=	'search',
 		  help		=	'')
+parser.add_option('-v', '--version', metavar='F', type='string', action='store',
+		  default	=	'v8',
+		  dest		=	'version',
+		  help		=	'')
 parser.add_option('--ttonly', metavar='F', action='store_true',
 		  default=False,
 		  dest='ttonly',
@@ -70,9 +74,16 @@ parser.add_option('--trigemu', metavar='F', action='store_true',
 		  default=False,
 		  dest='trigemu',
 		  help='trigemu')
+parser.add_option('--cutopt', metavar='F', action='store_true',
+		  default=False,
+		  dest='cutopt',
+		  help='cutopt')
+
 
 (options, args) = parser.parse_args()
+#make an option
 
+runttweight=True
 di=""
 if options.condor:
 	di="tardir/"
@@ -101,21 +112,28 @@ jobarr = [options.job,options.totaljobs]
 if jobarr[0]>jobarr[1]:
 	logging.error("Job Number Higher Than Total Jobs")
 	sys.exit()
+cutopt = options.cutopt
+optstr=""
+if cutopt:
+	optstr="optimizer_"
 prescale = options.prescale
 setname = options.set
 setnametowrite=setname.split('/')[0]
 print "set name",setnametowrite
 settype=setfilter(setname)
 print "set type",settype
-NanoF = NanoAODskim_Functions(options.anatype,options.era,"v8",settype,options.condor)
+ver=(options.version).split(",")
+NanoF = NanoAODskim_Functions(options.anatype,options.era,ver,settype,options.condor)
 
 
 if not (settype=="JetHT"):
 	constdict = NanoF.LoadConstants
 	lumi = constdict["lumi"]
-	
+	for cc in sorted(constdict["posfac"]):
+		print cc
 	nev_xsec = constdict["dataconst"][setnametowrite]
 	posfac = constdict["posfac"][setnametowrite]
+	print constdict["posfac"][setnametowrite]
 	posmmin = posfac
 	nevweighted=nev_xsec[0]*posmmin
 
@@ -143,7 +161,7 @@ for cfile in xrange(len(allfiles)):
 				#print "skip!",cfile
 				continue
 	files.append(allfiles[cfile])
-
+	print files[-1]     
 #random.shuffle(files)
 ntotfile = len(files)
 print "Loaded",ntotfile,"Files..."
@@ -209,6 +227,7 @@ if macro=="Ana":
 
 	regions=["C","K","H","F"]
 	rateregions = ["D","L","I","G"]
+
 	if options.anatype=="tHb" or options.anatype=="tZb":
 		ratehist["O"]=ratefile.Get('Mrate')
 		regions.append("N")
@@ -220,9 +239,7 @@ if macro=="Ana":
 	FSregions=copy.copy(regions)
 	anaregions=copy.copy(regions)
 	ratehistos={}
-	for ratetype in rateregions:
-		regions.append(ratetype)
-		ratehistos[ratetype] = []
+
 	#for lab in labels:
 	#	if len(lab)==1:
 	#		regions.append("NM1"+lab)
@@ -231,6 +248,15 @@ if macro=="Ana":
 		if rname.find("NM1")!=-1:
 			#print "found"
 			regions.append(rname)
+	if cutopt:
+		regions=['C','K','H','CFH1','CFH2','CFH3','CFT1','CFT2','CFT3','CFB1','CFB2','HFH1','HFH2','HFH3','KFT1','KFT2','KFT3']
+		FSregions=copy.copy(regions)
+		anaregions=copy.copy(regions)
+		rateregions = []
+
+	for ratetype in rateregions:
+		regions.append(ratetype)
+		ratehistos[ratetype] = []
 
 	#print regions
 	bkgweights=["","__err","_0","__err_0","_1","__err_1"]
@@ -250,6 +276,7 @@ if macro=="Ana":
 
 
 	#PUT IN A FUNCTION
+
 
 
 	for ratetype in rateregions:
@@ -337,6 +364,9 @@ minpt = 9999999.
 minptak4 = 9999999.
 minsdm = 9999999.
 for region in regions:
+	#print (NanoF.LoadCuts)
+	#for cc in NanoF.LoadCuts:
+	#	print cc
 	minpt=min(minpt,(NanoF.LoadCuts)[region]["ptAK8"])
 	if "B" in ak4labs:
 		minptak4=min(minptak4,(NanoF.LoadCuts)[region]["pt__B"])
@@ -380,7 +410,7 @@ if (not NanoF.isdata) and (settype!="QCD"):
 	errnames.append("q2")
 	if settype=="Signal":
 		errnames.append("pdfweight")
-	if settype=="TT":
+	if settype=="TT" and runttweight:
 		errnames.append("tptrw")
 	if doshifts:
 		shiftnames = ["jes","jer"]
@@ -737,6 +767,7 @@ for curfilename in files:
 			nfillsev=0
 			weightdict={}
 			for region in regions:
+				#print region
 				if (shift!="") and not (region in FSregions):
 					continue
 
@@ -927,7 +958,7 @@ for curfilename in files:
 						if genweight==None:
 							genweight = float(getattr(ev, "genWeight"))
 						weightdict[region]["genweight"] = {"sf":genweight}
-						if settype=="TT":
+						if settype=="TT" and runttweight:
 							if genpart==None:
 								genpart = NanoF.expandgeneric(ev,"GenPart",20,ptcut=0.0)
 							weightdict[region]["tptrw"] = NanoF.tptrw(genpart)
@@ -1029,8 +1060,6 @@ for curfilename in files:
 									bkgweight = curratehisto[etabin].GetBinContent(ptbin)
 										
 								plotdict[candl]["bbin"+str(etabin)]=ptbin
-							#if 
-							#	print bkgweight,bkgw,region
 							weightdict[region]["bkgweight"]={"sf":bkgweight}
 							bkgstr=region
 							
@@ -1043,11 +1072,8 @@ for curfilename in files:
 							NanoF.histosfill(histostoplot,plotdict,bkgstr,hweight)
 							if (not NanoF.isdata):
 								NanoF.weightshistosfill(weightshistos,weightdict,region)
-							#for weightname in weightdict:
-							#	if not weightname in resetweightdict :
-							#		print "missing",weightname
 					else:
-	
+						#Filling jetnum histos 
 						if macro=="Bkg":
 							hweight=1.0
 							for ww in weightdict[region]:
@@ -1058,37 +1084,21 @@ for curfilename in files:
 						cutflow[region]["Full"]+=1.
 						
 							
-						#print "Start unc loop",
 
 						hweight=1.0
-						#print "running weights"
 						for ww in weightdict[region]:
-								#print region,ww,"sf",weightdict[region][ww]["sf"]
 								hweight*=weightdict[region][ww]["sf"]
-								#if region=="FT":
-								#	print region,ww,weightdict[region][ww]["sf"]
 							
 						if (settype=="JetHT"):
 							if hweight!=1.0:
 								logging.error("DATA with non-unity weight!!!")
-						#if region=="FT":
-						#print "FW",hweight
 					
 						NanoF.histosfill(histostoplot,plotdict,region,hweight)
 						if (not NanoF.isdata):
 							NanoF.weightshistosfill(weightshistos,weightdict,region)
-						#print "fill"
-						#print "curshift",shift
 
-						#for weightname in weightdict:
-						#	if not weightname in resetweightdict :
-						#		print "missing",weightname
 						if (shift=="") and (region in FSregions):
-							#print
-							#print "running uncs"
 							for normerr in errnames:
-								#print normerr
-								#print weightdict[region]
 								for errval in ["down","up"]:
 									hweight=1.0
 								
@@ -1096,14 +1106,8 @@ for curfilename in files:
 		
 										if (normerr==ww) and (errval in weightdict[region][ww]):	
 											hweight*=weightdict[region][ww][errval]
-											#if normerr=="htag" and region=="C":
-											#	print errval,ww,weightdict[region][ww][errval]
-											#	print errval,ww,weightdict[region][ww]
 										else:
 											hweight*=weightdict[region][ww]["sf"]
-											#print "sf",ww,weightdict[region][ww]["sf"]
-									#if normerr=="htag" and region=="C":
-									#	print errval,hweight												
 									if errval=="up":
 										NanoF.histosfill(uphistos[normerr],plotdict,region,hweight)
 									if errval=="down":
@@ -1113,10 +1117,11 @@ for curfilename in files:
 						nfillsev+=1
 					
 print "Finished Looping..."
+
 jobstr=""
 if jobarr[1]!=1:
 	jobstr += "__job"+str(jobarr[0])+"of"+str(jobarr[1])
-output = ROOT.TFile("NanoAODskim_"+options.anatype+macro+options.era+"__"+setnametowrite+jobstr+".root","recreate")
+output = ROOT.TFile("NanoAODskim_"+optstr+options.anatype+macro+options.era+"__"+setnametowrite+jobstr+".root","recreate")
 output.cd()
 allhiststowrite=[histos]
 for errname in (errnames+shiftnames):

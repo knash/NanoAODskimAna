@@ -155,11 +155,11 @@ for num in numregions:
 			histosdenbkg["1"].RebinY(rebinval)
 			histosdenbkg["sum"].RebinY(rebinval)
 
-			print "subfrac"
-			print bkgs,histosnumbkg["sum"].Integral()/histosnum["sum"].Integral()
-			print bkgs,histosdenbkg["sum"].Integral()/histosden["sum"].Integral()
+			print "subfrac",num
+			print bkgs,"-- Num:",histosnumbkg["sum"].Integral()/histosnum["sum"].Integral(),",","Den:",histosdenbkg["sum"].Integral()/histosden["sum"].Integral()
 
 			if options.normcorr:
+				print "normcorr",ttbarnormcorr
 				histosnumbkg["0"].Scale(ttbarnormcorr[0])
 				histosnumbkg["1"].Scale(ttbarnormcorr[0])
 				histosnumbkg["sum"].Scale(ttbarnormcorr[0])
@@ -167,7 +167,8 @@ for num in numregions:
 				histosdenbkg["0"].Scale(ttbarnormcorr[0])
 				histosdenbkg["1"].Scale(ttbarnormcorr[0])
 				histosdenbkg["sum"].Scale(ttbarnormcorr[0])
-
+			#print "subnum",histosnumbkg["sum"].Integral(),histosnum["sum"].Integral()
+			#print "subden",histosdenbkg["sum"].Integral(),histosden["sum"].Integral()
 			histosnum["0"].Add(histosnumbkg["0"],-1)
 			histosnum["1"].Add(histosnumbkg["1"],-1)
 			histosnum["sum"].Add(histosnumbkg["sum"],-1)
@@ -188,8 +189,8 @@ for num in numregions:
 
 			curn = Numr.ProjectionX("curn",ybin,ybin,"e")
 			curd = Denr.ProjectionX("curd",ybin,ybin,"e")
-			print ybin,"curn",curn.Integral()
-			print ybin,"curd",curd.Integral()
+			#print ybin,"curn",curn.Integral()
+			#print ybin,"curd",curd.Integral()
 			bins = array('d',[400.])
 			curn.Integral()
 			lastval = 0
@@ -224,12 +225,12 @@ for num in numregions:
 			if bins[-1]!=3900.:
 				bins.append(3900.)
 			#print "h",hemis,"ybin",ybin,bins	
-			print "h",hemis,"ybin",ybin,"nbins",len(bins)-1
+			#print "h",hemis,"ybin",ybin,"nbins",len(bins)-1
 
 			curnr= curn.Rebin(len(bins)-1,"curnr",bins)
 			curdr= curd.Rebin(len(bins)-1,"curdr",bins)
 			hemarr.append([copy.deepcopy(curnr),copy.deepcopy(curdr)])
-		print
+		#print
 		sumnum = copy.deepcopy(hemarr[2][0])
 		sumden = copy.deepcopy(hemarr[2][1])
 		currate = copy.deepcopy(sumnum)
@@ -279,7 +280,7 @@ for num in numregions:
 		
 		bbb[0].Write(exstr+"ratebin__"+str(ibbb)+"__0")
 		bbb[1].Write(exstr+"ratebin__"+str(ibbb)+"__1")
-		print bbb
+		#print bbb
 		if ibbb>0:
 			canvw1.cd(ibbb)
 			#print "T0"

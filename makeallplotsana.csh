@@ -22,3 +22,9 @@ python NanoAODskim_Plotter.py -a tHb -s JetHT -e 2018  --normcorr --batch &
 python NanoAODskim_Plotter.py -a tHb -e 2018  --normcorr --batch &
 python NanoAODskim_Plotter.py -a tZb -s JetHT -e 2018  --normcorr --batch &
 python NanoAODskim_Plotter.py -a tZb -e 2018  --normcorr --batch &
+python NanoAODskim_Plotter.py -a tHb -e 2016,2017,2018 --batch &
+python NanoAODskim_Plotter.py -a tZb -e 2016,2017,2018 --batch &
+python NanoAODskim_Plotter.py -a tHb -s JetHT -e 2016,2017,2018 --batch &
+python NanoAODskim_Plotter.py -a tZb -s JetHT -e 2016,2017,2018 --batch &
+python NanoAODskim_Plotter.py -a tHb -s JetHT -e 2016,2017,2018  --normcorr --batch &
+python NanoAODskim_Plotter.py -a tZb -s JetHT -e 2016,2017,2018  --normcorr --batch &

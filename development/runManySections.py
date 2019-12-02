@@ -65,7 +65,8 @@ cmsswEnvFNAL = 'cd %%s; . %s prod; eval `scramv1 runtime -sh`; cd -' % cmsswFNAL
 #cmsswEnvCERN = 'cd %s; eval `scramv1 runtime -sh`; cd -'
 SAstr = os.environ['SCRAM_ARCH']
 CMstr = os.environ['SRT_CMSSW_VERSION_SCRAMRTDEL']
-cmsswEnvCERN = 'export SCRAM_ARCH='+SAstr+'; eval `scramv1 project CMSSW '+CMstr+'` ; cd '+CMstr+'/src ; eval `scramv1 runtime -sh`; cd -'
+cmsswEnvCERN = 'export SCRAM_ARCH='+SAstr+'; eval `scramv1 project CMSSW '+CMstr+'` ; cp -r tardir/PhysicsTools '+CMstr+'/src ; cd '+CMstr+'/src ; eval `scram b` ;eval `scramv1 runtime -sh`; eval `scram b` ; cd -'
+#cmsswEnvCERN = '. tardir/setupMyEnvironment.bash'
 storageXml = '$(CMS_PATH)/SITECONF/local/PhEDEx/storage.xml'
 storageProtocals = ['dcap']
 

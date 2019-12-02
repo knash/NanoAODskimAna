@@ -42,9 +42,15 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
       lumiText +=lumi_13TeV_2018;
       lumiText += " (13 TeV)";
     }
+
   else if ( iPeriod==4 )
     {
-      lumiText += lumi_13TeV;
+      lumiText += lumi_13TeV_20172018;
+      lumiText += " (13 TeV)";
+    }
+  else if ( iPeriod==5 )
+    {
+      lumiText += lumi_13TeV_201620172018;
       lumiText += " (13 TeV)";
     }
   else if ( iPeriod==7 )

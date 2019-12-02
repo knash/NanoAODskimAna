@@ -1,0 +1,895 @@
+<?xml version="1.0" ?>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head><title>theta-auto Report</title>
+    <script type="text/javascript" src="js/prototype.js"></script>
+    <script type="text/javascript" src="js/scriptaculous.js?load=effects,builder"></script>
+    <script type="text/javascript" src="js/lightbox.js"></script>
+    <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen" />
+    <style type="text/css">
+    body {margin: 30px; font-family: Verdana, Arial, sans-serif; font-size: 12px; background:#eee;}
+    h1, h2, h3 { padding: 0.2ex; padding-left:.8ex;}
+    h1 {font-size: 150%%; background: #d44;}
+    h2 {font-size: 110%%; background: #f88; padding-left:1.3ex;}
+    h3 {font-size: 100%%; background: #aaa; padding-left:1.3ex;}
+    .inner {padding-left: 3ex;}
+    a img{ border: none;}
+    p {margin:0 0 0 0; margin-top: 1.3ex;}
+    ul {margin:0 0 0 0;}
+    </style>
+    </head><body>
+    <p>Hint: click on top-level headers to toggle visibility of that section.</p>
+    <h1 onclick=$('div1').toggle()>1. General Model Info</h1><div class="inner" id="div1">
+<p>Observables (xmin, xmax, nbins):</p>
+<ul>
+<li>mass_THB_C_2017 (0, 8000, 8)</li>
+<li>mass_THB_C_2018 (0, 8000, 8)</li>
+</ul>
+<p>Background processes:</p>
+<ul>
+<li>qcd</li>
+<li>ttbar</li>
+</ul>
+<p>Signal processes:</p><ul>
+<li>WptoqVLQWp1500</li>
+<li>WptoqVLQWp2000</li>
+<li>WptoqVLQWp2500</li>
+<li>WptoqVLQWp3000</li>
+<li>WptoqVLQWp3500</li>
+<li>WptoqVLQWp4000</li>
+<li>WptoqVLQWp4500</li>
+</ul>
+<p>Nuisance parameters (includes only those which apply to the background-only model):</p>
+<ul>
+<li>bkg (morph only)</li>
+<li>btag2017 (morph only)</li>
+<li>btag2018 (morph only)</li>
+<li>htag (morph only)</li>
+<li>jer2017 (morph only)</li>
+<li>jer2018 (morph only)</li>
+<li>jes2017 (morph only)</li>
+<li>jes2018 (morph only)</li>
+<li>lumi (rate only)</li>
+<li>nonclosure (rate only)</li>
+<li>pu (morph only)</li>
+<li>q2 (morph only)</li>
+<li>topsf (rate only)</li>
+<li>trig2017 (morph only)</li>
+<li>trig2018 (morph only)</li>
+<li>ttbar_xsec (rate only)</li>
+</ul>
+
+</div>
+<h1 onclick=$('div2').toggle()>2. Rate Summary</h1><div class="inner" id="div2">
+<p>Rates for all observables and processes as given by the 'nominal' templates. If errors are given, they are MC stat. uncertainties.</p>
+<table cellpadding="2" border="1">
+<tr><th>process / observable</th><th>mass_THB_C_2017</th><th>mass_THB_C_2018</th></tr>
+<tr><td>qcd</td><td>5.1506 +/- 2.8696</td><td>9.6683 +/- 6.4375</td></tr>
+<tr><td>ttbar</td><td>4.5657 +/- 0.45512</td><td>4.7007 +/- 0.48752</td></tr>
+<tr><td><b>total background</b></td><td>9.7163 +/- 2.9055</td><td>14.369 +/- 6.456</td></tr>
+<tr><td>WptoqVLQWp1500</td><td>9.785 +/- 0.35281</td><td>14.543 +/- 0.52705</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>18.721 +/- 0.24406</td><td>26.503 +/- 0.34905</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>7.6663 +/- 0.079699</td><td>11.935 +/- 0.12608</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>2.7315 +/- 0.02745</td><td>3.9398 +/- 0.039934</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>0.67865 +/- 0.0069076</td><td>0.91664 +/- 0.0097099</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>0.25799 +/- 0.0029291</td><td>0.37629 +/- 0.0043318</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>0.12646 +/- 0.0017076</td><td>0.1815 +/- 0.0024081</td></tr>
+<tr><td><b>DATA</b></td><td>---</td><td>---</td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div3').toggle()>3. Rate Impact of Systematic Uncertainties</h1><div class="inner" id="div3">
+<p>The table below summarises the impact of an nuisance parameter on the rate prediction of a process.</p>
+    <p>For a nuisance parameter, (gauss) indicates that this nuisance parameter has a gaussian prior, (gamma) that it has a gamma prior.</p>
+    <p>For the individual cells, (r) indicates the 'rate only' part of the uncertainty, (s) indicates the effect on the rate of an uncertainty
+    treated via template morphing (i.e., the <em>rate</em> effect of an uncertainty treated as part of the
+    template morphing; even if this is zero, the shape effect is still taken into account). Note that both effects are applied seperatly, so
+    the total rate change is about the linear sum of these two.<br/>
+    The rate change in 'plus' direction of the uncertainty is written as superscript,
+    the 'minus' direction as subscript.<br/>All numbers are in percent.</p>
+<h2>Observable 'mass_THB_C_2017'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><sup>+3.68</sup><sub>-3.68</sub> (s) </td><td>---</td><td><sup>+8.96</sup><sub>-4.48</sub> (s) </td><td><sup>-0.51</sup><sub>-0.46</sub> (s) </td><td>---</td><td><sup>+6.65</sup><sub>-7.86</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>+0.13</sup><sub>-0.52</sub> (s) </td><td><sup>+14.32</sup><sub>-1.61</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.05</sup><sub>-0.05</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><sup>+3.88</sup><sub>-3.88</sub> (s) </td><td>---</td><td><sup>+9.38</sup><sub>-4.69</sub> (s) </td><td><sup>+0.01</sup><sub>+0.30</sub> (s) </td><td>---</td><td><sup>+1.79</sup><sub>-1.85</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.47</sup><sub>+0.45</sub> (s) </td><td><sup>+18.71</sup><sub>-1.71</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.01</sup><sub>-0.01</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><sup>+4.14</sup><sub>-4.14</sub> (s) </td><td>---</td><td><sup>+12.08</sup><sub>-6.04</sub> (s) </td><td><sup>-0.09</sup><sub>+0.23</sub> (s) </td><td>---</td><td><sup>-0.22</sup><sub>-2.48</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-6.70</sup><sub>+7.40</sub> (s) </td><td><sup>+22.96</sup><sub>-2.07</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><sup>+4.40</sup><sub>-4.40</sub> (s) </td><td>---</td><td><sup>+13.92</sup><sub>-6.96</sub> (s) </td><td><sup>-0.26</sup><sub>+0.14</sub> (s) </td><td>---</td><td><sup>+1.02</sup><sub>-1.07</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.50</sup><sub>+0.47</sub> (s) </td><td><sup>+26.53</sup><sub>-2.44</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><sup>+4.60</sup><sub>-4.60</sub> (s) </td><td>---</td><td><sup>+14.36</sup><sub>-7.18</sub> (s) </td><td><sup>-0.13</sup><sub>+0.14</sub> (s) </td><td>---</td><td><sup>+0.95</sup><sub>-0.89</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.52</sup><sub>+0.52</sub> (s) </td><td><sup>+29.56</sup><sub>-2.52</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><sup>+4.68</sup><sub>-4.68</sub> (s) </td><td>---</td><td><sup>+15.14</sup><sub>-7.57</sub> (s) </td><td><sup>-0.37</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>+0.83</sup><sub>-1.08</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.21</sup><sub>+0.06</sub> (s) </td><td><sup>+32.01</sup><sub>-3.01</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><sup>+4.74</sup><sub>-4.74</sub> (s) </td><td>---</td><td><sup>+15.83</sup><sub>-7.92</sub> (s) </td><td><sup>-0.20</sup><sub>+0.13</sub> (s) </td><td>---</td><td><sup>+0.91</sup><sub>-0.81</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.17</sup><sub>+0.10</sub> (s) </td><td><sup>+33.33</sup><sub>-3.22</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><sup>+3.71</sup><sub>-3.71</sub> (s) </td><td>---</td><td><sup>+9.20</sup><sub>-8.98</sub> (s) </td><td><sup>-3.43</sup><sub>-0.83</sub> (s) </td><td>---</td><td><sup>+2.57</sup><sub>-5.51</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-3.96</sup><sub>+4.42</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.05</sup><sub>-0.05</sub> (s) </td><td>---</td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+<h2>Observable 'mass_THB_C_2018'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td>---</td><td><sup>+3.26</sup><sub>-3.26</sub> (s) </td><td><sup>+6.77</sup><sub>-4.52</sub> (s) </td><td>---</td><td><sup>+0.16</sup><sub>+0.71</sub> (s) </td><td>---</td><td><sup>+20.21</sup><sub>-17.44</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.76</sup><sub>+0.86</sub> (s) </td><td><sup>+14.35</sup><sub>-1.77</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td>---</td><td><sup>+4.32</sup><sub>-4.32</sub> (s) </td><td><sup>+7.05</sup><sub>-4.70</sub> (s) </td><td>---</td><td><sup>-0.20</sup><sub>+0.48</sub> (s) </td><td>---</td><td><sup>+5.85</sup><sub>-6.19</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.16</sup><sub>+0.09</sub> (s) </td><td><sup>+18.81</sup><sub>-1.79</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td>---</td><td><sup>+5.47</sup><sub>-5.47</sub> (s) </td><td><sup>+9.01</sup><sub>-6.01</sub> (s) </td><td>---</td><td><sup>-0.08</sup><sub>+0.22</sub> (s) </td><td>---</td><td><sup>+1.73</sup><sub>-4.62</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-8.36</sup><sub>+9.93</sub> (s) </td><td><sup>+22.95</sup><sub>-2.11</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td>---</td><td><sup>+6.82</sup><sub>-6.82</sub> (s) </td><td><sup>+10.39</sup><sub>-6.93</sub> (s) </td><td>---</td><td><sup>-0.13</sup><sub>+0.09</sub> (s) </td><td>---</td><td><sup>+2.89</sup><sub>-2.65</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.01</sup><sub>+1.70</sub> (s) </td><td><sup>+26.49</sup><sub>-2.50</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td>---</td><td><sup>+7.83</sup><sub>-7.83</sub> (s) </td><td><sup>+10.72</sup><sub>-7.15</sub> (s) </td><td>---</td><td><sup>-0.24</sup><sub>+0.25</sub> (s) </td><td>---</td><td><sup>+3.17</sup><sub>-3.58</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.17</sup><sub>+0.06</sub> (s) </td><td><sup>+29.59</sup><sub>-2.53</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td>---</td><td><sup>+8.23</sup><sub>-8.23</sub> (s) </td><td><sup>+11.45</sup><sub>-7.63</sub> (s) </td><td>---</td><td><sup>-0.16</sup><sub>+0.21</sub> (s) </td><td>---</td><td><sup>+2.37</sup><sub>-2.87</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.94</sup><sub>+1.59</sub> (s) </td><td><sup>+32.04</sup><sub>-2.93</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td>---</td><td><sup>+8.54</sup><sub>-8.54</sub> (s) </td><td><sup>+12.01</sup><sub>-8.01</sub> (s) </td><td>---</td><td><sup>-0.03</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>+2.19</sup><sub>-2.89</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.05</sup><sub>+1.56</sub> (s) </td><td><sup>+33.31</sup><sub>-2.92</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td>---</td><td><sup>+3.52</sup><sub>-3.52</sub> (s) </td><td><sup>+9.20</sup><sub>-8.98</sub> (s) </td><td>---</td><td><sup>+1.30</sup><sub>+0.36</sub> (s) </td><td>---</td><td><sup>+12.56</sup><sub>-17.62</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>+4.76</sup><sub>-4.82</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div4').toggle()>4. Nuisance Parameter Priors</h1><div class="inner" id="div4">
+
+    <p>The priors for the nuisance parameters are either Gaussian or gamma distributions. As limit cases, these can have with=0 or width=inf
+    which makes them delta or flat distributions, respectively.</p>
+    <div class="inner"><h3>Prior Parameters</h3>
+<table cellpadding="2" border="1">
+<tr><th>parameter</th><th>distribution type</th><th>distribution parameters</th></tr>
+<tr><td>btag2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jes2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>btag2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>bkg</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>pu</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>htag</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jes2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>topsf</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>q2</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>lumi</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>nonclosure</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>ttbar_xsec</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+</table>
+
+</div>
+    </div>
+</div>
+<h1 onclick=$('div5').toggle()>5. Basic Model Plots</h1><div class="inner" id="div5">
+<h2>Stackplots</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Color Code:</p><ul>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp1500</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2000</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2500</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3000</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3500</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4000</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4500</li>
+<li><span style="background: #edd400;">&nbsp;&nbsp;&nbsp;</span> qcd</li>
+<li><span style="background: #f57900;">&nbsp;&nbsp;&nbsp;</span> ttbar</li>
+</ul>
+<p>Observable 'mass_THB_C_2017':<br /><img src="plots/mass_THB_C_2017_stack.png" /></p>
+<p>Observable 'mass_THB_C_2018':<br /><img src="plots/mass_THB_C_2018_stack.png" /></p>
+<h2>All 'nominal' Templates</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Observable "mass_THB_C_2017", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_C_2017_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_C_2017_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_C_2017_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_C_2017_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_C_2017_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_C_2017_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_C_2017_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "qcd":<br/><img src="plots/mass_THB_C_2017_qcd.png"/></p>
+<p>Observable "mass_THB_C_2017", Process "ttbar":<br/><img src="plots/mass_THB_C_2017_ttbar.png"/></p>
+<p>Observable "mass_THB_C_2017", all signals: <br/><img src="plots/mass_THB_C_2017_signals.png"/></p>
+<p>Observable "mass_THB_C_2017", signal normalization: <br/><img src="plots/mass_THB_C_2017_norm_vs_signals.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_C_2018_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_C_2018_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_C_2018_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_C_2018_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_C_2018_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_C_2018_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_C_2018_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "qcd":<br/><img src="plots/mass_THB_C_2018_qcd.png"/></p>
+<p>Observable "mass_THB_C_2018", Process "ttbar":<br/><img src="plots/mass_THB_C_2018_ttbar.png"/></p>
+<p>Observable "mass_THB_C_2018", all signals: <br/><img src="plots/mass_THB_C_2018_signals.png"/></p>
+<p>Observable "mass_THB_C_2018", signal normalization: <br/><img src="plots/mass_THB_C_2018_norm_vs_signals.png"/></p>
+<h2>Shape Uncertainty Plots</h2>
+<p>Color Code:</p><ul>
+<li><span style="background: #333333;">&nbsp;&nbsp;&nbsp;</span> nominal</li><li><span style="background: #aa3333;">&nbsp;&nbsp;&nbsp;</span> plus</li><li><span style="background: #3333aa;">&nbsp;&nbsp;&nbsp;</span> minus</li>
+</ul>
+<p>Processes not appearing in the tables do not have any shape uncertainty for this observable.</p>
+<p>Click on an image to enlarge. If you have javascript, the image will be displayed on this page and you can click through all shape uncertainties of that observable                    (instead of clicking, you can also use the left/right key on the keyboard).</p>
+<h3>Observable 'mass_THB_C_2017'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2017</th><th>htag</th><th>jer2017</th><th>jes2017</th><th>pu</th><th>q2</th><th>trig2017</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp1500__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp1500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp1500__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp1500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp1500__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp1500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp1500__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp1500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2000__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2000__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2000__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2000__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2500__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2500__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2500__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp2500__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp2500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3000__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3000__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3000__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3000__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3500__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3500__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3500__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp3500__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp3500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4000__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4000__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4000__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4000__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4500__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4500__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4500__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__WptoqVLQWp4500__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__WptoqVLQWp4500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_C_2017__qcd__bkg.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_C_2017__ttbar__btag2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__ttbar__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__ttbar__htag.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__ttbar__jer2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__ttbar__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__ttbar__jes2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__ttbar__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__ttbar__pu.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__ttbar__q2.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2017__ttbar__trig2017.png" rel="lightbox[mass_THB_C_2017]"><img src="plots/mass_THB_C_2017__ttbar__trig2017.png" width="200"/></a></td></tr>
+</table>
+
+<h3>Observable 'mass_THB_C_2018'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2018</th><th>htag</th><th>jer2018</th><th>jes2018</th><th>pu</th><th>q2</th><th>trig2018</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp1500__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp1500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp1500__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp1500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp1500__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp1500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp1500__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp1500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2000__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2000__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2000__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2000__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2500__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2500__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2500__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp2500__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp2500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3000__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3000__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3000__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3000__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3500__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3500__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3500__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp3500__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp3500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4000__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4000__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4000__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4000__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4500__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4500__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4500__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__WptoqVLQWp4500__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__WptoqVLQWp4500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_C_2018__qcd__bkg.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_C_2018__ttbar__btag2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__ttbar__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__ttbar__htag.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__ttbar__jer2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__ttbar__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__ttbar__jes2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__ttbar__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__ttbar__pu.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__ttbar__q2.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_C_2018__ttbar__trig2018.png" rel="lightbox[mass_THB_C_2018]"><img src="plots/mass_THB_C_2018__ttbar__trig2018.png" width="200"/></a></td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div6').toggle()>6. Limits Asymptotic CLs</h1><div class="inner" id="div6">
+<p><table cellpadding="2" border="1">
+<tr><th>signal process</th><th>expected limit</th><th>expected limit (central 1sigma)</th><th>expected limit (central 2sigma)</th></tr>
+<tr><td>1500</td><td>0.692</td><td>0.481--1.02</td><td>0.355--1.47</td></tr>
+<tr><td>2000</td><td>0.372</td><td>0.256--0.552</td><td>0.186--0.792</td></tr>
+<tr><td>2500</td><td>0.361</td><td>0.237--0.57</td><td>0.168--0.881</td></tr>
+<tr><td>3000</td><td>1.12</td><td>0.745--1.73</td><td>0.532--2.6</td></tr>
+<tr><td>3500</td><td>3.47</td><td>2.22--5.64</td><td>1.54--8.89</td></tr>
+<tr><td>4000</td><td>6.98</td><td>4.31--11.7</td><td>2.87--18.8</td></tr>
+<tr><td>4500</td><td>9.3</td><td>4.94--17.6</td><td>2.84--30.8</td></tr>
+</table>
+</p>
+<p><p><img src="plots/limit_band_plot-acls.png" /></p></p>
+<p><p><img src="plots/limit_band_plot-log-acls.png" /></p></p>
+
+</div>
+<h1 onclick=$('div7').toggle()>7. General Model Info</h1><div class="inner" id="div7">
+<p>Observables (xmin, xmax, nbins):</p>
+<ul>
+<li>mass_THB_CFT1_2017 (0, 8000, 8)</li>
+<li>mass_THB_CFT1_2018 (0, 8000, 8)</li>
+</ul>
+<p>Background processes:</p>
+<ul>
+<li>qcd</li>
+<li>ttbar</li>
+</ul>
+<p>Signal processes:</p><ul>
+<li>WptoqVLQWp1500</li>
+<li>WptoqVLQWp2000</li>
+<li>WptoqVLQWp2500</li>
+<li>WptoqVLQWp3000</li>
+<li>WptoqVLQWp3500</li>
+<li>WptoqVLQWp4000</li>
+<li>WptoqVLQWp4500</li>
+</ul>
+<p>Nuisance parameters (includes only those which apply to the background-only model):</p>
+<ul>
+<li>bkg (morph only)</li>
+<li>btag2017 (morph only)</li>
+<li>btag2018 (morph only)</li>
+<li>htag (morph only)</li>
+<li>jer2017 (morph only)</li>
+<li>jer2018 (morph only)</li>
+<li>jes2017 (morph only)</li>
+<li>jes2018 (morph only)</li>
+<li>lumi (rate only)</li>
+<li>nonclosure (rate only)</li>
+<li>pu (morph only)</li>
+<li>q2 (morph only)</li>
+<li>topsf (rate only)</li>
+<li>trig2017 (morph only)</li>
+<li>trig2018 (morph only)</li>
+<li>ttbar_xsec (rate only)</li>
+</ul>
+
+</div>
+<h1 onclick=$('div8').toggle()>8. Rate Summary</h1><div class="inner" id="div8">
+<p>Rates for all observables and processes as given by the 'nominal' templates. If errors are given, they are MC stat. uncertainties.</p>
+<table cellpadding="2" border="1">
+<tr><th>process / observable</th><th>mass_THB_CFT1_2017</th><th>mass_THB_CFT1_2018</th></tr>
+<tr><td>qcd</td><td>9.1 +/- 4.3942</td><td>9.9031 +/- 6.4418</td></tr>
+<tr><td>ttbar</td><td>5.1458 +/- 0.50726</td><td>5.6803 +/- 0.56767</td></tr>
+<tr><td><b>total background</b></td><td>14.246 +/- 4.4234</td><td>15.583 +/- 6.4668</td></tr>
+<tr><td>WptoqVLQWp1500</td><td>11.331 +/- 0.40022</td><td>17.261 +/- 0.60799</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>22.021 +/- 0.27901</td><td>31.491 +/- 0.40343</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>8.9971 +/- 0.091031</td><td>14.16 +/- 0.14563</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>3.1989 +/- 0.031318</td><td>4.6675 +/- 0.046036</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>0.79315 +/- 0.0078691</td><td>1.09 +/- 0.011208</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>0.30094 +/- 0.003333</td><td>0.4433 +/- 0.0049829</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>0.14849 +/- 0.0019523</td><td>0.21566 +/- 0.0027819</td></tr>
+<tr><td><b>DATA</b></td><td>---</td><td>---</td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div9').toggle()>9. Rate Impact of Systematic Uncertainties</h1><div class="inner" id="div9">
+<p>The table below summarises the impact of an nuisance parameter on the rate prediction of a process.</p>
+    <p>For a nuisance parameter, (gauss) indicates that this nuisance parameter has a gaussian prior, (gamma) that it has a gamma prior.</p>
+    <p>For the individual cells, (r) indicates the 'rate only' part of the uncertainty, (s) indicates the effect on the rate of an uncertainty
+    treated via template morphing (i.e., the <em>rate</em> effect of an uncertainty treated as part of the
+    template morphing; even if this is zero, the shape effect is still taken into account). Note that both effects are applied seperatly, so
+    the total rate change is about the linear sum of these two.<br/>
+    The rate change in 'plus' direction of the uncertainty is written as superscript,
+    the 'minus' direction as subscript.<br/>All numbers are in percent.</p>
+<h2>Observable 'mass_THB_CFT1_2017'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><sup>+3.68</sup><sub>-3.68</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.36</sup><sub>-0.33</sub> (s) </td><td>---</td><td><sup>+6.96</sup><sub>-7.78</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.10</sup><sub>-0.25</sub> (s) </td><td><sup>+14.31</sup><sub>-1.59</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.06</sup><sub>-0.06</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><sup>+3.88</sup><sub>-3.88</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.06</sup><sub>+0.37</sub> (s) </td><td>---</td><td><sup>+1.77</sup><sub>-1.84</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.47</sup><sub>+0.42</sub> (s) </td><td><sup>+18.72</sup><sub>-1.70</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.01</sup><sub>-0.01</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><sup>+4.13</sup><sub>-4.13</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.07</sup><sub>+0.25</sub> (s) </td><td>---</td><td><sup>-0.19</sup><sub>-2.46</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-6.71</sup><sub>+7.39</sub> (s) </td><td><sup>+22.96</sup><sub>-2.08</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><sup>+4.40</sup><sub>-4.40</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.23</sup><sub>+0.12</sub> (s) </td><td>---</td><td><sup>+0.99</sup><sub>-1.10</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.49</sup><sub>+0.43</sub> (s) </td><td><sup>+26.56</sup><sub>-2.45</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><sup>+4.60</sup><sub>-4.60</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.19</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>+0.95</sup><sub>-0.94</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.55</sup><sub>+0.57</sub> (s) </td><td><sup>+29.58</sup><sub>-2.48</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><sup>+4.68</sup><sub>-4.68</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.36</sup><sub>+0.13</sub> (s) </td><td>---</td><td><sup>+0.81</sup><sub>-1.03</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.16</sup><sub>+0.02</sub> (s) </td><td><sup>+32.07</sup><sub>-2.97</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><sup>+4.74</sup><sub>-4.74</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.25</sup><sub>+0.13</sub> (s) </td><td>---</td><td><sup>+0.89</sup><sub>-0.87</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.08</sup><sub>+0.01</sub> (s) </td><td><sup>+33.28</sup><sub>-3.20</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><sup>+3.71</sup><sub>-3.71</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-2.90</sup><sub>-0.81</sub> (s) </td><td>---</td><td><sup>+2.31</sup><sub>-5.46</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-3.84</sup><sub>+4.26</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+<h2>Observable 'mass_THB_CFT1_2018'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td>---</td><td><sup>+3.25</sup><sub>-3.25</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>+0.15</sup><sub>+0.46</sub> (s) </td><td>---</td><td><sup>+19.83</sup><sub>-17.23</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.70</sup><sub>+0.84</sub> (s) </td><td><sup>+14.28</sup><sub>-1.79</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td>---</td><td><sup>+4.31</sup><sub>-4.31</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.23</sup><sub>+0.45</sub> (s) </td><td>---</td><td><sup>+5.80</sup><sub>-6.31</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.22</sup><sub>+0.15</sub> (s) </td><td><sup>+18.80</sup><sub>-1.77</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td>---</td><td><sup>+5.46</sup><sub>-5.46</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.07</sup><sub>+0.24</sub> (s) </td><td>---</td><td><sup>+1.78</sup><sub>-4.65</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-8.34</sup><sub>+9.92</sub> (s) </td><td><sup>+22.96</sup><sub>-2.14</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td>---</td><td><sup>+6.81</sup><sub>-6.81</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.14</sup><sub>+0.08</sub> (s) </td><td>---</td><td><sup>+2.91</sup><sub>-2.63</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.98</sup><sub>+1.67</sub> (s) </td><td><sup>+26.51</sup><sub>-2.48</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td>---</td><td><sup>+7.82</sup><sub>-7.82</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.26</sup><sub>+0.23</sub> (s) </td><td>---</td><td><sup>+3.15</sup><sub>-3.53</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.16</sup><sub>+0.07</sub> (s) </td><td><sup>+29.58</sup><sub>-2.52</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td>---</td><td><sup>+8.21</sup><sub>-8.21</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.19</sup><sub>+0.19</sub> (s) </td><td>---</td><td><sup>+2.37</sup><sub>-2.85</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.94</sup><sub>+1.61</sub> (s) </td><td><sup>+32.05</sup><sub>-2.94</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td>---</td><td><sup>+8.54</sup><sub>-8.54</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.04</sup><sub>+0.14</sub> (s) </td><td>---</td><td><sup>+2.24</sup><sub>-2.92</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.00</sup><sub>+1.49</sub> (s) </td><td><sup>+33.31</sup><sub>-2.87</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td>---</td><td><sup>+3.40</sup><sub>-3.40</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>+1.19</sup><sub>+1.07</sub> (s) </td><td>---</td><td><sup>+11.52</sup><sub>-16.16</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>+5.55</sup><sub>-5.46</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div10').toggle()>10. Nuisance Parameter Priors</h1><div class="inner" id="div10">
+
+    <p>The priors for the nuisance parameters are either Gaussian or gamma distributions. As limit cases, these can have with=0 or width=inf
+    which makes them delta or flat distributions, respectively.</p>
+    <div class="inner"><h3>Prior Parameters</h3>
+<table cellpadding="2" border="1">
+<tr><th>parameter</th><th>distribution type</th><th>distribution parameters</th></tr>
+<tr><td>jes2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>btag2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>q2</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>pu</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>htag</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>btag2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>topsf</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>bkg</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>lumi</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jes2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>nonclosure</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>ttbar_xsec</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+</table>
+
+</div>
+    </div>
+</div>
+<h1 onclick=$('div11').toggle()>11. Basic Model Plots</h1><div class="inner" id="div11">
+<h2>Stackplots</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Color Code:</p><ul>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp1500</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2000</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2500</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3000</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3500</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4000</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4500</li>
+<li><span style="background: #edd400;">&nbsp;&nbsp;&nbsp;</span> qcd</li>
+<li><span style="background: #f57900;">&nbsp;&nbsp;&nbsp;</span> ttbar</li>
+</ul>
+<p>Observable 'mass_THB_CFT1_2017':<br /><img src="plots/mass_THB_CFT1_2017_stack.png" /></p>
+<p>Observable 'mass_THB_CFT1_2018':<br /><img src="plots/mass_THB_CFT1_2018_stack.png" /></p>
+<h2>All 'nominal' Templates</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Observable "mass_THB_CFT1_2017", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_CFT1_2017_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_CFT1_2017_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_CFT1_2017_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_CFT1_2017_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_CFT1_2017_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_CFT1_2017_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_CFT1_2017_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "qcd":<br/><img src="plots/mass_THB_CFT1_2017_qcd.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", Process "ttbar":<br/><img src="plots/mass_THB_CFT1_2017_ttbar.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", all signals: <br/><img src="plots/mass_THB_CFT1_2017_signals.png"/></p>
+<p>Observable "mass_THB_CFT1_2017", signal normalization: <br/><img src="plots/mass_THB_CFT1_2017_norm_vs_signals.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_CFT1_2018_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_CFT1_2018_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_CFT1_2018_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_CFT1_2018_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_CFT1_2018_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_CFT1_2018_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_CFT1_2018_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "qcd":<br/><img src="plots/mass_THB_CFT1_2018_qcd.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", Process "ttbar":<br/><img src="plots/mass_THB_CFT1_2018_ttbar.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", all signals: <br/><img src="plots/mass_THB_CFT1_2018_signals.png"/></p>
+<p>Observable "mass_THB_CFT1_2018", signal normalization: <br/><img src="plots/mass_THB_CFT1_2018_norm_vs_signals.png"/></p>
+<h2>Shape Uncertainty Plots</h2>
+<p>Color Code:</p><ul>
+<li><span style="background: #333333;">&nbsp;&nbsp;&nbsp;</span> nominal</li><li><span style="background: #aa3333;">&nbsp;&nbsp;&nbsp;</span> plus</li><li><span style="background: #3333aa;">&nbsp;&nbsp;&nbsp;</span> minus</li>
+</ul>
+<p>Processes not appearing in the tables do not have any shape uncertainty for this observable.</p>
+<p>Click on an image to enlarge. If you have javascript, the image will be displayed on this page and you can click through all shape uncertainties of that observable                    (instead of clicking, you can also use the left/right key on the keyboard).</p>
+<h3>Observable 'mass_THB_CFT1_2017'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2017</th><th>htag</th><th>jer2017</th><th>jes2017</th><th>pu</th><th>q2</th><th>trig2017</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp1500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp2500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp3500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__WptoqVLQWp4500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_CFT1_2017__qcd__bkg.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_CFT1_2017__ttbar__btag2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__ttbar__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__ttbar__htag.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__ttbar__jer2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__ttbar__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__ttbar__jes2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__ttbar__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__ttbar__pu.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__ttbar__q2.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2017__ttbar__trig2017.png" rel="lightbox[mass_THB_CFT1_2017]"><img src="plots/mass_THB_CFT1_2017__ttbar__trig2017.png" width="200"/></a></td></tr>
+</table>
+
+<h3>Observable 'mass_THB_CFT1_2018'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2018</th><th>htag</th><th>jer2018</th><th>jes2018</th><th>pu</th><th>q2</th><th>trig2018</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp1500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp2500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp3500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__WptoqVLQWp4500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_CFT1_2018__qcd__bkg.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_CFT1_2018__ttbar__btag2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__ttbar__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__ttbar__htag.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__ttbar__jer2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__ttbar__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__ttbar__jes2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__ttbar__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__ttbar__pu.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__ttbar__q2.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT1_2018__ttbar__trig2018.png" rel="lightbox[mass_THB_CFT1_2018]"><img src="plots/mass_THB_CFT1_2018__ttbar__trig2018.png" width="200"/></a></td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div12').toggle()>12. Limits Asymptotic CLs</h1><div class="inner" id="div12">
+<p><table cellpadding="2" border="1">
+<tr><th>signal process</th><th>expected limit</th><th>expected limit (central 1sigma)</th><th>expected limit (central 2sigma)</th></tr>
+<tr><td>1500</td><td>0.701</td><td>0.491--1.02</td><td>0.364--1.46</td></tr>
+<tr><td>2000</td><td>0.36</td><td>0.249--0.529</td><td>0.182--0.752</td></tr>
+<tr><td>2500</td><td>0.322</td><td>0.214--0.502</td><td>0.153--0.764</td></tr>
+<tr><td>3000</td><td>1</td><td>0.675--1.53</td><td>0.486--2.27</td></tr>
+<tr><td>3500</td><td>3.15</td><td>2.05--5.02</td><td>1.44--7.76</td></tr>
+<tr><td>4000</td><td>6.3</td><td>3.93--10.3</td><td>2.64--16.3</td></tr>
+<tr><td>4500</td><td>7.91</td><td>4.21--14.9</td><td>2.43--25.8</td></tr>
+</table>
+</p>
+<p><p><img src="plots/limit_band_plot-acls.png" /></p></p>
+<p><p><img src="plots/limit_band_plot-log-acls.png" /></p></p>
+
+</div>
+<h1 onclick=$('div13').toggle()>13. General Model Info</h1><div class="inner" id="div13">
+<p>Observables (xmin, xmax, nbins):</p>
+<ul>
+<li>mass_THB_CFT2_2017 (0, 8000, 8)</li>
+<li>mass_THB_CFT2_2018 (0, 8000, 8)</li>
+</ul>
+<p>Background processes:</p>
+<ul>
+<li>qcd</li>
+<li>ttbar</li>
+</ul>
+<p>Signal processes:</p><ul>
+<li>WptoqVLQWp1500</li>
+<li>WptoqVLQWp2000</li>
+<li>WptoqVLQWp2500</li>
+<li>WptoqVLQWp3000</li>
+<li>WptoqVLQWp3500</li>
+<li>WptoqVLQWp4000</li>
+<li>WptoqVLQWp4500</li>
+</ul>
+<p>Nuisance parameters (includes only those which apply to the background-only model):</p>
+<ul>
+<li>bkg (morph only)</li>
+<li>btag2017 (morph only)</li>
+<li>btag2018 (morph only)</li>
+<li>htag (morph only)</li>
+<li>jer2017 (morph only)</li>
+<li>jer2018 (morph only)</li>
+<li>jes2017 (morph only)</li>
+<li>jes2018 (morph only)</li>
+<li>lumi (rate only)</li>
+<li>nonclosure (rate only)</li>
+<li>pu (morph only)</li>
+<li>q2 (morph only)</li>
+<li>topsf (rate only)</li>
+<li>trig2017 (morph only)</li>
+<li>trig2018 (morph only)</li>
+<li>ttbar_xsec (rate only)</li>
+</ul>
+
+</div>
+<h1 onclick=$('div14').toggle()>14. Rate Summary</h1><div class="inner" id="div14">
+<p>Rates for all observables and processes as given by the 'nominal' templates. If errors are given, they are MC stat. uncertainties.</p>
+<table cellpadding="2" border="1">
+<tr><th>process / observable</th><th>mass_THB_CFT2_2017</th><th>mass_THB_CFT2_2018</th></tr>
+<tr><td>qcd</td><td>5.1506 +/- 2.8696</td><td>2.2792 +/- 1.0392</td></tr>
+<tr><td>ttbar</td><td>4.521 +/- 0.47599</td><td>4.8077 +/- 0.51698</td></tr>
+<tr><td><b>total background</b></td><td>9.6716 +/- 2.9088</td><td>7.087 +/- 1.1607</td></tr>
+<tr><td>WptoqVLQWp1500</td><td>9.8009 +/- 0.37227</td><td>14.769 +/- 0.55912</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>19.18 +/- 0.26032</td><td>27.179 +/- 0.37493</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>7.776 +/- 0.084651</td><td>12.254 +/- 0.13546</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>2.7792 +/- 0.029158</td><td>4.0884 +/- 0.043067</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>0.69194 +/- 0.0073612</td><td>0.94845 +/- 0.010467</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>0.26384 +/- 0.0031325</td><td>0.38741 +/- 0.0046645</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>0.12874 +/- 0.0018216</td><td>0.18676 +/- 0.0025878</td></tr>
+<tr><td><b>DATA</b></td><td>---</td><td>---</td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div15').toggle()>15. Rate Impact of Systematic Uncertainties</h1><div class="inner" id="div15">
+<p>The table below summarises the impact of an nuisance parameter on the rate prediction of a process.</p>
+    <p>For a nuisance parameter, (gauss) indicates that this nuisance parameter has a gaussian prior, (gamma) that it has a gamma prior.</p>
+    <p>For the individual cells, (r) indicates the 'rate only' part of the uncertainty, (s) indicates the effect on the rate of an uncertainty
+    treated via template morphing (i.e., the <em>rate</em> effect of an uncertainty treated as part of the
+    template morphing; even if this is zero, the shape effect is still taken into account). Note that both effects are applied seperatly, so
+    the total rate change is about the linear sum of these two.<br/>
+    The rate change in 'plus' direction of the uncertainty is written as superscript,
+    the 'minus' direction as subscript.<br/>All numbers are in percent.</p>
+<h2>Observable 'mass_THB_CFT2_2017'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><sup>+3.68</sup><sub>-3.68</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.62</sup><sub>-0.86</sub> (s) </td><td>---</td><td><sup>+6.26</sup><sub>-8.20</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.04</sup><sub>-0.25</sub> (s) </td><td><sup>+14.38</sup><sub>-1.65</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.07</sup><sub>-0.07</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><sup>+3.88</sup><sub>-3.88</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.03</sup><sub>+0.19</sub> (s) </td><td>---</td><td><sup>+1.74</sup><sub>-1.84</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.43</sup><sub>+0.45</sub> (s) </td><td><sup>+18.70</sup><sub>-1.74</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><sup>+4.14</sup><sub>-4.14</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.11</sup><sub>+0.14</sub> (s) </td><td>---</td><td><sup>-0.26</sup><sub>-2.43</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-6.71</sup><sub>+7.40</sub> (s) </td><td><sup>+22.92</sup><sub>-2.06</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><sup>+4.40</sup><sub>-4.40</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.26</sup><sub>+0.13</sub> (s) </td><td>---</td><td><sup>+1.00</sup><sub>-1.11</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.51</sup><sub>+0.48</sub> (s) </td><td><sup>+26.53</sup><sub>-2.43</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><sup>+4.60</sup><sub>-4.60</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.11</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>+0.96</sup><sub>-0.88</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.60</sup><sub>+0.60</sub> (s) </td><td><sup>+29.56</sup><sub>-2.48</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><sup>+4.68</sup><sub>-4.68</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.39</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>+0.78</sup><sub>-1.12</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.23</sup><sub>+0.01</sub> (s) </td><td><sup>+31.95</sup><sub>-2.94</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><sup>+4.74</sup><sub>-4.74</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.23</sup><sub>+0.21</sub> (s) </td><td>---</td><td><sup>+0.87</sup><sub>-0.82</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.21</sup><sub>+0.09</sub> (s) </td><td><sup>+33.27</sup><sub>-3.22</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><sup>+3.67</sup><sub>-3.67</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-3.94</sup><sub>-1.01</sub> (s) </td><td>---</td><td><sup>+2.78</sup><sub>-5.43</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-3.63</sup><sub>+4.04</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+<h2>Observable 'mass_THB_CFT2_2018'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td>---</td><td><sup>+3.26</sup><sub>-3.26</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.22</sup><sub>+0.69</sub> (s) </td><td>---</td><td><sup>+20.10</sup><sub>-17.70</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.05</sup><sub>+1.10</sub> (s) </td><td><sup>+14.38</sup><sub>-1.66</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td>---</td><td><sup>+4.32</sup><sub>-4.32</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.20</sup><sub>+0.47</sub> (s) </td><td>---</td><td><sup>+5.83</sup><sub>-6.05</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.23</sup><sub>+0.16</sub> (s) </td><td><sup>+18.80</sup><sub>-1.71</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td>---</td><td><sup>+5.49</sup><sub>-5.49</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.10</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>+1.64</sup><sub>-4.49</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-8.38</sup><sub>+9.94</sub> (s) </td><td><sup>+22.92</sup><sub>-2.10</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td>---</td><td><sup>+6.83</sup><sub>-6.83</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.14</sup><sub>+0.07</sub> (s) </td><td>---</td><td><sup>+2.85</sup><sub>-2.64</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.07</sup><sub>+1.75</sub> (s) </td><td><sup>+26.46</sup><sub>-2.50</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td>---</td><td><sup>+7.84</sup><sub>-7.84</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.28</sup><sub>+0.24</sub> (s) </td><td>---</td><td><sup>+3.03</sup><sub>-3.56</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.15</sup><sub>+0.03</sub> (s) </td><td><sup>+29.60</sup><sub>-2.52</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td>---</td><td><sup>+8.24</sup><sub>-8.24</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.17</sup><sub>+0.21</sub> (s) </td><td>---</td><td><sup>+2.36</sup><sub>-2.94</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.80</sup><sub>+1.44</sub> (s) </td><td><sup>+31.98</sup><sub>-2.87</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td>---</td><td><sup>+8.55</sup><sub>-8.55</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.01</sup><sub>+0.20</sub> (s) </td><td>---</td><td><sup>+2.17</sup><sub>-2.95</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.05</sup><sub>+1.56</sub> (s) </td><td><sup>+33.31</sup><sub>-2.91</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td>---</td><td><sup>+3.41</sup><sub>-3.41</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>+1.41</sup><sub>-0.58</sub> (s) </td><td>---</td><td><sup>+10.62</sup><sub>-16.31</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>+4.44</sup><sub>-4.45</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div16').toggle()>16. Nuisance Parameter Priors</h1><div class="inner" id="div16">
+
+    <p>The priors for the nuisance parameters are either Gaussian or gamma distributions. As limit cases, these can have with=0 or width=inf
+    which makes them delta or flat distributions, respectively.</p>
+    <div class="inner"><h3>Prior Parameters</h3>
+<table cellpadding="2" border="1">
+<tr><th>parameter</th><th>distribution type</th><th>distribution parameters</th></tr>
+<tr><td>btag2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jes2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>q2</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>pu</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>htag</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>btag2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>topsf</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>bkg</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>lumi</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jes2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>nonclosure</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>ttbar_xsec</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+</table>
+
+</div>
+    </div>
+</div>
+<h1 onclick=$('div17').toggle()>17. Basic Model Plots</h1><div class="inner" id="div17">
+<h2>Stackplots</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Color Code:</p><ul>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp1500</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2000</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2500</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3000</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3500</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4000</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4500</li>
+<li><span style="background: #edd400;">&nbsp;&nbsp;&nbsp;</span> qcd</li>
+<li><span style="background: #f57900;">&nbsp;&nbsp;&nbsp;</span> ttbar</li>
+</ul>
+<p>Observable 'mass_THB_CFT2_2017':<br /><img src="plots/mass_THB_CFT2_2017_stack.png" /></p>
+<p>Observable 'mass_THB_CFT2_2018':<br /><img src="plots/mass_THB_CFT2_2018_stack.png" /></p>
+<h2>All 'nominal' Templates</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Observable "mass_THB_CFT2_2017", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_CFT2_2017_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_CFT2_2017_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_CFT2_2017_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_CFT2_2017_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_CFT2_2017_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_CFT2_2017_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_CFT2_2017_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "qcd":<br/><img src="plots/mass_THB_CFT2_2017_qcd.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", Process "ttbar":<br/><img src="plots/mass_THB_CFT2_2017_ttbar.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", all signals: <br/><img src="plots/mass_THB_CFT2_2017_signals.png"/></p>
+<p>Observable "mass_THB_CFT2_2017", signal normalization: <br/><img src="plots/mass_THB_CFT2_2017_norm_vs_signals.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_CFT2_2018_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_CFT2_2018_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_CFT2_2018_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_CFT2_2018_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_CFT2_2018_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_CFT2_2018_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_CFT2_2018_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "qcd":<br/><img src="plots/mass_THB_CFT2_2018_qcd.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", Process "ttbar":<br/><img src="plots/mass_THB_CFT2_2018_ttbar.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", all signals: <br/><img src="plots/mass_THB_CFT2_2018_signals.png"/></p>
+<p>Observable "mass_THB_CFT2_2018", signal normalization: <br/><img src="plots/mass_THB_CFT2_2018_norm_vs_signals.png"/></p>
+<h2>Shape Uncertainty Plots</h2>
+<p>Color Code:</p><ul>
+<li><span style="background: #333333;">&nbsp;&nbsp;&nbsp;</span> nominal</li><li><span style="background: #aa3333;">&nbsp;&nbsp;&nbsp;</span> plus</li><li><span style="background: #3333aa;">&nbsp;&nbsp;&nbsp;</span> minus</li>
+</ul>
+<p>Processes not appearing in the tables do not have any shape uncertainty for this observable.</p>
+<p>Click on an image to enlarge. If you have javascript, the image will be displayed on this page and you can click through all shape uncertainties of that observable                    (instead of clicking, you can also use the left/right key on the keyboard).</p>
+<h3>Observable 'mass_THB_CFT2_2017'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2017</th><th>htag</th><th>jer2017</th><th>jes2017</th><th>pu</th><th>q2</th><th>trig2017</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp1500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp2500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp3500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__WptoqVLQWp4500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_CFT2_2017__qcd__bkg.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_CFT2_2017__ttbar__btag2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__ttbar__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__ttbar__htag.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__ttbar__jer2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__ttbar__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__ttbar__jes2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__ttbar__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__ttbar__pu.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__ttbar__q2.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2017__ttbar__trig2017.png" rel="lightbox[mass_THB_CFT2_2017]"><img src="plots/mass_THB_CFT2_2017__ttbar__trig2017.png" width="200"/></a></td></tr>
+</table>
+
+<h3>Observable 'mass_THB_CFT2_2018'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2018</th><th>htag</th><th>jer2018</th><th>jes2018</th><th>pu</th><th>q2</th><th>trig2018</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp1500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp2500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp3500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__WptoqVLQWp4500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_CFT2_2018__qcd__bkg.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_CFT2_2018__ttbar__btag2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__ttbar__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__ttbar__htag.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__ttbar__jer2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__ttbar__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__ttbar__jes2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__ttbar__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__ttbar__pu.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__ttbar__q2.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT2_2018__ttbar__trig2018.png" rel="lightbox[mass_THB_CFT2_2018]"><img src="plots/mass_THB_CFT2_2018__ttbar__trig2018.png" width="200"/></a></td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div18').toggle()>18. Limits Asymptotic CLs</h1><div class="inner" id="div18">
+<p><table cellpadding="2" border="1">
+<tr><th>signal process</th><th>expected limit</th><th>expected limit (central 1sigma)</th><th>expected limit (central 2sigma)</th></tr>
+<tr><td>1500</td><td>0.384</td><td>0.256--0.596</td><td>0.183--0.909</td></tr>
+<tr><td>2000</td><td>0.226</td><td>0.154--0.339</td><td>0.112--0.494</td></tr>
+<tr><td>2500</td><td>0.34</td><td>0.225--0.533</td><td>0.159--0.815</td></tr>
+<tr><td>3000</td><td>1.02</td><td>0.685--1.58</td><td>0.49--2.36</td></tr>
+<tr><td>3500</td><td>2.94</td><td>1.86--4.82</td><td>1.28--7.65</td></tr>
+<tr><td>4000</td><td>5.99</td><td>3.68--10.1</td><td>2.44--16.3</td></tr>
+<tr><td>4500</td><td>8.7</td><td>4.66--16.3</td><td>2.7--28.1</td></tr>
+</table>
+</p>
+<p><p><img src="plots/limit_band_plot-acls.png" /></p></p>
+<p><p><img src="plots/limit_band_plot-log-acls.png" /></p></p>
+
+</div>
+<h1 onclick=$('div19').toggle()>19. General Model Info</h1><div class="inner" id="div19">
+<p>Observables (xmin, xmax, nbins):</p>
+<ul>
+<li>mass_THB_CFT3_2017 (0, 8000, 8)</li>
+<li>mass_THB_CFT3_2018 (0, 8000, 8)</li>
+</ul>
+<p>Background processes:</p>
+<ul>
+<li>qcd</li>
+<li>ttbar</li>
+</ul>
+<p>Signal processes:</p><ul>
+<li>WptoqVLQWp1500</li>
+<li>WptoqVLQWp2000</li>
+<li>WptoqVLQWp2500</li>
+<li>WptoqVLQWp3000</li>
+<li>WptoqVLQWp3500</li>
+<li>WptoqVLQWp4000</li>
+<li>WptoqVLQWp4500</li>
+</ul>
+<p>Nuisance parameters (includes only those which apply to the background-only model):</p>
+<ul>
+<li>bkg (morph only)</li>
+<li>btag2017 (morph only)</li>
+<li>btag2018 (morph only)</li>
+<li>htag (morph only)</li>
+<li>jer2017 (morph only)</li>
+<li>jer2018 (morph only)</li>
+<li>jes2017 (morph only)</li>
+<li>jes2018 (morph only)</li>
+<li>lumi (rate only)</li>
+<li>nonclosure (rate only)</li>
+<li>pu (morph only)</li>
+<li>q2 (morph only)</li>
+<li>topsf (rate only)</li>
+<li>trig2017 (morph only)</li>
+<li>trig2018 (morph only)</li>
+<li>ttbar_xsec (rate only)</li>
+</ul>
+
+</div>
+<h1 onclick=$('div20').toggle()>20. Rate Summary</h1><div class="inner" id="div20">
+<p>Rates for all observables and processes as given by the 'nominal' templates. If errors are given, they are MC stat. uncertainties.</p>
+<table cellpadding="2" border="1">
+<tr><th>process / observable</th><th>mass_THB_CFT3_2017</th><th>mass_THB_CFT3_2018</th></tr>
+<tr><td>qcd</td><td>4.1211 +/- 2.8145</td><td>1.3357 +/- 0.73342</td></tr>
+<tr><td>ttbar</td><td>3.6667 +/- 0.42718</td><td>3.99 +/- 0.4665</td></tr>
+<tr><td><b>total background</b></td><td>7.7878 +/- 2.8467</td><td>5.3257 +/- 0.86921</td></tr>
+<tr><td>WptoqVLQWp1500</td><td>7.9315 +/- 0.33477</td><td>12.09 +/- 0.50779</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>16.012 +/- 0.23813</td><td>22.635 +/- 0.34267</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>6.4637 +/- 0.077169</td><td>10.197 +/- 0.1237</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>2.3398 +/- 0.026713</td><td>3.4535 +/- 0.039604</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>0.58107 +/- 0.0067531</td><td>0.8027 +/- 0.0096322</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>0.22162 +/- 0.0028819</td><td>0.32432 +/- 0.0042602</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>0.10689 +/- 0.0016605</td><td>0.15592 +/- 0.0023681</td></tr>
+<tr><td><b>DATA</b></td><td>---</td><td>---</td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div21').toggle()>21. Rate Impact of Systematic Uncertainties</h1><div class="inner" id="div21">
+<p>The table below summarises the impact of an nuisance parameter on the rate prediction of a process.</p>
+    <p>For a nuisance parameter, (gauss) indicates that this nuisance parameter has a gaussian prior, (gamma) that it has a gamma prior.</p>
+    <p>For the individual cells, (r) indicates the 'rate only' part of the uncertainty, (s) indicates the effect on the rate of an uncertainty
+    treated via template morphing (i.e., the <em>rate</em> effect of an uncertainty treated as part of the
+    template morphing; even if this is zero, the shape effect is still taken into account). Note that both effects are applied seperatly, so
+    the total rate change is about the linear sum of these two.<br/>
+    The rate change in 'plus' direction of the uncertainty is written as superscript,
+    the 'minus' direction as subscript.<br/>All numbers are in percent.</p>
+<h2>Observable 'mass_THB_CFT3_2017'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><sup>+3.69</sup><sub>-3.69</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>+0.09</sup><sub>-0.83</sub> (s) </td><td>---</td><td><sup>+6.82</sup><sub>-7.74</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>+0.44</sup><sub>-0.87</sub> (s) </td><td><sup>+14.40</sup><sub>-1.52</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.04</sup><sub>-0.04</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><sup>+3.88</sup><sub>-3.88</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.02</sup><sub>+0.19</sub> (s) </td><td>---</td><td><sup>+1.78</sup><sub>-1.87</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.47</sup><sub>+0.52</sub> (s) </td><td><sup>+18.65</sup><sub>-1.67</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.01</sup><sub>-0.01</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><sup>+4.14</sup><sub>-4.14</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.18</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>-0.19</sup><sub>-2.28</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-6.75</sup><sub>+7.42</sub> (s) </td><td><sup>+22.89</sup><sub>-2.06</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><sup>+4.40</sup><sub>-4.40</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.24</sup><sub>+0.15</sub> (s) </td><td>---</td><td><sup>+0.95</sup><sub>-1.13</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.59</sup><sub>+0.61</sub> (s) </td><td><sup>+26.48</sup><sub>-2.40</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><sup>+4.61</sup><sub>-4.61</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.12</sup><sub>+0.07</sub> (s) </td><td>---</td><td><sup>+1.00</sup><sub>-0.96</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.59</sup><sub>+0.60</sub> (s) </td><td><sup>+29.51</sup><sub>-2.37</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>-0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><sup>+4.69</sup><sub>-4.69</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.33</sup><sub>+0.13</sub> (s) </td><td>---</td><td><sup>+0.71</sup><sub>-1.15</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.11</sup><sub>-0.12</sub> (s) </td><td><sup>+31.91</sup><sub>-2.90</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><sup>+4.75</sup><sub>-4.75</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-0.08</sup><sub>+0.25</sub> (s) </td><td>---</td><td><sup>+0.91</sup><sub>-0.79</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.04</sup><sub>+0.00</sub> (s) </td><td><sup>+33.18</sup><sub>-3.28</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><sup>+3.63</sup><sub>-3.63</sub> (s) </td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>-4.98</sup><sub>-1.20</sub> (s) </td><td>---</td><td><sup>+3.43</sup><sub>-6.70</sub> (s) </td><td>---</td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-4.70</sup><sub>+5.10</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+<h2>Observable 'mass_THB_CFT3_2018'</h2>
+<table cellpadding="2" border="1">
+<tr><th>process / nuisance parameter</th><th>bkg (gauss)</th><th>btag2017 (gauss)</th><th>btag2018 (gauss)</th><th>htag (gauss)</th><th>jer2017 (gauss)</th><th>jer2018 (gauss)</th><th>jes2017 (gauss)</th><th>jes2018 (gauss)</th><th>lumi (gauss)</th><th>nonclosure (gauss)</th><th>pu (gauss)</th><th>q2 (gauss)</th><th>topsf (gauss)</th><th>trig2017 (gauss)</th><th>trig2018 (gauss)</th><th>ttbar_xsec (gauss)</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td>---</td><td><sup>+3.31</sup><sub>-3.31</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.29</sup><sub>+0.64</sub> (s) </td><td>---</td><td><sup>+21.49</sup><sub>-18.74</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.26</sup><sub>+1.24</sub> (s) </td><td><sup>+14.36</sup><sub>-1.59</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td>---</td><td><sup>+4.29</sup><sub>-4.29</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.17</sup><sub>+0.38</sub> (s) </td><td>---</td><td><sup>+5.33</sup><sub>-5.94</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.39</sup><sub>+0.28</sub> (s) </td><td><sup>+18.82</sup><sub>-1.71</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td>---</td><td><sup>+5.50</sup><sub>-5.50</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.17</sup><sub>+0.17</sub> (s) </td><td>---</td><td><sup>+1.60</sup><sub>-4.37</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-8.37</sup><sub>+9.91</sub> (s) </td><td><sup>+22.89</sup><sub>-2.11</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td>---</td><td><sup>+6.84</sup><sub>-6.84</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.12</sup><sub>+0.05</sub> (s) </td><td>---</td><td><sup>+2.77</sup><sub>-2.64</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-1.07</sup><sub>+1.74</sub> (s) </td><td><sup>+26.48</sup><sub>-2.39</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td>---</td><td><sup>+7.86</sup><sub>-7.86</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.32</sup><sub>+0.23</sub> (s) </td><td>---</td><td><sup>+2.98</sup><sub>-3.60</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.15</sup><sub>+0.06</sub> (s) </td><td><sup>+29.56</sup><sub>-2.43</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td>---</td><td><sup>+8.23</sup><sub>-8.23</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>-0.09</sup><sub>+0.25</sub> (s) </td><td>---</td><td><sup>+2.36</sup><sub>-2.94</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.85</sup><sub>+1.51</sub> (s) </td><td><sup>+32.05</sup><sub>-2.74</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td>---</td><td><sup>+8.57</sup><sub>-8.57</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>+0.06</sup><sub>+0.27</sub> (s) </td><td>---</td><td><sup>+2.13</sup><sub>-2.87</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>-0.94</sup><sub>+1.49</sub> (s) </td><td><sup>+33.24</sup><sub>-2.97</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td></tr>
+<tr><td>qcd</td><td><sup>+10.00</sup><sub>-10.00</sub> (s) </td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>&#xb1;12.00 (r)</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td>---</td><td><sup>+3.55</sup><sub>-3.55</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>---</td><td><sup>+1.69</sup><sub>-2.10</sub> (s) </td><td>---</td><td><sup>+9.34</sup><sub>-16.14</sub> (s) </td><td>&#xb1;2.50 (r)</td><td>---</td><td><sup>+6.25</sup><sub>-6.15</sub> (s) </td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td>&#xb1;10.00 (r)</td><td>---</td><td><sup>+0.00</sup><sub>+0.00</sub> (s) </td><td><sup>+5.50</sup><sub>-4.80</sub> (r) </td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div22').toggle()>22. Nuisance Parameter Priors</h1><div class="inner" id="div22">
+
+    <p>The priors for the nuisance parameters are either Gaussian or gamma distributions. As limit cases, these can have with=0 or width=inf
+    which makes them delta or flat distributions, respectively.</p>
+    <div class="inner"><h3>Prior Parameters</h3>
+<table cellpadding="2" border="1">
+<tr><th>parameter</th><th>distribution type</th><th>distribution parameters</th></tr>
+<tr><td>btag2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jes2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>q2</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>pu</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jer2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>htag</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>jes2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>topsf</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>bkg</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>trig2017</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>lumi</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>btag2018</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>nonclosure</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+<tr><td>ttbar_xsec</td><td>gauss</td><td>width = 1.0; range = [-5.0, 5.0]; mean = 0.0</td></tr>
+</table>
+
+</div>
+    </div>
+</div>
+<h1 onclick=$('div23').toggle()>23. Basic Model Plots</h1><div class="inner" id="div23">
+<h2>Stackplots</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Color Code:</p><ul>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp1500</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2000</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp2500</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3000</li>
+<li><span style="background: #cc0000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp3500</li>
+<li><span style="background: #a40000;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4000</li>
+<li><span style="background: #ef2929;">&nbsp;&nbsp;&nbsp;</span> WptoqVLQWp4500</li>
+<li><span style="background: #edd400;">&nbsp;&nbsp;&nbsp;</span> qcd</li>
+<li><span style="background: #f57900;">&nbsp;&nbsp;&nbsp;</span> ttbar</li>
+</ul>
+<p>Observable 'mass_THB_CFT3_2017':<br /><img src="plots/mass_THB_CFT3_2017_stack.png" /></p>
+<p>Observable 'mass_THB_CFT3_2018':<br /><img src="plots/mass_THB_CFT3_2018_stack.png" /></p>
+<h2>All 'nominal' Templates</h2>
+<p>Everything normalized to expectation, i.e., to the normalization in the template input file, possibly scaled via the python script file.</p>
+<p>Observable "mass_THB_CFT3_2017", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_CFT3_2017_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_CFT3_2017_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_CFT3_2017_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_CFT3_2017_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_CFT3_2017_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_CFT3_2017_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_CFT3_2017_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "qcd":<br/><img src="plots/mass_THB_CFT3_2017_qcd.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", Process "ttbar":<br/><img src="plots/mass_THB_CFT3_2017_ttbar.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", all signals: <br/><img src="plots/mass_THB_CFT3_2017_signals.png"/></p>
+<p>Observable "mass_THB_CFT3_2017", signal normalization: <br/><img src="plots/mass_THB_CFT3_2017_norm_vs_signals.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "WptoqVLQWp1500":<br/><img src="plots/mass_THB_CFT3_2018_WptoqVLQWp1500.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "WptoqVLQWp2000":<br/><img src="plots/mass_THB_CFT3_2018_WptoqVLQWp2000.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "WptoqVLQWp2500":<br/><img src="plots/mass_THB_CFT3_2018_WptoqVLQWp2500.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "WptoqVLQWp3000":<br/><img src="plots/mass_THB_CFT3_2018_WptoqVLQWp3000.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "WptoqVLQWp3500":<br/><img src="plots/mass_THB_CFT3_2018_WptoqVLQWp3500.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "WptoqVLQWp4000":<br/><img src="plots/mass_THB_CFT3_2018_WptoqVLQWp4000.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "WptoqVLQWp4500":<br/><img src="plots/mass_THB_CFT3_2018_WptoqVLQWp4500.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "qcd":<br/><img src="plots/mass_THB_CFT3_2018_qcd.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", Process "ttbar":<br/><img src="plots/mass_THB_CFT3_2018_ttbar.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", all signals: <br/><img src="plots/mass_THB_CFT3_2018_signals.png"/></p>
+<p>Observable "mass_THB_CFT3_2018", signal normalization: <br/><img src="plots/mass_THB_CFT3_2018_norm_vs_signals.png"/></p>
+<h2>Shape Uncertainty Plots</h2>
+<p>Color Code:</p><ul>
+<li><span style="background: #333333;">&nbsp;&nbsp;&nbsp;</span> nominal</li><li><span style="background: #aa3333;">&nbsp;&nbsp;&nbsp;</span> plus</li><li><span style="background: #3333aa;">&nbsp;&nbsp;&nbsp;</span> minus</li>
+</ul>
+<p>Processes not appearing in the tables do not have any shape uncertainty for this observable.</p>
+<p>Click on an image to enlarge. If you have javascript, the image will be displayed on this page and you can click through all shape uncertainties of that observable                    (instead of clicking, you can also use the left/right key on the keyboard).</p>
+<h3>Observable 'mass_THB_CFT3_2017'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2017</th><th>htag</th><th>jer2017</th><th>jes2017</th><th>pu</th><th>q2</th><th>trig2017</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp1500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp2500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp3500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4000__trig2017.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__WptoqVLQWp4500__trig2017.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_CFT3_2017__qcd__bkg.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_CFT3_2017__ttbar__btag2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__ttbar__btag2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__ttbar__htag.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__ttbar__jer2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__ttbar__jer2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__ttbar__jes2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__ttbar__jes2017.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__ttbar__pu.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__ttbar__q2.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2017__ttbar__trig2017.png" rel="lightbox[mass_THB_CFT3_2017]"><img src="plots/mass_THB_CFT3_2017__ttbar__trig2017.png" width="200"/></a></td></tr>
+</table>
+
+<h3>Observable 'mass_THB_CFT3_2018'</h3>
+<table cellpadding="2" border="1">
+<tr><th>process / uncertainty</th><th>bkg</th><th>btag2018</th><th>htag</th><th>jer2018</th><th>jes2018</th><th>pu</th><th>q2</th><th>trig2018</th></tr>
+<tr><td>WptoqVLQWp1500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp1500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2000</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp2500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp2500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3000</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp3500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp3500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4000</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4000__trig2018.png" width="200"/></a></td></tr>
+<tr><td>WptoqVLQWp4500</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__WptoqVLQWp4500__trig2018.png" width="200"/></a></td></tr>
+<tr><td>qcd</td><td><a href="plots/mass_THB_CFT3_2018__qcd__bkg.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__qcd__bkg.png" width="200"/></a></td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>
+<tr><td>ttbar</td><td>---</td><td><a href="plots/mass_THB_CFT3_2018__ttbar__btag2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__ttbar__btag2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__ttbar__htag.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__ttbar__htag.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__ttbar__jer2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__ttbar__jer2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__ttbar__jes2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__ttbar__jes2018.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__ttbar__pu.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__ttbar__pu.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__ttbar__q2.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__ttbar__q2.png" width="200"/></a></td><td><a href="plots/mass_THB_CFT3_2018__ttbar__trig2018.png" rel="lightbox[mass_THB_CFT3_2018]"><img src="plots/mass_THB_CFT3_2018__ttbar__trig2018.png" width="200"/></a></td></tr>
+</table>
+
+
+</div>
+<h1 onclick=$('div24').toggle()>24. Limits Asymptotic CLs</h1><div class="inner" id="div24">
+<p><table cellpadding="2" border="1">
+<tr><th>signal process</th><th>expected limit</th><th>expected limit (central 1sigma)</th><th>expected limit (central 2sigma)</th></tr>
+<tr><td>1500</td><td>0.406</td><td>0.266--0.646</td><td>0.187--1.01</td></tr>
+<tr><td>2000</td><td>0.234</td><td>0.158--0.356</td><td>0.113--0.525</td></tr>
+<tr><td>2500</td><td>0.379</td><td>0.249--0.597</td><td>0.177--0.918</td></tr>
+<tr><td>3000</td><td>1.12</td><td>0.742--1.73</td><td>0.529--2.6</td></tr>
+<tr><td>3500</td><td>3.17</td><td>1.98--5.28</td><td>1.35--8.48</td></tr>
+<tr><td>4000</td><td>6.58</td><td>3.99--11.2</td><td>2.63--18.3</td></tr>
+<tr><td>4500</td><td>10.1</td><td>5.44--18.9</td><td>3.16--32.7</td></tr>
+</table>
+</p>
+<p><p><img src="plots/limit_band_plot-acls.png" /></p></p>
+<p><p><img src="plots/limit_band_plot-log-acls.png" /></p></p>
