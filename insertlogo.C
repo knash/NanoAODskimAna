@@ -71,6 +71,12 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
       lumiText += "8 TeV";
     }
    
+  else if ( iPeriod==13 )
+    {
+      lumiText += "13 TeV";
+      writeExtraText+=" Simulation";
+    }
+   
  // cout << lumiText << endl;
 
   TLatex latex;
@@ -154,5 +160,7 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
       latex.SetTextAlign(align_);
       latex.DrawLatex(posX_, posY_, extraText);      
     }
+
+
   return;
 }

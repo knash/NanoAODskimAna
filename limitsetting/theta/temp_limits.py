@@ -1,22 +1,50 @@
 # -*- coding: utf-8 -*-
 import scipy.interpolate
+import sys
+import subprocess
 import ROOT
-from ROOT import *
+#from ROOT import *
+sys.path.append('../../')
+import NanoAODskim_Data	
+from NanoAODskim_Data import *
 ROOT.gROOT.SetBatch(True)
 ROOT.PyConfig.IgnoreCommandLineOptions = True
+
+
+
 class hfilt:
-	def __init__(self,regs):
+	def __init__(self,regs,coupstr):
 		self.regs=regs
-	
+		self.coupstr=coupstr
 	def histogram_filter(self,hname):
 	    #if 'ttag' in hname: return False
-	    
+	    #if 'htag' in hname: return False
+
 	    for rr in self.regs:
 		searchl = "_"+rr+"_"
 		if searchl in hname:
+		    	if "WptoqVLQWp" in hname:
+				if not (self.coupstr in hname):
+					return False
+
 			return True
-	    
 	    return False
+
+class hrn:
+	def __init__(self,coupstr,corr):
+		self.coupstr=coupstr
+		self.corr=corr
+	def histogram_rename(self,hname):
+
+
+	    hname=hname.replace(self.coupstr,"")
+	    for ccorr in self.corr:
+		    if ccorr != None:
+			    for iyr in ["2016","2017","2018"]:
+					hname=hname.replace(ccorr+iyr,ccorr)
+	    #print hname
+	    return hname
+
 
 
 def makenuisanceplot(parlist,parVal):
@@ -147,141 +175,304 @@ def makenuisanceplot(parlist,parVal):
 
    return c1
 
-def build_allhad_model(signaltype="tHb",year="2017",regs=[["C"]]):
+def build_allhad_model(signaltype="tHb",year="2017",regs=[["C"]],coups=[0.5,0.5],corr=[None],sign="central",genstr=""):
     optname="optimizer_"
-    flec = hfilt(regs)
-    files = ["NanoAODskim_"+optname+signaltype+"_ForLimits__"+year+".root"]
+    optname=""
+
+    zhc=coups[0]
+    vlqc=coups[1]
+
+    NanoF = NanoAODskim_Data(year)
+    constdict = NanoF.LoadConstants
+    ttbarnormcorr=constdict['ttrenorm']
+
+    coupstr="_B"+str(vlqc[0])+"T"+str(vlqc[1])+"H"+str(zhc[0])+"Z"+str(zhc[1])+"_"
+    coupstr=coupstr.replace(".","p")
+    frn = hrn(coupstr,corr)
+    flec = hfilt(regs,coupstr)
+    files = ["NanoAODskim_"+optname+signaltype+"_ForLimits__"+year+sign+genstr+".root"]
     histogram_filter=flec.histogram_filter
-    model = build_model_from_rootfile(files, histogram_filter,  include_mc_uncertainties=True)
+    histogram_rename=frn.histogram_rename
+    model = build_model_from_rootfile(files, histogram_filter,  histogram_rename, include_mc_uncertainties=True)
     model.fill_histogram_zerobins()
+    #print 'WptoqVLQWp'+coupstr
+
     model.set_signal_processes('WptoqVLQWp*')
     #print "Observables"
     #for oo in model.get_observables():
 	#print oo
-    
+
     #print "Processes"
     for p in model.processes:
-	#print p
-       	if p=='qcd': 
-       		model.add_lognormal_uncertainty('nonclosure', math.log(1.12), p)
+	print p
+       	if (p=='qcd'): 
+		print p,"continue"
+       		#model.add_lognormal_uncertainty('nonclosure', math.log(1.12), p)
 		continue
-       	model.add_lognormal_uncertainty('lumi', math.log(1.025), p)
-    	model.add_lognormal_uncertainty('topsf',math.log(1.10), p)
-       	if p=='ttbar':
-    		model.add_asymmetric_lognormal_uncertainty('ttbar_xsec',math.log(1.048),math.log(1.055), p)
+       	if (p=='ttbar'): 
+		print p,ttbarnormcorr[1],ttbarnormcorr[0]
+		ttclos=1.0+ttbarnormcorr[1]/ttbarnormcorr[0]
+       		model.add_lognormal_uncertainty('tt', math.log(ttclos), p)
+		continue
+	if year=="2017":
+       		model.add_lognormal_uncertainty('lumi'+year, math.log(1.025), p)
+	else:
+       		model.add_lognormal_uncertainty('lumi'+year, math.log(1.023), p)
+       	#if p=='ttbar':
+	#	print "ttbar unc"
+    	#	model.add_asymmetric_lognormal_uncertainty('ttbar_xsec',math.log(1.048),math.log(1.055), p)
 
     return model
 
-def limits_allhad(model, step = 0):
-   fnamestr = "RFILE"
-   #exp,obs = bayesian_limits(model,what='expected',input_expected='toys:0')
-   exp,obs = asymptotic_cls_limits(model,use_data=False)
-   #print exp
-   exp.write_txt('testexp'+fnamestr.replace('.root','')+'.txt')
-   
-
-   #myopts = Options()
+def limits_allhad(model,genstr=""):
+   myopts = Options()
    #myopts.set('minimizer', 'strategy', 'robust')
-   #parVals = mle(model, input = 'toys:0', n=1,with_error=True, with_covariance=False,options=myopts)
-   #for pv in parVals:
-	#print pv
-	#print parVals[pv]
+   myopts.set('minimizer', 'minuit_tolerance_factor', '1000')
+   myopts.set('minimizer', 'strategy', 'newton_vanilla')
+
+   #if genstr!="":
+   #	myopts.set('minimizer', 'minuit_tolerance_factor', '10000')
+   #	myopts.set('minimizer', 'strategy', 'newton_vanilla')
+
+   print "TEST"
+   exp,obs = asymptotic_cls_limits(model,use_data=True,options = myopts,n=5)
 
 
 
-   #parlist = ['__nll','beta_signal']
+   Nbin=0
+   for obsbl in model.get_observables():
+   	Nbin+=model.get_data_histogram(obsbl).get_nbins()
+   myopts1 = Options()
+   myopts1.set('minimizer', 'minuit_tolerance_factor', '100')
+   #myopts1.set('minimizer', 'strategy', 'robust')
+   myopts1.set('minimizer', 'strategy', 'newton_vanilla')
 
-   #canvnuisanceplot = makenuisanceplot(parlist,parVals['WptoqVLQWp2000'])
+   #parVals = mle(model, input = 'data', n=1, with_error = True,chi2=True,options=myopts1)
+   #print parVals
+   #print discovery(model,spid="WptoqVLQWp1500")
+   #parVals = mle(model, input = 'data', n=1, with_error = True, signal_process_groups = {'': []},chi2=True,options=myopts1)
+   #parVals = mle(model, input = 'toys:0', n=1, with_error = True, signal_process_groups = {'': []},chi2=True,options=myopts1)
+
+   chi2=-1
+   #for pp in parVals:
+	#for pp1 in parVals[pp]:
+	#	if pp1=="__chi2":
+	#		chi2=parVals[pp][pp1][0]/Nbin
+	#		print pp1,Nbin, parVals[pp][pp1][0]/Nbin
+	#	print pp,pp1,parVals[pp][pp1][0]
+   return [exp,obs],chi2
+
+regs=[['C']]
+#regs=[['C'],['K'],['H'],['C','K','H']]
+#regs=[['F'],['K'],['H']]
+#regs=[['H']]
+
+#SRs=[["tHb2016"],["tHb2017"],["tHb2018"],["tZb2016"],["tZb2017"],["tZb2018"],["tHb2016","tHb2017","tHb2018","tZb2016","tZb2017","tZb2018"]]
+#SRs=[["tHb2016"],["tHb2017"],["tHb2018"],["tHb2016","tHb2017","tHb2018"]]
+#SRs=[["tZb2016"],["tZb2017"],["tZb2018"],["tZb2016","tZb2017","tZb2018"]]
+SRs=[["tHb2016","tHb2017","tHb2018","tZb2016","tZb2017","tZb2018"]]
+#SRs=[["tHb2016","tHb2017","tHb2018"],["tZb2016","tZb2017","tZb2018"]]
+
+#SRs=[["tHb2017","tZb2017"]]
+
+bttp=[]
+zh=[]
+reso=10
+dogcvlq=False
+dogczh=False
+genstr=""
+if dogcvlq:
+	genstr="genvlq"
+	for it in xrange(reso+1):
+		for jt in xrange(reso+1):
+			if (it+jt<=reso+1):
+				bttp.append([max(0.0001,float(it)/float(reso)),max(0.0001,float(jt)/float(reso))])
+else:
+	bttp=[[0.5,0.5]]
+if dogczh:
+	genstr="genzc"
+	for it in xrange(reso+1):
+		for jt in xrange(reso+1):
+			if (it+jt<=reso+1):
+				zh.append([max(0.0001,float(it)/float(reso)),max(0.0001,float(jt)/float(reso))])
+else:
+	zh=[[0.5,0.5]]
 
 
 
-   '''
-   print "running discovery"
-   discvector = {}
-   for masses in ['1500','2000','2500']:
-   	discvector['wp'+masses] = discovery(model, spid = 'wp'+masses, use_data = False, maxit = 20)
-   print discvector
+#SRs=[["tHb2017","tZb2017"]]
+#SRs=[["tHb2016","tHb2017","tHb2018","tZb2016","tZb2017","tZb2018"]]
+#SRs=[["tHb2016","tHb2017","tHb2018","tZb2016","tZb2017","tZb2018"]]
 
-   text_file = open('discvector'+fnamestr.replace('.root','')+'.txt', "w") 
-   for key in sorted(discvector):
-  	 text_file.write(key + " "+str(discvector[key])+"\n")
-
-   '''
-   return [exp,obs]
-#regions=['CFH1','CFH2','CFH3','CFT1','CFT2','CFT3','CFB1','CFB2','HFH1','HFH2','HFH3','KFT1','KFT2','KFT3']
-#regs=['CFH3','HFH3']
-#regs=[['CFT1','KFT1'],['CFT2','KFT2'],['CFT3','KFT3'],['CFH1','HFH1'],['CFH2','HFH2'],['CFH3','HFH3'],['CFB1','HFB1'],['CFB2','HFB2']]
-regs=[['C'],['CFT1'],['CFT2'],['CFT3']]
-#regs=[['C'],['CFH1'],['CFH2'],['CFH3']]
-#regs=[['C'],['CFB1'],['CFB2']]
+rootstr="Bench_FullRun2LimTZBplusTHBCOMP"
+rootstr="ckhcomp"
 tc = ROOT.TCanvas("tc","tc",700,600)
 tc.Draw()
 tcnorm = ROOT.TCanvas("tcnorm","tcnorm",700,600)
 tcnorm.Draw()
 grarray=[]
+grarraylow=[]
+grarrayhigh=[]
 grnormarray=[]
-mg=TMultiGraph()
-mgnorm=TMultiGraph()
+grnormarraylow=[]
+grnormarrayhigh=[]
+mg=ROOT.TMultiGraph()
+mgnorm=ROOT.TMultiGraph()
 
-leg = TLegend(0.60, 0.65, 0.84, 0.84)
+leg = ROOT.TLegend(0.20, 0.55, 0.54, 0.84)
 leg.SetFillColor(0)
 leg.SetBorderSize(0)
-for rr in regs:
-	print rr
-	models={}
-	#models["tHb2016"] = build_allhad_model("tHb","2016",rr)
-	#models["tHb2017"] = build_allhad_model("tHb","2017",rr)
-	#models["tHb2018"] = build_allhad_model("tHb","2018",rr)
-	models["tHb2018"] = build_allhad_model("tHb","SUMMED",rr)
-	#models["tZb2016"] = build_allhad_model("tZb","2016",rr)
-	#models["tZb2017"] = build_allhad_model("tZb","2017",rr)
-	#models["tZb2018"] = build_allhad_model("tZb","2018",rr)
-	nmodel = 0
-	for mmm in models:
-		print mmm
-		if nmodel==0:
-			model=models[mmm]
-		else:
-			model.combine(models[mmm])
-		nmodel += 1
-	for p in model.distribution.get_parameters():
-	    d = model.distribution.get_distribution(p)
-	    if d['typ'] == 'gauss' and d['mean'] == 0.0 and d['width'] == 1.0:
-		model.distribution.set_distribution_parameters(p, range = [-5.0, 5.0])
-	model_summary(model, True, True, True)
+#corrs=[[None],['jms'],['jmr'],['jes'],['jer'],['btag'],['wtag'],['htag'],['jms','jmr','jes','jer','btag','wtag','htag']]
+corrs=[[None]]
+#signs=["central","low","high"]
+signs=["central"]
+allchis=[]
 
-	lim=limits_allhad(model,0)
+print zh
+print bttp
+#zh = [[0.5, 0.5]]
+#bttp = [[0.0001, 0.2]]
+for sign in signs:
+	for corr in corrs:
+		for vlqc in bttp:
+			for zhc in zh:
+				for sr in SRs:
+					for rr in regs:
 
-	yarr = array.array('d',lim[0].y)
-	yarrnorm = array.array('d',lim[0].y)
-	xarr = array.array('d',lim[0].x)
-	if len(grarray)==0:
-		yarrinit=copy.deepcopy(yarr)
-		xarrinit=copy.deepcopy(xarr)
-	for yy in xrange(len(yarr)):
-		yarrnorm[yy]/=yarrinit[yy]
-	#print xarr,yarr
-	grarray.append(ROOT.TGraph(len(xarr),xarr,yarr))
-	tc.cd()
-	grarray[-1].SetMarkerColor(len(grarray)+1)
-	grarray[-1].SetLineWidth(2)
-	grarray[-1].SetLineColor(len(grarray)+1)
-	grarray[-1].SetMarkerStyle(5)
-	grnormarray.append(ROOT.TGraph(len(xarr),xarr,yarrnorm))
-	tcnorm.cd()
-	grnormarray[-1].SetMarkerColor(len(grarray)+1)
-	grnormarray[-1].SetLineColor(len(grarray)+1)
-	grnormarray[-1].SetLineWidth(2)
-	grnormarray[-1].SetMarkerStyle(5)
-	leg.AddEntry( grarray[-1], str(rr), 'PL')
-	mg.Add(grarray[-1])
-	mgnorm.Add(grnormarray[-1])
-	#if len(grarray)==0:
-	#	grarray[-1].Draw("AP")
-	#else:
-	#	grarray[-1].Draw("Psame")
-	tc.Update()
-	#print lim[0].split("\n")[1:]
+						srstr=""
+						for srr1 in sr:
+							for srr2 in srr1:
+								srstr+=str(srr2)
+						#corrstr="None"
+						if len(corr)==1:
+								corrstr=str(corr[0])
+						else:
+								corrstr="All"
+		    				coupstr="_B"+str(vlqc[0])+"T"+str(vlqc[1])+"H"+str(zhc[0])+"Z"+str(zhc[1])+"_"
+		    				coupstr=coupstr.replace(".","p")
+						txtname='exp'+rootstr+srstr+coupstr+corrstr+sign+'.txt'
+						txtnameobs='obs'+rootstr+srstr+coupstr+corrstr+sign+'.txt'
+
+						if os.path.exists(txtname) and genstr!="":
+							print "alreadyran"
+							continue 
+    						#subprocess.call( ["rm -rf analysis/*.cfg"], shell=True )
+						print rr,sr,zhc,vlqc,corr
+						models={}
+						for sr1 in sr:
+							anat=str(sr1[:3])
+							yr=str(sr1[3:])
+							print anat,yr
+							models[sr1]=build_allhad_model(anat,yr,rr,[zhc,vlqc],corr,sign,genstr)
+
+						nmodel = 0
+						for mmm in models:
+							print mmm
+							if nmodel==0:
+								model=models[mmm]
+							else:
+								model.combine(models[mmm])
+							nmodel += 1
+						#for p in model.distribution.get_parameters():
+						#    d = model.distribution.get_distribution(p)
+						#    if d['typ'] == 'gauss' and d['mean'] == 0.0 and d['width'] == 1.0:
+						#	model.distribution.set_distribution_parameters(p, range = [-5.0, 5.0])
+						#model_summary(model, True, True, True)
+						print "zhc,vlqc",zhc,vlqc
+						lim=limits_allhad(model,genstr)
+						#try:
+						#	lim=limits_allhad(model,genstr)
+						#except:
+						#	print "FAIL"
+						#	continue 
+						print lim[0]
+				   		lim[0][0].write_txt(txtname)
+						print "lim[0][1]",lim[0][1]
+						if lim[0][1]!=None:
+				   			lim[0][1].write_txt(txtnameobs)
+						del models
+
+						continue
+
+						chi2=lim[1]
+						print "chi2",rr,chi2
+						allchis.append([sr+rr,chi2])
+						#try:
+						#	lim=limits_allhad(model)
+						#	print lim[0]
+				   		#	lim[0].write_txt(txtname)
+						#except:
+
+						#	print "FAIL!"
+						#	continue
+						yarr = array.array('d',lim[0][0].y)
+						yarrnorm = array.array('d',lim[0][0].y)
+						lowerr,higherr = lim[0][0].bands
+						lowerrnorm,higherrnorm = lim[0][0].bands
+						#print lowerr
+						#print higherr
+						yarrerrlow = array.array('d',lowerr[0])
+						yarrerrhigh = array.array('d',lowerr[1])
+						#print yarrerrlow
+						#print yarrerrhigh
+
+						yarrerrlownorm = array.array('d',lowerrnorm[0])
+						yarrerrhighnorm = array.array('d',lowerrnorm[1])
+
+
+						yarrerrnorm = array.array('d',lim[0][0].y)
+						xarr = array.array('d',lim[0][0].x)
+						if len(grarray)==0:
+							yarrinit=copy.deepcopy(yarr)
+							xarrinit=copy.deepcopy(xarr)
+						for yy in xrange(len(yarr)):
+							yarrnorm[yy]/=yarrinit[yy]
+							yarrerrlownorm[yy]/=yarrinit[yy]
+							yarrerrhighnorm[yy]/=yarrinit[yy]
+						print xarr,yarr
+						grarray.append(ROOT.TGraph(len(xarr),xarr,yarr))
+						grarraylow.append(ROOT.TGraph(len(xarr),xarr,yarrerrlow))
+						grarrayhigh.append(ROOT.TGraph(len(xarr),xarr,yarrerrhigh))
+						tc.cd()
+						colo= (len(grarray))%9+1
+						grarray[-1].SetMarkerColor(colo)
+						grarray[-1].SetLineWidth(2)
+						grarray[-1].SetLineColor(colo)
+						grarray[-1].SetMarkerStyle(5)
+
+						grarraylow[-1].SetLineStyle(2)
+						grarraylow[-1].SetLineWidth(2)
+						grarraylow[-1].SetLineColor(colo)
+						#grarraylow[-1].SetMarkerStyle(5)
+
+						grarrayhigh[-1].SetLineStyle(2)
+						grarrayhigh[-1].SetLineWidth(2)
+						grarrayhigh[-1].SetLineColor(colo)
+						#grarrayhigh[-1].SetMarkerStyle(5)
+
+						grnormarray.append(ROOT.TGraph(len(xarr),xarr,yarrnorm))
+						grnormarraylow.append(ROOT.TGraph(len(xarr),xarr,yarrerrlownorm))
+						grnormarrayhigh.append(ROOT.TGraph(len(xarr),xarr,yarrerrhighnorm))
+
+						tcnorm.cd()
+						grnormarray[-1].SetMarkerColor(colo)
+						grnormarray[-1].SetLineColor(colo)
+						grnormarray[-1].SetLineWidth(2)
+						grnormarray[-1].SetMarkerStyle(5)
+						#leg.AddEntry( grarray[-1], str(rr)+" - "+str(sr), 'PL')
+						#leg.AddEntry( grarray[-1], corrstr, 'PL')
+						leg.AddEntry( grarray[-1], str(rr), 'PL')
+						mg.Add(grarray[-1])
+						mg.Add(grarraylow[-1])
+						mg.Add(grarrayhigh[-1])
+						mgnorm.Add(grnormarray[-1])
+						mgnorm.Add(grnormarraylow[-1])
+						mgnorm.Add(grnormarrayhigh[-1])
+			
+						tc.Update()
+						#print lim[0].split("\n")[1:]
+
+print "Done"
 
 tc.cd()
 mg.Draw("ALP")
@@ -290,7 +481,8 @@ mg.GetXaxis().SetRangeUser(min(xarr)*0.9,max(xarr)*1.5)
 tc.SetLogy()
 tc.Update()
 leg.Draw()
-tc.Print("limcomp.root","root")
+tc.Print("limcomp"+rootstr+".root","root")
+tc.Print("../../plots/limcomp"+rootstr+".pdf","pdf")
 
 
 
@@ -301,5 +493,8 @@ mgnorm.GetXaxis().SetRangeUser(min(xarr)*0.9,max(xarr)*1.5)
 tcnorm.SetLogy()
 tcnorm.Update()
 leg.Draw()
-tcnorm.Print("limcompnorm.root","root")
+tcnorm.Print("limcompnorm"+rootstr+".root","root")
+tc.Print("../../plots/limcompnorm"+rootstr+".pdf","pdf")
+
+print allchis
 

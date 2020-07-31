@@ -96,7 +96,7 @@ if jobarr[0]>jobarr[1]:
 setname = options.set
 setnametowrite=setname.split('/')[0]
 print "set name",setnametowrite
-settype=setfilter(setname)
+settype=SetFilter(setname)
 print "set type",settype
 NanoF = NanoAODskim_Functions(options.anatype,options.era,"v8",settype)
 
@@ -104,9 +104,10 @@ NanoF = NanoAODskim_Functions(options.anatype,options.era,"v8",settype)
 
 
 print "Loading Files..."
-NanoF.versionstring=""
+NanoF.versionstring=[""]
 NanoF.nanotype=""
-allfiles = NanoF.loadfiles(setname,options.folder,options.redir,options.search)
+
+allfiles = NanoF.LoadFiles(setname,options.folder,options.redir,options.search)
 print "Totfiles",len(allfiles)
 files = []
 for cfile in xrange(len(allfiles)):
@@ -169,7 +170,7 @@ for curfilename in files:
 	for pars in parsename:
 		if pars.find("Run201")!=-1:
 			runver=pars[0:8]
-	NanoF.setruntrigs(runver)
+	NanoF.SetRunTrigs(runver)
 	
 	mutrigs = copy.copy(NanoF.mutrigs)
 	prescaletrigstr = ""
@@ -187,7 +188,7 @@ for curfilename in files:
 	trigstr="("+trigstr+")"
 
 	output.cd()
-	kinstr = "(Length$(FatJet_pt)>1)&&(FatJet_pt[1]>450.0)"
+	kinstr = "(Length$(FatJet_pt)>1)&&(FatJet_pt[1]>400.0)"
 
 	denom= prescaletrigstr+"&&"+kinstr
 	num= prescaletrigstr+"&&"+trigstr+"&&"+kinstr

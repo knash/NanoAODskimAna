@@ -31,7 +31,7 @@ parser.add_option('-r', '--run', metavar='F', type='string', action='store',
                   dest		=	'run',
                   help		=	'')
 (options, args) = parser.parse_args()
-
+ROOT.gROOT.LoadMacro("insertlogo.C+")
 setname = options.set
 isdata=False
 if (setname).find('JetHT')!=-1:
@@ -65,8 +65,39 @@ trighisthtmass.Divide(htmasshistpre)
 output.cd()
 trighistht.Write("trighistht")
 trighisthtmass.Write("trighisthtmass")
+
 output.Write()
 output.Close()
+c3 = TCanvas('c3', '', 700, 600)
+c3.SetLeftMargin(0.16)
+c3.SetRightMargin(0.12)
+c3.SetTopMargin(0.11)
+c3.SetBottomMargin(0.1)
+trighisthtmass.SetStats(0)
+trighisthtmass.SetTitle(';H_{T}(GeV);m_{softdrop}(GeV)')
+trighisthtmass.GetYaxis().SetLabelSize(.05)
+trighisthtmass.GetYaxis().SetTitleSize(.05)
+trighisthtmass.GetYaxis().SetTitleOffset(1.4)
+
+
+
+trighisthtmass.Draw("colz")
+if options.era=="2016":
+	per=1
+if options.era=="2017":
+	per=2
+if options.era=="2018":
+	per=3
+
+ROOT.insertlogo( c3, per, 11 )
+
+prelim = TLatex()
+prelim.SetNDC()
+prelim.DrawLatex( 0.2, 0.91, runstr )
+
+c3.Print('plots/trigplot2D_ht_msd_'+runstr+'__'+options.era+'.root', 'root')
+c3.Print('plots/trigplot2D_ht_msd_'+runstr+'__'+options.era+'.pdf', 'pdf')
+c3.Print('plots/trigplot2D_ht_msd_'+runstr+'__'+options.era+'.png', 'png')
 print "Completed..."
 
 

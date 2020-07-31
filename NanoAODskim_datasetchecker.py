@@ -87,7 +87,6 @@ allsets=[]
 setsdict = {}
 badsets=[]
 for ff in filessig:
-	
 	roots=glob.glob(ff+"/*/*/*.root")
 
 	#print	ff.split("/")[7]
@@ -97,8 +96,9 @@ for ff in filessig:
 	else :
 		setsdict[setn]=roots
 clfile=open('jobstoclean'+options.era+exs, 'w+') 
+numbsarr=[]
 for ff in setsdict:
-	#print ff,setsdict[ff]
+
 	fnums = []
 	for rr in setsdict[ff]:
 		fnums.append(int(rr.split("_")[-1].replace(".root","")))
@@ -107,6 +107,7 @@ for ff in setsdict:
 		allsets.append(ff)
 		if max(fnums)!=len(fnums):
 			badsets.append([ff,copy.deepcopy(setsdict[ff])])
+			numbsarr.append([ff,max(fnums),len(fnums)])
 			print ff,max(fnums),len(fnums)
 
 	else:
@@ -114,17 +115,22 @@ for ff in setsdict:
 		print "no roots",allsets[-1]
 print
 print "Incomplete Sets"
+bsind=0
 for bb in badsets:
-	print bb[0]
+	print "mismatch",numbsarr[bsind]
+	print "setname ","/"+numbsarr[bsind][0]+"/"+minset+"*/MINIAODSIM"
 	clfile.write(bb[0]+"\n")
 	for jj in bb[1]:
 		clfile.write( "\t"+jj+"\n")
 	clfile.write( "\n")
-	print
+
+	bsind+=1
 print ""
 clfile.close()
 for sf in setstofind:
+	#print sf
 	if not (sf in allsets):
+		print "checking ","/"+sf+"/"+minset+"*/MINIAODSIM"
 		query = das_client.get_data("dataset=/"+sf+"/"+minset+"*/MINIAODSIM")
 		items = query.items()
 		foundit=False
@@ -137,4 +143,5 @@ for sf in setstofind:
 					foundit=True
 					print dname,"20000"
 		if not foundit:
-			print "dataset=/"+sf+"/"+minset+"*/MINIAODSIM"
+
+			print "dataset=/"+sf+"/"+minset+"*/MINIAODSIM", "not in DAS!"
