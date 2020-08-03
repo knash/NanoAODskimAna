@@ -1,4 +1,3 @@
-
 from optparse import OptionParser
 import subprocess,os,sys
 import ROOT
@@ -374,6 +373,7 @@ for curset in (options.set).split(","):
 
 		#for mass faking
 		masshist = ratefile.Get("masshist")
+
 
 	print "Start Looping..."
 	counts = 0
@@ -826,7 +826,9 @@ for curset in (options.set).split(","):
 	evhistos["PV_npvs_postdown"]=TH1F("PV_npvs_postdown",	"PV_npvs_postdown",		100, 0.,100 )
 	evhistos["pdfuncevup"]=TH1F("pdfuncevup",	"pdfuncevup",		100, 0.,2 )
 	evhistos["pdfuncevdown"]=TH1F("pdfuncevdown",	"pdfuncevdown",		100, 0.,2 )
-
+	evhistos["NM1TiMDtophigheta"] = copy.deepcopy(histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"])
+	evhistos["NM1TiMDtophigheta"].SetName("iMDtop__T__NM1TiMDtophigheta")
+	evhistos["NM1TiMDtophigheta"].SetTitle("iMDtop__T__NM1TiMDtophigheta")
 	cfregions=["C","NM2bt"]
 
 	cutflowpoints=	[
@@ -1616,6 +1618,7 @@ for curset in (options.set).split(","):
 								#	ntotdc+=1
 									#print "dc",ntotdc
 								break
+
 							#if (macro=="Ana" and region!="FT" ):
 							#	print htval,weightdict[region]["trig"]
 							if region =="C" and (shift==""):
@@ -1639,6 +1642,15 @@ for curset in (options.set).split(","):
 									#if region=="C":
 									#	print region,hweight,shift,ww,weightdict[region][ww]["sf"]
 										#print ""
+							if (region=="NM1TiMDtop"):
+								if (abs(cands["T"].eta)>2.0):
+									#print(cands["T"].eta)
+									evhistos["NM1TiMDtophigheta"].Fill(cands["T"].iMDtop,hweight)
+									cetbins=[evhistos["NM1TiMDtophigheta"].FindBin(0.9),evhistos["NM1TiMDtophigheta"].FindBin(1.0)]
+									print 	
+									print evhistos["NM1TiMDtophigheta"].GetEntries(),evhistos["NM1TiMDtophigheta"].Integral(cetbins[0],cetbins[1]),evhistos["NM1TiMDtophigheta"].Integral(),evhistos["NM1TiMDtophigheta"].Integral(cetbins[0],cetbins[1])/evhistos["NM1TiMDtophigheta"].Integral()
+									print histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].GetEntries(),histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].Integral(cetbins[0],cetbins[1])/histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].Integral()
+
 							#if region=="C":
 							#	print"Weight",hweight
 							if (NanoF.isdata):
