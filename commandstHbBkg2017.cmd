@@ -9,56 +9,6 @@
 - copycommand = cp
 
 # Sections listed
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 1 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 2 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 3 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 4 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 5 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 6 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 7 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 8 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 9 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 10 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 11 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 12 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 13 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 14 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 15 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 16 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 17 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 18 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 19 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 20 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 21 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 22 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 23 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 24 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 25 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 26 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 27 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 28 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 29 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  JetHT -j 30 -t 30  --Bkg -e 2017 -S Run2017  --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8 -j 1 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8 -j 2 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8 -j 3 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8 -j 4 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8 -j 5 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8 -j 6 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8 -j 1 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8 -j 2 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8 -j 3 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8 -j 4 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8 -j 5 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8 -j 6 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8 -j 1 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8 -j 2 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8 -j 3 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8 -j 4 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8 -j 5 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8 -j 6 -t 6  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash -S NanoSlimNtuples2017    --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8 -j 1 -t 1  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash   -v _v10  -S NanoSlimNtuples2017 --condor
-output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8 -j 1 -t 1  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash   -v _v10  -S NanoSlimNtuples2017 --condor
 output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8 -j 1 -t 2  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash   -v _v10  -S NanoSlimNtuples2017 --condor
 output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8 -j 2 -t 2  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash   -v _v10  -S NanoSlimNtuples2017 --condor
 output_$(JID)        python ./tardir/NanoAODskim_Generic.py -a tHb -s  TT_Mtt-1000toInf_TuneCP5_PSweights_13TeV-powheg-pythia8 -j 1 -t 12  --Bkg -e 2017 -f /eos/cms/store/group/phys_b2g/knash   -v _v10  -S NanoSlimNtuples2017 --condor

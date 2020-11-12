@@ -58,6 +58,10 @@ trighistht.Divide(hthistpre)
 
 htmasshistpost=inputfile.Get("postHTmass")
 htmasshistpre=inputfile.Get("preHTmass")
+copyhtmasshistpost=copy.deepcopy(htmasshistpost)
+copyhtmasshistpre=copy.deepcopy(htmasshistpre)
+copyhtmasshistpost.GetYaxis().SetRangeUser(65.0,1000.0)
+copyhtmasshistpre.GetYaxis().SetRangeUser(65.0,1000.0)
 htmasshistpost.Rebin2D(2,2)
 htmasshistpre.Rebin2D(2,2)
 trighisthtmass=copy.copy(htmasshistpost)
@@ -70,9 +74,12 @@ output.Write()
 output.Close()
 c3 = TCanvas('c3', '', 700, 600)
 c3.SetLeftMargin(0.16)
-c3.SetRightMargin(0.12)
+c3.SetRightMargin(0.16)
 c3.SetTopMargin(0.11)
 c3.SetBottomMargin(0.1)
+
+
+
 trighisthtmass.SetStats(0)
 trighisthtmass.SetTitle(';H_{T}(GeV);m_{softdrop}(GeV)')
 trighisthtmass.GetYaxis().SetLabelSize(.05)
@@ -98,6 +105,40 @@ prelim.DrawLatex( 0.2, 0.91, runstr )
 c3.Print('plots/trigplot2D_ht_msd_'+runstr+'__'+options.era+'.root', 'root')
 c3.Print('plots/trigplot2D_ht_msd_'+runstr+'__'+options.era+'.pdf', 'pdf')
 c3.Print('plots/trigplot2D_ht_msd_'+runstr+'__'+options.era+'.png', 'png')
+
+c2 = TCanvas('c2', '', 700, 600)
+c2.SetLeftMargin(0.16)
+c2.SetRightMargin(0.1)
+c2.SetTopMargin(0.11)
+c2.SetBottomMargin(0.1)
+
+cuttrighisthtpost=copyhtmasshistpost.ProjectionX()
+cuttrighisthtpre=copyhtmasshistpre.ProjectionX()
+cuttrighistht=copy.copy(cuttrighisthtpost)
+cuttrighistht.Divide(cuttrighisthtpre)
+
+
+cuttrighistht.GetXaxis().SetRangeUser(500.,2000.)
+cuttrighistht.GetYaxis().SetRangeUser(0.85,1.0)
+cuttrighistht.SetStats(0)
+cuttrighistht.SetTitle(';H_{T}(GeV);Efficiency')
+cuttrighistht.GetYaxis().SetLabelSize(.05)
+cuttrighistht.GetYaxis().SetTitleSize(.05)
+cuttrighistht.GetYaxis().SetTitleOffset(1.4)
+cuttrighistht.Draw("hist")
+
+ROOT.insertlogo( c2, per, 11 )
+
+prelim = TLatex()
+prelim.SetNDC()
+prelim.DrawLatex( 0.2, 0.91, runstr )
+
+c2.Print('plots/trigplot1D_ht_'+runstr+'__'+options.era+'.root', 'root')
+c2.Print('plots/trigplot1D_ht_'+runstr+'__'+options.era+'.pdf', 'pdf')
+c2.Print('plots/trigplot1D_ht_'+runstr+'__'+options.era+'.png', 'png')
+
+
+
 print "Completed..."
 
 

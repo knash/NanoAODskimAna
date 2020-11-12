@@ -126,7 +126,7 @@ class NanoAODskim_Data:
 
 								},
 						'posfac': posfac["2017"],
-						'ttrenorm':[0.886187132518, 0.135407900797]
+						'ttrenorm':[0.936776375367, 0.111389879456]
 						}
 
 
@@ -234,7 +234,7 @@ class NanoAODskim_Data:
 								},
 
 						'posfac': posfac["2018"],
-						'ttrenorm':[0.984634860046, 0.134834288348]
+						'ttrenorm':[0.981345353242, 0.140695042664]
 
 
 						}
@@ -320,7 +320,7 @@ class NanoAODskim_Data:
 								"GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":[2616911,93.46]
 								},
 						'posfac': posfac["2016"],
-						'ttrenorm':[1.22687096743, 0.175341326269],
+						'ttrenorm':[1.19674528432, 0.178374218938],
 						}
 		self.allsignamesHT=[]
 		self.allsignamesZT=[]

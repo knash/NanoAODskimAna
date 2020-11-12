@@ -2028,10 +2028,12 @@ class NanoAODskim_Functions:
 					if self.anatype=="tHb":
 							histos[region]["btagHbb__"+label[1]+"__iMDtop__"+label[0]+"__"+region] =  TH2F("btagHbb__"+label[1]+"__iMDtop__"+label[0]+"__"+region,	"btagHbb__"+label[1]+"__iMDtop__"+label[0]+"__"+region,		100, -1.,1.,100, 0.,1. )
 							histos[region]["msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region] =  TH2F("msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region,	"msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region,		240, 0.,480.,100, 0.,1. )
+							histos[region]["aeta__"+label[1]+"__aeta__"+label[0]+"__"+region] =  TH2F("aeta__"+label[1]+"__aeta__"+label[0]+"__"+region,	"aeta__"+label[1]+"__aeta__"+label[0]+"__"+region,		24, 0.0,2.4,24, 0.0,2.4 )
 							#histos[region]["mass__"+label+"__"+region] =  TH1F("mass__"+label+"__"+region,	"mass__"+label+"__"+region,		800, 0.,8000. )
 					if self.anatype=="tZb":
 							histos[region]["tau21__"+label[1]+"__iMDtop__"+label[0]+"__"+region] =  TH2F("tau21__"+label[1]+"__iMDtop__"+label[0]+"__"+region,	"tau21__"+label[1]+"__iMDtop__"+label[0]+"__"+region,		100, 0.,1.,100, 0.,1. )
 							histos[region]["msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region] =  TH2F("msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region,	"msoftdrop__"+label[1]+"__iMDtop__"+label[0]+"__"+region,		240, 0.,480.,100, 0.,1. )
+							histos[region]["aeta__"+label[1]+"__aeta__"+label[0]+"__"+region] =  TH2F("aeta__"+label[1]+"__aeta__"+label[0]+"__"+region,	"aeta__"+label[1]+"__aeta__"+label[0]+"__"+region,		24, 0.0,2.4,24, 0.0,2.4 )
 							#histos[region]["mass__"+label+"__"+region] =  TH1F("mass__"+label+"__"+region,	"mass__"+label+"__"+region,		800, 0.,8000. )
 
 				if not isAK4:
@@ -2482,14 +2484,17 @@ class NanoAODskim_Functions:
 		#print len(pdfweights)
 		pdw=0
 		origw=opdf
+		#print origw,avew
 		for ip in xrange(0,len(pdfweights)):
-			#print ip,pdfweights[ip],origw
+			
 			curp=pdfweights[ip]
 			pdw+=(curp-origw)*(curp-origw)
 
-		pdwsq = sqrt(pdw)
+		pdwsq = sqrt(pdw)/(origw)
                 #print "pdw",pdwsq
 		#print len(pdfweights)
+		#rare buggy events
+   		pdwsq=min(5.0,pdwsq)
 		return {"sf":1.0,"down":1.0-pdwsq,"up":1.0+pdwsq}
 
 	#Calculate Q2 Envelope

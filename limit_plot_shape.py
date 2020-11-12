@@ -151,17 +151,22 @@ def make_smooth_graph(h2,h3):
 
 if __name__ == "__main__":
     ROOT.gROOT.Macro("rootlogon.C")
-    TPT = ROOT.TPaveText(.20, .63, .43, .7,"NDC")
-    TPT1 = ROOT.TPaveText(.20, .57, .43, .63 ,"NDC")
+
 
 
     if options.region=="low":
+    	TPT = ROOT.TPaveText(.20, .63, .37, .7,"NDC")
+    	TPT1 = ROOT.TPaveText(.20, .57, .37, .63 ,"NDC")
     	TPT.AddText("Low VLQ mass")
     	TPT1.AddText("m_{VLQ} ~ 1/2m_{W'}")
     if options.region=="center":
+    	TPT = ROOT.TPaveText(.20, .63, .43, .7,"NDC")
+    	TPT1 = ROOT.TPaveText(.20, .57, .37, .63 ,"NDC")
     	TPT.AddText("Medium VLQ mass")
     	TPT1.AddText("m_{VLQ} ~ 2/3m_{W'}")
     if options.region=="high":
+    	TPT = ROOT.TPaveText(.20, .63, .38, .7,"NDC")
+    	TPT1 = ROOT.TPaveText(.20, .57, .37, .63 ,"NDC")
     	TPT.AddText("High VLQ mass")
     	TPT1.AddText("m_{VLQ} ~ 3/4m_{W'}")
 
@@ -224,9 +229,7 @@ if __name__ == "__main__":
 			valup=float(ll.split(",")[2].replace("\n",""))
 
 			print curlwp+curlvlq,valdown,valup
-			if valdown>0.6 or valup>0.6:
-				print "badval"
-				continue
+			
 			if not (curlwp+curlvlq in pdfdict):
 				pdfdict[curlwp+curlvlq]=[[valdown],[valup]]
 			else:
@@ -361,12 +364,15 @@ if __name__ == "__main__":
     print "Theory lines"
     sigstr = []
     xbr=[]
+    print pdfdict
     for wpmass in masses:
 	wpm=str(wpmass)
 	curxsec=sigxsecdict[wpm]
 	vlq = VLQbuddy[wpm]
 	curbr=(sigbrdict[wpm+vlq]["Tp"]+sigbrdict[wpm+vlq]["Bp"])
+	print wpm+vlq
 	pdarr=pdfdict[wpm+vlq]
+	print "pdf",pdarr[0],pdarr[1]
 	pdavedown = sum(pdarr[0])/len(pdarr[0])
 	pdaveup = sum(pdarr[1])/len(pdarr[1])
 	print wpm,curbr,curxsec,pdaveup,pdavedown

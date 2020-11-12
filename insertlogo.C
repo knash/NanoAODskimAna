@@ -23,9 +23,9 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
   float r = pad->GetRightMargin();
   float b = pad->GetBottomMargin();
   float e = 0.025;
-
+  TString extraTextNew=extraText;
   pad->cd();
-
+  float extraTextSize = extraOverCmsTextSize*cmsTextSize;
   TString lumiText;
   if( iPeriod==1 )
     {
@@ -74,7 +74,8 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
   else if ( iPeriod==13 )
     {
       lumiText += "13 TeV";
-      writeExtraText+=" Simulation";
+      extraTextNew+=" Simulation";
+      extraTextSize *= 0.6;
     }
    
  // cout << lumiText << endl;
@@ -84,7 +85,7 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
   latex.SetTextAngle(0);
   latex.SetTextColor(kBlack);    
 
-  float extraTextSize = extraOverCmsTextSize*cmsTextSize;
+
 
   latex.SetTextFont(42);
   latex.SetTextAlign(31); 
@@ -144,7 +145,7 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
 	      latex.SetTextFont(extraTextFont);
 	      latex.SetTextAlign(align_);
 	      latex.SetTextSize(extraTextSize*t);
-	      latex.DrawLatex(posX_, posY_- relExtraDY*cmsTextSize*t, extraText);
+	      latex.DrawLatex(posX_, posY_- relExtraDY*cmsTextSize*t, extraTextNew);
 	    }
 	}
     }
@@ -158,7 +159,7 @@ void insertlogo( TPad* pad, int iPeriod, int iPosX )
       latex.SetTextFont(extraTextFont);
       latex.SetTextSize(extraTextSize*t);
       latex.SetTextAlign(align_);
-      latex.DrawLatex(posX_, posY_, extraText);      
+      latex.DrawLatex(posX_, posY_, extraTextNew);      
     }
 
 

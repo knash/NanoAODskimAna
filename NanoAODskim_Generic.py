@@ -125,6 +125,7 @@ infinity=99999999999.
 genwoff=options.genwoff
 
 for curset in (options.set).split(","):
+
 	iovr,inover,ibr,itot=0,0,0,0
 	jobarr = [options.job,options.totaljobs]
 	if jobarr[0]>jobarr[1]:
@@ -145,8 +146,9 @@ for curset in (options.set).split(","):
 	settype=SetFilter(setname)
 	print "set type",settype
 	vstr= (options.version).split(",")
-	NanoF = NanoAODskim_Functions(options.anatype,options.era,vstr,settype,options.condor)
-
+	NanoF = NanoAODskim_Functions(options.anatype,options.era)
+	avep=0
+	np=0
 	if not (settype=="JetHT"):
 		constdict = NanoF.LoadConstants
 		#Lumi, Nevents
@@ -430,7 +432,7 @@ for curset in (options.set).split(","):
 			errnames.append("bmistag")
 		errnames.append("q2")
 		errnames.append("ps")
-		if settype=="Signal" or settype=="ST":
+		if settype=="Signal" or settype=="ST" or settype=="TT":
 			errnames.append("pdfweight")
 		if settype=="TT" and runttweight:
 			errnames.append("tptrw")
@@ -826,9 +828,11 @@ for curset in (options.set).split(","):
 	evhistos["PV_npvs_postdown"]=TH1F("PV_npvs_postdown",	"PV_npvs_postdown",		100, 0.,100 )
 	evhistos["pdfuncevup"]=TH1F("pdfuncevup",	"pdfuncevup",		100, 0.,2 )
 	evhistos["pdfuncevdown"]=TH1F("pdfuncevdown",	"pdfuncevdown",		100, 0.,2 )
-	evhistos["NM1TiMDtophigheta"] = copy.deepcopy(histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"])
-	evhistos["NM1TiMDtophigheta"].SetName("iMDtop__T__NM1TiMDtophigheta")
-	evhistos["NM1TiMDtophigheta"].SetTitle("iMDtop__T__NM1TiMDtophigheta")
+
+	if macro=="Ana":
+		evhistos["NM1TiMDtophigheta"] = copy.deepcopy(histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"])
+		evhistos["NM1TiMDtophigheta"].SetName("iMDtop__T__NM1TiMDtophigheta")
+		evhistos["NM1TiMDtophigheta"].SetTitle("iMDtop__T__NM1TiMDtophigheta")
 	cfregions=["C","NM2bt"]
 
 	cutflowpoints=	[
@@ -1006,7 +1010,7 @@ for curset in (options.set).split(","):
 			PV_npvs = getattr(ev, "PV_npvs")
 
 			evhistos["PV_npvs_pre"].Fill(PV_npvs)
-
+	
 			if (not NanoF.isdata):
 
 				
@@ -1014,7 +1018,7 @@ for curset in (options.set).split(","):
 				evhistos["PV_npvs_post"].Fill(float(PV_npvs),evpuweight["sf"])
 				evhistos["PV_npvs_postup"].Fill(float(PV_npvs),evpuweight["up"])
 				evhistos["PV_npvs_postdown"].Fill(float(PV_npvs),evpuweight["down"])
-				if settype=="Signal" or settype=="ST":
+				if settype=="Signal" or settype=="ST" or settype=="TT":
 					pdfweights=[]
 					#tempth1=TH1F("tempth1",	"tempth1",		10000, -1.0,5.0 )
 					allpdfs = getattr(ev, "LHEPdfWeight")
@@ -1035,12 +1039,21 @@ for curset in (options.set).split(","):
 					alphas=[allpdfs[len(allpdfs)-2],allpdfs[len(allpdfs)-1]]
 
 					#print "alphas",alphas,avew
-					if settype=="Signal":
+					tgw=float(getattr(ev, "genWeight"))
+					if (settype=="TT" and options.era == "2016"):
 						evpdfweight=NanoF.PdfWeight(pdfweights)
-					if settype=="ST":
-						evpdfweight=NanoF.PdfWeightHessian(pdfweights,opdf)
-						
-				
+					if settype=="Signal" or settype=="ST" or (settype=="TT" and options.era in ["2017","2018"]):
+						if (tgw>0):
+							evpdfweight=NanoF.PdfWeightHessian(pdfweights,opdf)
+						else:
+							evpdfweight={"sf":1.0,"down":1.0,"up":1.0}
+					if  (evpdfweight['up']!=1.0):
+						avep+=evpdfweight['up']-1.0
+						np+=1
+						#print("pdf",evpdfweight['up']-1.0)
+						#print("genw",tgw)
+						#print("ave",avep/np)
+							
 					alsigdown=abs(avew-min(alphas))/avew
 					alsigup=abs(avew-max(alphas))/avew
 	
@@ -1065,8 +1078,9 @@ for curset in (options.set).split(","):
 
 					q2weights=[]
 					if settype=="Signal":
+
 						q2indices=[0,5,15,24,34,39]
-					if settype=="ST":
+					if settype=="ST" or settype=="TT":
 						q2indices=[0,1,3,5,7,8]
 					for iq2 in q2indices:
 
@@ -1410,6 +1424,7 @@ for curset in (options.set).split(","):
 						#print evcutflow
 						if not foundall:
 							continue
+
 						if shift=="" and (region in cfregions):
 							evcutflow[region]["presel_kin_vtag_ttag_DR_btag"]=1
 
@@ -1439,6 +1454,8 @@ for curset in (options.set).split(","):
 
 									if len(lab)>2:
 										threecand=lab
+				
+                 
 						if threecand!=None:
 						#	print cands
 						#	print vpairs[0],cands[vpairs[0]]
@@ -1453,6 +1470,8 @@ for curset in (options.set).split(","):
 									continue
 							#if [threecand].maxvlq
 						#Htcut, should not be hardcoded?
+						if cands[threecand].mass<1270.0:
+							continue
 
 						if (not NanoF.isdata):
 							if genjet==None:
@@ -1472,7 +1491,7 @@ for curset in (options.set).split(","):
 
 
 							#MC gen weights
-							if settype=="Signal" or settype=="ST":
+							if settype=="Signal" or settype=="ST" or settype=="TT":
 
 							
 								weightdict[region]["q2"] = evq2weights
@@ -1647,9 +1666,9 @@ for curset in (options.set).split(","):
 									#print(cands["T"].eta)
 									evhistos["NM1TiMDtophigheta"].Fill(cands["T"].iMDtop,hweight)
 									cetbins=[evhistos["NM1TiMDtophigheta"].FindBin(0.9),evhistos["NM1TiMDtophigheta"].FindBin(1.0)]
-									print 	
-									print evhistos["NM1TiMDtophigheta"].GetEntries(),evhistos["NM1TiMDtophigheta"].Integral(cetbins[0],cetbins[1]),evhistos["NM1TiMDtophigheta"].Integral(),evhistos["NM1TiMDtophigheta"].Integral(cetbins[0],cetbins[1])/evhistos["NM1TiMDtophigheta"].Integral()
-									print histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].GetEntries(),histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].Integral(cetbins[0],cetbins[1])/histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].Integral()
+									#print 	
+									#print evhistos["NM1TiMDtophigheta"].GetEntries(),evhistos["NM1TiMDtophigheta"].Integral(cetbins[0],cetbins[1]),evhistos["NM1TiMDtophigheta"].Integral(),evhistos["NM1TiMDtophigheta"].Integral(cetbins[0],cetbins[1])/evhistos["NM1TiMDtophigheta"].Integral()
+									#print histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].GetEntries(),histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].Integral(cetbins[0],cetbins[1])/histos["NM1TiMDtop"]["iMDtop__T__NM1TiMDtop"].Integral()
 
 							#if region=="C":
 							#	print"Weight",hweight

@@ -94,16 +94,20 @@ if options.anatype=="WW":
 	sigfiles=glob.glob("rootfiles/NanoAODskim_WWAna"+errsrt+"__WkkToWRadionToWWW_M4000-R0-06_TuneCP5_13TeV-madgraph.root")
 if options.anatype=="tZb":
 	captex="TZB"
-	sigfiles=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToTpB_Wp3000Nar_Tp2000Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
-	sigfiles+=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToBpT_Wp3000Nar_Bp2000Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
-	#sigfiles+=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToTpB_Wp3000Nar_Tp2000Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
-	#sigfiles+=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToBpT_Wp3000Nar_Bp2000Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+	#sigfiles=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToTpB_Wp3000Nar_Tp2000Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+	#sigfiles+=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToBpT_Wp3000Nar_Bp2000Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+
+	sigfiles=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToTpB_Wp5000Nar_Tp3300Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+	sigfiles+=glob.glob("rootfiles/NanoAODskim_tZbAna"+errsrt+"__WpToBpT_Wp5000Nar_Bp3300Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+
 if options.anatype=="tHb":
 	captex="THB"
-	sigfiles=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToTpB_Wp3000Nar_Tp2000Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
-	sigfiles+=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToBpT_Wp3000Nar_Bp2000Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
-	#sigfiles+=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToTpB_Wp3000Nar_Tp2000Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
-	#sigfiles+=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToBpT_Wp3000Nar_Bp2000Nar_Zt_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+	#sigfiles=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToTpB_Wp3000Nar_Tp2000Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+	#sigfiles+=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToBpT_Wp3000Nar_Bp2000Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+
+	sigfiles=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToTpB_Wp5000Nar_Tp3300Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+	sigfiles+=glob.glob("rootfiles/NanoAODskim_tHbAna"+errsrt+"__WpToBpT_Wp5000Nar_Bp3300Nar_Ht_TuneCP5_13TeV-madgraphMLM-pythia8.root")
+
 print "startsigkeys"
 sigfs = {}
 for sigf in sigfiles:
@@ -142,14 +146,14 @@ for rname in NanoF.LoadCuts:
 			xvals.append("m_{SD}(Z) GeV")
 			#cutvals.append([65.0,105.0])
 			cutvals.append([65.0,105.0])
-			maxfacs.append(1.4)
+			maxfacs.append(2.3)
 		if obj=="H" and var=="msoftdrop":
 			rebins.append(5)
 			ranges.append([0.0,200.0])
 			xvals.append("m_{SD}(H) GeV")
 			#cutvals.append([105.0,140.0])
 			cutvals.append([105.0,140.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 
 
 
@@ -159,7 +163,7 @@ for rname in NanoF.LoadCuts:
 			ranges.append([0.0,250.0])
 			xvals.append("m_{SD}(T) GeV")
 			cutvals.append([140.0,220.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 
 
 		if obj=="F" and var=="msoftdrop":
@@ -167,26 +171,26 @@ for rname in NanoF.LoadCuts:
 			ranges.append([0.0,300.0])
 			xvals.append("m_{SD} GeV")
 			cutvals.append([105.0,-999.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 		if obj=="P" and var=="msoftdrop":
 			rebins.append(10)
 			ranges.append([0.0,300.0])
 			xvals.append("m_{SD} GeV")
 			cutvals.append([105.0,-999.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 		if (obj=="W" or obj=="Z")  and var=="tau21":
 			rebins.append(5)
 			ranges.append([0.0,1.0])
 			xvals.append("#tau_{21}")
 			cutvals.append([0.45,-999.0])
-			maxfacs.append(2.5)
+			maxfacs.append(2.9)
 
 		if var=="iW":
 			rebins.append(1)
 			ranges.append([0.0,1.0])
 			xvals.append("imageMD_{W}")
 			cutvals.append([0.9,-999.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 		if var=="iMDWW":
 			rebins.append(100)
 			ranges.append([0.0,1.0])
@@ -194,22 +198,21 @@ for rname in NanoF.LoadCuts:
 			cutvals.append([0.8,-999.0])
 		if var=="iMDtop":
 			rebins.append(100)
-			ranges.append([0.0,1.0])
 			xvals.append("imageMD_{top}")
 			cutvals.append([0.9,-999.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 		if var=="iMDPho":
 			rebins.append(100)
 			ranges.append([0.0,1.0])
 			xvals.append("imageMD_{#gammaZ}")
 			cutvals.append([0.9,-999.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 		if var=="btagHbb":
 			rebins.append(4)
 			ranges.append([-1.0,1.0])
-			xvals.append("doubleB")
+			xvals.append("Dbtag")
 			cutvals.append([0.6,-999.0])
-			maxfacs.append(1.4)
+			maxfacs.append(1.7)
 
 
 
@@ -292,7 +295,7 @@ for ihn in xrange(len(histonames)):
 		tthist.SetLineWidth(2)
 		#wjetshist.SetLineWidth(2)
 	
-		leg = TLegend(0.45, 0.62, 0.75, 0.84)
+		leg = TLegend(0.47, 0.6, 0.84, 0.84)
 		leg.SetFillColor(0)
 		leg.SetBorderSize(0)
 
@@ -307,7 +310,7 @@ for ihn in xrange(len(histonames)):
 			htoplot.append(sighs[sigh])
 			htoplot[-1].SetLineWidth(2)
 			htoplot[-1].SetLineColor(1)
-			leg.AddEntry( htoplot[-1], options.anatype+' signal MC (M_{W\'} = 3TeV)', 'l')
+			leg.AddEntry( htoplot[-1], options.anatype+' signal MC (m_{W\'} = 3TeV)', 'l')
 		if options.anatype=="Pho":
 			htoplot.append(gjetshist)
 			htoplot[-1].SetLineWidth(2)
@@ -318,6 +321,7 @@ for ihn in xrange(len(histonames)):
 			vhisto.Scale(1.0/vhisto.Integral())	
 			maxes.append(vhisto.GetMaximum())
 		htoplot[0].SetMaximum(max(maxes)*maxfacs[ihn])
+		htoplot[0].SetMinimum(-0.000001)
 		htoplot[0].SetStats(0)
 		c1.SetLeftMargin(0.15)
 		#vhisto.SetRightMargin(0.05)
@@ -400,7 +404,7 @@ for tdf in datafiles:
 	else:
 		datahist.Add(copy.deepcopy(df.Get("CutflowC")))
 	print datahist.Integral()
-
+print "c1"
 limnames=glob.glob("limitsetting/theta/NanoAODskim_"+options.anatype+"_ForLimits__"+errsrt+"central.root")
 corrlimf=[]
 
@@ -409,11 +413,17 @@ numevs={}
 ints={}
 
 for ln in limnames:
+	print "c2"
 	corrlimf.append(TFile(ln))
 	#print ln,curyear
 	curyear=ln.split("_")[-1][0:4]
+	print "c2p1"
 	qcdlh=corrlimf[-1].Get("mass_"+captex+"_C_"+curyear+"__qcd")
+	print "c2p2"	
 	ttlh=corrlimf[-1].Get("mass_"+captex+"_C_"+curyear+"__ttbar")
+	print "c2p3",corrlimf[-1],"mass_"+captex+"_C_"+curyear+"__ttbar"
+	print ttlh 
+	print "c2p4"
 	if "ttbar" in numevs:
 		numevs["ttbar"]+=ttlh.GetEntries()
 		ints["ttbar"]+=ttlh.Integral()
@@ -426,6 +436,7 @@ for ln in limnames:
 	else:
 		numevs["qcd"]=qcdlh.GetEntries()
 		ints["qcd"]=qcdlh.Integral()
+	print "c3"
 	for sigf in sigfs:
 		
 		sigm=sigf[sigf.find("WpTo_Wp")+7:sigf.find("Nar")]
@@ -438,6 +449,8 @@ for ln in limnames:
 		else:
 			numevs[sigf]=cursh.GetEntries()
 			ints[sigf]=cursh.Integral()
+
+print "checkp"
 norms = {"data":1.0}
 print numevs
 print ints

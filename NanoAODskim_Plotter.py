@@ -1,6 +1,6 @@
 import NanoAODskim_Functions	
 from NanoAODskim_Functions import *
-
+from ROOT.TH1 import kPoisson
 from optparse import OptionParser
 import subprocess,os,sys
 
@@ -82,10 +82,10 @@ parser.add_option('--dogczh', metavar='F', action='store_true',
 
 withST=options.withST
 regiontoname=	{
-		"C":"C, Signal",
-		"K":"K, Medium t",
-		"H":"H, Medium V",
-		"F":"F, Validation",
+		"C":"C",
+		"K":"K",
+		"H":"H",
+		"F":"F",
 		"ZC":"Low mass t",
 		"FT":"ttbar measurement",
 		}
@@ -129,7 +129,7 @@ for  opt,value in options.__dict__.items():
 	print str(opt) +': '+ str(value)
 print "=================="
 print ""
-mthbbinning=[1000.0]
+mthbbinning=[1270.0]
 increm=270.0
 #constdict = NanoF.LoadConstants
 while mthbbinning[-1]<8000.0:
@@ -403,11 +403,30 @@ for era in eras:
 			#print datafile
 			#print curname+"__"+vv[0]
 			#print "varobj",var,obj
+
+			crange=None
+			if var=="mass":
+				if len(obj)==3:
+					crange=[1270.0,8000.0]
+				if len(obj)==2:
+					#print "VLQ",obj
+					crange=[200.0,6000.0]
+			elif var=="pt":
+				if obj=="B":
+					crange=[200.0,2500.0]
+				else:
+					crange=[450.0,2500.0]
+			elif var=="eta":
+				crange=[-2.4,2.4]
+			elif var=="msoftdropdef":
+				crange=[120.0,300.0]
 			if var=="mass" and (obj in ["THB","TZB"]):
 				datahist = datahist.Rebin(len(bins2)-1,datahist.GetName()+"TEMP",bins2)
+
 			else:
 				#print vv,rebins[ihn]
 				datahist.Rebin(rebins[ihn])
+			datahist.GetXaxis().SetRangeUser(crange[0],crange[1])
 			#print datafile,curname+"__"+vv[1]+"_0"
 			bkgfile=datafile
 
@@ -456,7 +475,9 @@ for era in eras:
 
 					bkghist.Add(temphist,-1)
 				#print bkghist.Integral()
-		
+			bkghist.GetXaxis().SetRangeUser(crange[0],crange[1])
+			bkghistttup.GetXaxis().SetRangeUser(crange[0],crange[1])
+			bkghistttdown.GetXaxis().SetRangeUser(crange[0],crange[1])
 			if var=="mass" and (obj in ["THB","TZB"]):
 					bkghist = bkghist.Rebin(len(bins2)-1,bkghist.GetName()+"TEMP",bins2)
 					if not qcdmcbkg:
@@ -489,6 +510,8 @@ for era in eras:
 
 
 			#print datahist.Integral(),tthist.Integral()
+			tthist.GetXaxis().SetRangeUser(crange[0],crange[1])
+
 			if var=="mass" and (obj in ["THB","TZB"]):
 				tthist = tthist.Rebin(len(bins2)-1,tthist.GetName()+"TEMP",bins2)
 			else:
@@ -496,7 +519,7 @@ for era in eras:
 			tthistuncs = {}
 			if withST:
 				sthist = stfile.Get(curname+"__"+vv[0])
-
+				sthist.GetXaxis().SetRangeUser(crange[0],crange[1])
 				if var=="mass" and (obj in ["THB","TZB"]):
 					sthist = sthist.Rebin(len(bins2)-1,sthist.GetName()+"TEMP",bins2)
 				else:
@@ -507,10 +530,12 @@ for era in eras:
 			#print datahist.Integral(),tthist.Integral()
 			#print  var,uncnames
 			if var in uncnames:
-				for unc in uncs:
-					#print unc,curname+"__"+vv[0]+"__"+unc+"__down",curname+"__"+vv[0]+"__"+unc+"__up"
-					tthistuncs[unc]=[ttfile.Get(curname+"__"+vv[0]+"__"+unc+"__down"),ttfile.Get(curname+"__"+vv[0]+"__"+unc+"__up")]
 
+				for unc in uncs:#uncs:
+					print unc
+					tthistuncs[unc]=[ttfile.Get(curname+"__"+vv[0]+"__"+unc+"__down"),ttfile.Get(curname+"__"+vv[0]+"__"+unc+"__up")]
+					tthistuncs[unc][0].GetXaxis().SetRangeUser(crange[0],crange[1])
+					tthistuncs[unc][1].GetXaxis().SetRangeUser(crange[0],crange[1])
 					if var=="mass" and (obj in ["THB","TZB"]):
 						tthistuncs[unc][0] = tthistuncs[unc][0].Rebin(len(bins2)-1,tthistuncs[unc][0].GetName()+"TEMP",bins2)
 						tthistuncs[unc][1] = tthistuncs[unc][1].Rebin(len(bins2)-1,tthistuncs[unc][1].GetName()+"TEMP",bins2)
@@ -532,7 +557,8 @@ for era in eras:
 
 						print unc,curname+"__"+vv[0]+"__"+unc+"__down",curname+"__"+vv[0]+"__"+unc+"__up"
 						sthistuncs[unc]=[stfile.Get(curname+"__"+vv[0]+"__"+unc+"__down"),stfile.Get(curname+"__"+vv[0]+"__"+unc+"__up")]
-
+						sthistuncs[unc][0].GetXaxis().SetRangeUser(crange[0],crange[1])
+						sthistuncs[unc][1].GetXaxis().SetRangeUser(crange[0],crange[1])
 						if var=="mass" and (obj in ["THB","TZB"]):
 							sthistuncs[unc][0] = sthistuncs[unc][0].Rebin(len(bins2)-1,sthistuncs[unc][0].GetName()+"TEMP",bins2)
 							sthistuncs[unc][1] = sthistuncs[unc][1].Rebin(len(bins2)-1,sthistuncs[unc][1].GetName()+"TEMP",bins2)
@@ -598,7 +624,7 @@ for era in eras:
 			for sigh in sighs:
 				#print sigh
 
-
+				sighs[sigh].GetXaxis().SetRangeUser(crange[0],crange[1])
 				if var=="mass" and (obj in ["THB","TZB"]):
 					sighs[sigh] = sighs[sigh].Rebin(len(bins2)-1,sighs[sigh].GetName()+"TEMP",bins2)
 				else:
@@ -651,7 +677,7 @@ for era in eras:
 							for errbin in xrange(bbinhistserr.GetNbinsX()+1):
 		
 								projectederr=bbinhistserr.ProjectionY(bbinhistserr.GetName()+"_py",errbin,errbin)
-
+								projectederr.GetXaxis().SetRangeUser(crange[0],crange[1])
 								if var=="mass" and (obj in ["THB","TZB"]):
 									projectederr = projectederr.Rebin(len(bins2)-1,projectederr.GetName()+"TEMP",bins2)
 								else:
@@ -670,7 +696,7 @@ for era in eras:
 								#print errhist.GetBinCenter(xbin),contcorr
 							for errbin1 in xrange(bbinhistscont.GetNbinsX()+1):
 								projectedcont=bbinhistscont.ProjectionY(bbinhistscont.GetName()+"_py",errbin1,errbin1)
-
+								projectedcont.GetXaxis().SetRangeUser(crange[0],crange[1])
 								if var=="mass" and (obj in ["THB","TZB"]):
 									projectedcont = projectedcont.Rebin(len(bins2)-1,projectedcont.GetName()+"TEMP",bins2)
 								else:
@@ -805,14 +831,21 @@ for era in eras:
 			bkghistcorrup.SetLineStyle(3)
 			bkghistcorrdown.SetLineStyle(3)
 			bkghist.SetStats(0)
-
-			xaxist = var+"("+obj+")"
+			pvar=var
+			pobj=obj
+		
+			pobj=pobj.replace("T","t")
+			pobj=pobj.replace("B","b")
+	
+	
+			xaxist = pvar+"("+pobj+")"
+			print "pvar+pobj",pvar,pobj
 			bkghist.SetTitle(';'+xaxist+';Events/Bin')	
 
 			leg1 = TLegend(0.60, 0.55, 0.84, 0.84)
 			leg1.SetFillColor(0)
 			leg1.SetBorderSize(0)
-			leg1.AddEntry( datahist, 'Data', 'PE')
+			leg1.AddEntry( datahist, 'Data', 'E0')
 			leg1.AddEntry( bkghist, 'QCD MC selection', 'l')
 			leg1.AddEntry( bkghist, 'QCD MC estimate', 'l')
 			leg1.AddEntry( bkghistup, '1#sigma bkg uncertainty', 'l')
@@ -823,9 +856,9 @@ for era in eras:
 			bkghistup.Draw('histsame')
 			bkghistdown.Draw('histsame')
 			if not blindington:
-				datahist.Draw("same")
+				datahist.Draw("samePE0")
 			elif not vv[0]=="C":
-				datahist.Draw("same")
+				datahist.Draw("samePE0")
 			#bkghistcorrup.Draw('histsame')
 			#bkghistcorrdown.Draw('histsame')
 
@@ -837,7 +870,7 @@ for era in eras:
 			leg1.Draw()
 			sub.cd()
 
-			
+			datahist.SetBinErrorOption(kPoisson)
 			pull = NanoF.Make_Pull_plot( datahist,bkghist,bkghistup,bkghistdown )
 
 			pull.SetFillColor(ROOT.kBlue)
@@ -991,24 +1024,9 @@ for era in eras:
 
 			st1.Draw("hist")
 
-			crange=None
-			if var=="mass":
-				if len(obj)==3:
-					crange=[1000.0,8000.0]
-				if len(obj)==2:
-					#print "VLQ",obj
-					crange=[200.0,6000.0]
-			elif var=="pt":
-				if obj=="B":
-					crange=[200.0,2500.0]
-				else:
-					crange=[450.0,2500.0]
-			elif var=="eta":
-				crange=[-2.4,2.4]
-			elif var=="msoftdropdef":
-				crange=[120.0,300.0]
 			if crange!=None:
 				st1.GetXaxis().SetRangeUser(crange[0],crange[1])
+				datahist.GetXaxis().SetRangeUser(crange[0],crange[1])
 			
 
 			#if not isdata:
@@ -1018,11 +1036,12 @@ for era in eras:
 			#	if wjetscorr!="None":
 			#		datahist.Add(wjetshist)
 			#print  "blindington",blindington,vv[0]
+
 			if not blindington:
-				datahist.Draw("same")
+				datahist.Draw("samePE0")
 
 			elif not vv[0]=="C":
-				datahist.Draw("same")
+				datahist.Draw("samePE0")
 			if vv[0]=="FT" and isdata and var!="msoftdropdef":
 				print "RECORDING AVE TTSF"
 				avettsfunc=0.5*abs((tthistuncs["ttag"][1].Integral()-tthistuncs["ttag"][0].Integral()))/tthist.Integral()
@@ -1365,17 +1384,18 @@ for era in eras:
 			leg = TLegend(0.60, 0.5, 0.84, 0.84)
 			leg.SetFillColor(0)
 			leg.SetBorderSize(0)
-			leg.AddEntry( datahist, 'Data', 'PE')
+			leg.AddEntry( datahist, 'Data', 'P0')
 			leg.AddEntry( bkgqcd, 'Data driven QCD', 'F')
-			leg.AddEntry( tthist, 't#bar{t} Monte Carlo', 'F')
+			leg.AddEntry( tthist, 't#bar{t} MC', 'F')
 			if withST:
-				leg.AddEntry( sthist, 'single-t Monte Carlo', 'F')
+				leg.AddEntry( sthist, 'single-t MC', 'F')
 			leg.AddEntry( totalHup, '1#sigma background uncertainty', 'l')
 			leg.AddEntry( grshade, '1#sigma background uncertainty', 'F')
 			if wjetscorr!="None":
 				leg.AddEntry( bkgwj, 'W+jets->QQ fraction', 'F')				
 			for plotsig in sorted(plottedsigs):
 				leg.AddEntry(plottedsigs[plotsig],"Wp at "+plotsig+"GeV","l")
+
 			leg.Draw()
 			prelim = TLatex()
 			prelim.SetNDC()
@@ -1388,15 +1408,15 @@ for era in eras:
 
 			pull.SetFillColor(ROOT.kBlue)
 			if var=="mass":
-				xaxist = "M_{"+obj+"} [GeV]"
+				xaxist = "m_{"+pobj+"} [GeV]"
 			elif var=="pt":
-				xaxist = obj+" candidate p_{T} [GeV]"
+				xaxist = pobj+" candidate p_{T} [GeV]"
 			elif var=="eta":
-				xaxist = obj+" candidate #eta"
+				xaxist = pobj+" candidate #eta"
 			elif var=="msoftdropdef":
-				xaxist = "top candidate softdrop mass [GeV]"
+				xaxist = "m_{SD} [GeV]"
 			else:
-				xaxist = var+"("+obj+")"
+				xaxist = pvar+"("+pobj+")"
 			pull.SetTitle(';'+xaxist+';(Data-Bkg)/#sigma')
 			pull.SetStats(0)
 
@@ -1597,6 +1617,7 @@ if options.postfit:
 			anastr="THB"
 		for era in eras:
 			settofind="JetHT__Run"+era
+			print combinefile,fold+options.anatype+era+"/qcd"
 			datafiles.append(TFile(rootfolder+prestr+"Ana"+era+"__"+settofind+".root","open"))
 			if "mass__"+anastr+"__"+reg in sumhistsunb:
 					sumhistsunb["mass__"+anastr+"__"+reg]["qcd"].Add(combinefile.Get(fold+options.anatype+era+"/qcd"))
@@ -1621,6 +1642,7 @@ if options.postfit:
 
 		sumhists["mass__"+anastr+"__"+reg]={}
 		sumhists["mass__"+anastr+"__"+reg]["data"] = sumhistsunb["mass__"+anastr+"__"+reg]["data"]
+
 		sumhists["mass__"+anastr+"__"+reg]["data"] = sumhistsunb["mass__"+anastr+"__"+reg]["data"].Rebin(len(bins2)-1,sumhistsunb["mass__"+anastr+"__"+reg]["data"].GetName()+"TEMP",bins2)
 		print "mass__"+anastr+"__"+reg,sumhists["mass__"+anastr+"__"+reg]["data"].Integral()
 
@@ -1657,7 +1679,7 @@ if len(eras)==1:
 for sumhist in sumhists:
 	curhset = sumhists[sumhist]
 	print sumhist,curhset,curhset["data"].Integral()
-	
+	curhset["data"].SetBinErrorOption(kPoisson)
 
 	main = ROOT.TPad("main", "main", 0, 0.3, 1, 1)
 	sub = ROOT.TPad("sub", "sub", 0, 0, 1, 0.3)
@@ -1715,9 +1737,14 @@ for sumhist in sumhists:
 		if withST:
 			st1.Add(curhset["st"])
 		st1.Add(curhset["qcd"])
-	print "reg",reg,"obj",obj,"var",var
+	pvar=var
+	pobj=obj
+		
+	pobj=pobj.replace("T","t")
+	pobj=pobj.replace("B","b")
+	print "reg",reg,"obj",pobj,"var",var
 	if options.postfit:
-		xaxist = "M_{"+obj+"} [GeV]"
+		xaxist = "m_{"+pobj+"} [GeV]"
 	if setstring!="QCD":
 		st1.SetMaximum(max(st1.GetMaximum(),curhset["data"].GetMaximum())*1.4)	
 		st1.SetTitle(';'+xaxist+';Events/Bin')
@@ -1741,9 +1768,9 @@ for sumhist in sumhists:
 		qcdl.Draw("hist")
 
 	if not blindington:
-		curhset["data"].Draw("same")
+		curhset["data"].Draw("samePE0")
 	elif not reg=="C":
-		curhset["data"].Draw("same")
+		curhset["data"].Draw("samePE0")
 	else:
 		print "not drawing",reg+'__'+var
 
@@ -1814,15 +1841,16 @@ for sumhist in sumhists:
   	grshade.SetFillStyle(3013)
 	grshade.SetFillColor(1)
 
-	leg = TLegend(0.55, 0.5, 0.84, 0.84)
+	leg = TLegend(0.5, 0.45, 0.84, 0.84)
 	leg.SetFillColor(0)
 	leg.SetBorderSize(0)
 	if setstring!="QCD":
-		leg.AddEntry( curhset["data"], 'Data', 'P')
+
+		leg.AddEntry( curhset["data"], 'Data', 'PE')
 		leg.AddEntry( curhset["qcd"], 'Data driven QCD', 'F')
-		leg.AddEntry( curhset["tt"], 't#bar{t} Monte Carlo', 'F')
+		leg.AddEntry( curhset["tt"], 't#bar{t} MC', 'F')
 		if withST:
-			leg.AddEntry( curhset["st"], 'single-t Monte Carlo', 'F')
+			leg.AddEntry( curhset["st"], 'single-t MC', 'F')
 		leg.AddEntry( grshade, '1#sigma background uncertainty', 'F')
 
 
@@ -1845,12 +1873,12 @@ for sumhist in sumhists:
 					curhset[ch].SetLineColor(sigcolors[isig])
 					curhset[ch].SetLineWidth(2)
 					curhset[ch].SetLineStyle(2)
-					leg.AddEntry( curhset[ch], 'Signal at '+curwpm+' GeV', 'l')
+					leg.AddEntry( curhset[ch], 'Signal (m_{W\'}='+curwpm+' GeV)', 'l')
+
 					isig+=1
-			
 
 	else:
-		leg.AddEntry( curhset["data"], 'QCD MC selection', 'P')
+		leg.AddEntry( curhset["data"], 'QCD MC selection', 'E0')
 		leg.AddEntry( qcdl, 'QCD background estimate', 'l')
 		leg.AddEntry( grshade, '1#sigma background uncertainty', 'F')
 
@@ -1869,16 +1897,16 @@ for sumhist in sumhists:
 
 	pull.SetFillColor(ROOT.kBlue)
 	if var=="mass":
-				xaxist = "M_{"+obj+"} [GeV]"
+				xaxist = "m_{"+pobj+"} [GeV]"
 
 	elif var=="pt":
-				xaxist = obj+" candidate p_{T} [GeV]"
+				xaxist = pobj+" candidate p_{T} [GeV]"
 	elif var=="eta":
-				xaxist = obj+" candidate #eta"
+				xaxist = pobj+" candidate #eta"
 	elif var=="msoftdropdef":
 				xaxist = "top candidate softdrop mass [GeV]"
 	else:
-				xaxist = var+"("+obj+")"
+				xaxist = pvar+"("+pobj+")"
 	pull.SetTitle(';'+xaxist+';(Data-Bkg)/#sigma')
 	pull.SetStats(0)
 
@@ -1959,11 +1987,11 @@ for sumhist in sumhists:
 
 	if setstring!="QCD":
 		st1.SetMinimum(0.1)
-		st1.SetMaximum(max(st1.GetMaximum(),curhset["data"].GetMaximum())*30)	
+		st1.SetMaximum(max(st1.GetMaximum(),curhset["data"].GetMaximum())*100)	
 
 	else:	
 		qcdl.SetMinimum(0.1)
-		qcdl.SetMaximum(max(st1.GetMaximum(),curhset["data"].GetMaximum())*30)
+		qcdl.SetMaximum(max(st1.GetMaximum(),curhset["data"].GetMaximum())*100)
 
 	main.SetLogy()
 	main.RedrawAxis()
